@@ -1,0 +1,17 @@
+name: 問題回報 / Bug report
+description: 網頁顯示錯誤、題目或答案有誤 / Something looks wrong on the page or in a test
+title: "[問題] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: 發生了什麼？/ What happened?
+      description: 哪一題、哪個功能、預期看到什麼 / Which test or feature, and what you expected
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: 瀏覽器與裝置 / Browser and device
+      placeholder: 例如 Chrome 131 / Windows 11

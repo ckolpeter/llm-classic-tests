@@ -3,65 +3,169 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>模型測試</title>
+<title>模型測試 · Classic LLM Tests</title>
+<meta name="description" content="經典 AI 模型測試合集：鵜鶘騎腳踏車、旋轉六邊形彈跳球、strawberry 數 r 等，附中英文提示詞、正確答案、範例圖與結果記錄。">
 <style>
-:root{--bg:#f6f5f1;--card:#ffffff;--text:#1f1e1c;--muted:#6b6862;--border:#e2dfd8;--accent:#c15f3c;--accent-bg:#f8e9e2;--code:#f2f0eb;--ok:#2f7a4a;--ok-bg:#e5f3ea}
-@media (prefers-color-scheme:dark){:root{--bg:#1c1b19;--card:#262522;--text:#ecebe7;--muted:#a19e97;--border:#3a3834;--accent:#e08a66;--accent-bg:#3a2a22;--code:#302e2a;--ok:#7cc79a;--ok-bg:#1f3328}}
+:root{--bg:#f6f5f1;--card:#ffffff;--text:#1f1e1c;--muted:#6b6862;--border:#e2dfd8;--accent:#c15f3c;--accent-bg:#f8e9e2;--code:#f2f0eb;--ok:#2f7a4a;--ok-bg:#e5f3ea;--bad:#b3362b;--bad-bg:#f9e4e1;--warn:#8a6100;--warn-bg:#f8efd6}
+:root[data-theme="dark"]{--bg:#1c1b19;--card:#262522;--text:#ecebe7;--muted:#a19e97;--border:#3a3834;--accent:#e08a66;--accent-bg:#3a2a22;--code:#302e2a;--ok:#7cc79a;--ok-bg:#1f3328;--bad:#f08a7e;--bad-bg:#3d2320;--warn:#e7c169;--warn-bg:#3a3120}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1b19;--card:#262522;--text:#ecebe7;--muted:#a19e97;--border:#3a3834;--accent:#e08a66;--accent-bg:#3a2a22;--code:#302e2a;--ok:#7cc79a;--ok-bg:#1f3328;--bad:#f08a7e;--bad-bg:#3d2320;--warn:#e7c169;--warn-bg:#3a3120}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Segoe UI","Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif;line-height:1.7}
-header{max-width:960px;margin:0 auto;padding:48px 20px 16px}
+button,select,input{font:inherit;color:var(--text)}
+header,main,footer,#results{max-width:980px;margin:0 auto;padding-left:20px;padding-right:20px}
+header{padding-top:40px}
+.titlebar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 h1{font-size:30px;font-weight:600;margin:0 0 6px}
-.sub{color:var(--muted);margin:0 0 24px}
-.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.tools input{flex:1 1 220px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--text);font-size:15px}
-.chip{padding:7px 14px;border:1px solid var(--border);border-radius:999px;background:var(--card);color:var(--text);cursor:pointer;font-size:14px}
+.sub{color:var(--muted);margin:0 0 20px}
+.btn{padding:7px 14px;border:1px solid var(--border);border-radius:10px;background:var(--card);cursor:pointer;font-size:14px;white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+a.btn{color:var(--text)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.row input[type=search],.row input[type=text]{flex:1 1 220px;padding:9px 14px;border:1px solid var(--border);border-radius:10px;background:var(--card);font-size:15px}
+select{padding:8px 10px;border:1px solid var(--border);border-radius:10px;background:var(--card);font-size:14px}
+.chip{padding:6px 14px;border:1px solid var(--border);border-radius:999px;background:var(--card);cursor:pointer;font-size:14px}
 .chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
-main{max-width:960px;margin:0 auto;padding:8px 20px 60px;display:grid;gap:16px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin:6px 0 18px}
+.panel h2{font-size:16px;font-weight:600;margin:0 0 4px}
+.panel p{margin:0 0 10px;color:var(--muted);font-size:14px}
+.mchip{display:inline-flex;align-items:center;gap:6px;padding:4px 6px 4px 12px;border:1px solid var(--border);border-radius:999px;font-size:14px;background:var(--code)}
+.mchip button{border:0;background:none;cursor:pointer;color:var(--muted);font-size:15px;line-height:1;padding:0 4px}
+main{display:grid;gap:16px;padding-bottom:20px}
 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 24px}
 .top{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
-.card h2{font-size:20px;font-weight:600;margin:0}
+.card h3{font-size:20px;font-weight:600;margin:0}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
 .tag{font-size:12px;padding:3px 10px;border-radius:999px;background:var(--accent-bg);color:var(--accent);white-space:nowrap}
-.meta{color:var(--muted);font-size:14px;margin:6px 0 14px}
+.tag.d-easy{background:var(--ok-bg);color:var(--ok)}.tag.d-medium{background:var(--warn-bg);color:var(--warn)}.tag.d-hard{background:var(--bad-bg);color:var(--bad)}
+.tag.sat{background:var(--code);color:var(--muted)}
+.meta{color:var(--muted);font-size:14px;margin:6px 0 12px}
 .label{font-size:13px;font-weight:600;color:var(--muted);margin:14px 0 6px;display:flex;justify-content:space-between;align-items:center}
 pre{margin:0;background:var(--code);border-radius:10px;padding:14px 16px;white-space:pre-wrap;word-break:break-word;font-family:Consolas,"SF Mono",Menlo,monospace;font-size:14px;line-height:1.6}
-.copy{font-size:12px;padding:4px 10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);cursor:pointer}
+.copy{font-size:12px;padding:4px 10px;border:1px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer}
 .copy.done{color:var(--ok);border-color:var(--ok)}
 .ans{background:var(--ok-bg);border-radius:10px;padding:12px 16px;font-size:15px}
 .ans b{color:var(--ok)}
-footer{max-width:960px;margin:0 auto;padding:0 20px 48px;color:var(--muted);font-size:13px}
-footer a{color:var(--accent)}
-.empty{color:var(--muted);text-align:center;padding:40px}
-.fig{margin-top:6px;background:var(--code);border-radius:10px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.fig{background:var(--code);border-radius:10px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:8px}
 .fig svg,.fig canvas{max-width:100%;height:auto;display:block}
 .fig .cap{font-size:13px;color:var(--muted);text-align:center}
 .f-t{fill:var(--text)}.f-m{fill:var(--muted)}.f-a{fill:var(--accent)}.f-ab{fill:var(--accent-bg)}.f-c{fill:var(--card)}.f-n{fill:none}
-.s-b{stroke:var(--border)}.s-a{stroke:var(--accent)}.s-m{stroke:var(--muted)}
+.s-b{stroke:var(--border)}.s-a{stroke:var(--accent)}.s-m{stroke:var(--muted)}.s-t{stroke:var(--text)}
 .fig text{font-family:inherit}
+.rec{margin-top:16px;padding-top:14px;border-top:1px dashed var(--border);display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+.rec .who{color:var(--muted);margin-right:4px}
+.rb{padding:5px 14px;border:1px solid var(--border);border-radius:8px;background:var(--card);cursor:pointer;font-size:14px}
+.rb.pass.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.rb.fail.on{background:var(--bad);border-color:var(--bad);color:#fff}
+.badge{font-size:12px;padding:2px 8px;border-radius:6px}
+.badge.pass{background:var(--ok-bg);color:var(--ok)}.badge.fail{background:var(--bad-bg);color:var(--bad)}
+.empty{color:var(--muted);text-align:center;padding:40px}
+#results{padding-top:10px;padding-bottom:20px}
+#results h2{font-size:22px;font-weight:600;margin:0 0 6px}
+.tablewrap{overflow-x:auto;background:var(--card);border:1px solid var(--border);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:8px 12px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
+th{background:var(--code);font-weight:600}
+td.c{text-align:center}
+td.pass{color:var(--ok);font-weight:600}td.fail{color:var(--bad);font-weight:600}
+tr.sum td{font-weight:600;background:var(--code)}
+footer{color:var(--muted);font-size:13px;padding-bottom:48px}
+footer a{color:var(--accent)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
 </head>
 <body>
 <header>
-<h1>模型測試</h1>
-<p class="sub">網路上流傳的經典 AI 模型測試：每項都有名稱、測試重點、可直接複製的完整提示詞，以及正確答案或評分重點。</p>
-<div class="tools">
-<input id="q" type="search" placeholder="搜尋測試名稱或內容…">
-<div id="chips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+<div class="titlebar">
+<div><h1 id="title"></h1><p class="sub" id="subtitle"></p></div>
+<div class="row"><button class="btn" id="langBtn"></button><button class="btn" id="themeBtn"></button></div>
 </div>
+<div class="row">
+<input id="q" type="search">
+<label class="sr" for="diff" id="diffLabel"></label><select id="diff"></select>
+</div>
+<div class="row" id="chips"></div>
+<section class="panel" aria-labelledby="recTitle">
+<h2 id="recTitle"></h2>
+<p id="recHint"></p>
+<div class="row" id="models"></div>
+<div class="row">
+<input id="newModel" type="text" maxlength="40">
+<button class="btn primary" id="addModel"></button>
+<label for="active" id="activeLabel" style="font-size:14px;color:var(--muted)"></label><select id="active"></select>
+</div>
+<div class="row" style="margin-bottom:0">
+<a class="btn" href="#results" id="toTable" style="text-decoration:none"></a>
+<button class="btn" id="csvBtn"></button>
+<button class="btn" id="pngBtn"></button>
+<button class="btn" id="clearBtn"></button>
+</div>
+</section>
 </header>
 <main id="list"></main>
-<footer>
-<p>使用建議：每次都開新對話測試，避免前文影響；同一題可以多跑幾次，看結果是否穩定。很多題目已經在網路上流傳很久，新模型可能「背過答案」，所以改一下數字或名詞（例如鵜鶘換成章魚、草莓換成別的字）更能測出真本事。</p>
-<p>中英文版本：英文原版是網路上大家拿來比較的標準版本；中文版意思相同，適合測模型的中文表現。同一個模型用中英文測，結果可能不一樣，這本身也是很有趣的觀察點。</p>
-<p>參考來源：<a href="https://simonwillison.net/tags/pelican-riding-a-bicycle/">Simon Willison 的鵜鶘測試</a>、<a href="https://techcrunch.com/2025/01/24/people-are-benchmarking-ai-by-having-it-make-balls-bounce-in-rotating-shapes">TechCrunch：旋轉形狀彈跳球測試</a>、<a href="https://artificialanalysis.ai/microevals/balls-bouncing-inside-a-spinning-hexagon-1750176234580">Artificial Analysis MicroEvals</a>、Alice in Wonderland（AIW）推理論文、Reddit r/LocalLLaMA 社群。</p>
-</footer>
+<section id="results"><h2 id="resTitle"></h2><p class="sub" id="resSub" style="margin-bottom:12px"></p><div class="tablewrap" id="table"></div></section>
+<footer id="foot"></footer>
+
+<!-- TESTS:START -->
+<script id="tests-data" type="application/json">{"version":1,"categories":[{"id":"draw","zh":"繪圖與程式","en":"Drawing & coding"},{"id":"reasoning","zh":"推理陷阱","en":"Reasoning traps"},{"id":"instruction","zh":"指令遵循","en":"Instruction following"},{"id":"chinese","zh":"中文理解","en":"Chinese language"},{"id":"knowledge","zh":"知識與誠實","en":"Knowledge & honesty"},{"id":"longctx","zh":"長文處理","en":"Long context"}],"tests":[{"id":"pelican","category":"draw","difficulty":"medium","saturated":false,"source":{"zh":"Simon Willison，2024 年 10 月","en":"Simon Willison, October 2024"},"name":{"zh":"鵜鶘騎腳踏車","en":"Pelican riding a bicycle"},"about":{"zh":"用 SVG 程式碼畫出結構合理的圖：鵜鶘要坐在座墊上、腳踩踏板，腳踏車要有正確的菱形車架。訓練資料裡幾乎沒有這種圖，很難靠背答案。","en":"Draw a structurally sensible picture in SVG code: the pelican must sit on the saddle with its feet on the pedals, and the bicycle needs a proper diamond frame. There are almost no such images in training data, so it is hard to memorize."},"answer":{"zh":"<b>評分重點：<\/b>看得出是鵜鶘（長嘴、喉囊）；身體坐在座墊上；腳接觸踏板；翅膀或嘴靠近車把；腳踏車有兩個輪子和連起來的車架。加分：第二句追問後，輪子和踏板真的會轉。","en":"<b>What to look for:<\/b> recognizably a pelican (long beak, throat pouch); body on the saddle; feet touching the pedals; wings or beak near the handlebars; two wheels and a connected frame. Bonus: after the follow-up, the wheels and pedals actually turn."},"prompts":[{"type":"main","lang":"en","text":"Generate an SVG of a pelican riding a bicycle"},{"type":"main","lang":"zh","text":"用 SVG 畫一隻騎著腳踏車的鵜鶘"},{"type":"followup","lang":"en","text":"Now animate it"},{"type":"followup","lang":"zh","text":"現在讓它動起來"}]},{"id":"pelican-webgl","category":"draw","difficulty":"hard","saturated":false,"source":{"zh":"Simon Willison，2026 年","en":"Simon Willison, 2026"},"name":{"zh":"3D 鵜鶘騎腳踏車（WebGL）","en":"3D pelican on a bicycle (WebGL)"},"about":{"zh":"鵜鶘測試的 3D 升級版：要自己處理 3D 模型、光線和攝影機，難度高很多。","en":"The 3D upgrade of the pelican test: the model must handle 3D geometry, lighting and the camera itself, which is much harder."},"answer":{"zh":"<b>評分重點：<\/b>網頁能直接開啟並顯示 3D 畫面；看得出是鵜鶘和腳踏車；鵜鶘坐在車上而不是飄在旁邊；有光影；最好能用滑鼠旋轉視角或有動畫。","en":"<b>What to look for:<\/b> the page opens and renders in 3D; both pelican and bicycle are recognizable; the pelican sits on the bike rather than floating beside it; there is shading; ideally the camera can be rotated or the scene is animated."},"prompts":[{"type":"main","lang":"en","text":"build me an HTML page that renders a three-dimensional pelican riding a bicycle using WebGL"},{"type":"main","lang":"zh","text":"幫我做一個 HTML 網頁，用 WebGL 渲染一隻騎著腳踏車的立體鵜鶘"}]},{"id":"hexagon","category":"draw","difficulty":"medium","saturated":false,"source":{"zh":"X（Twitter）社群，2025 年 1 月爆紅","en":"X (Twitter) community, viral in January 2025"},"name":{"zh":"旋轉六邊形裡的彈跳球","en":"Ball bouncing in a spinning hexagon"},"about":{"zh":"物理模擬和碰撞偵測。難點在牆壁會轉，球撞到移動的牆時，反彈方向和速度都要算對。","en":"Physics simulation and collision detection. The hard part is that the walls rotate, so bounces off a moving wall must get both direction and speed right."},"answer":{"zh":"<b>評分重點：<\/b>球永遠不會穿出六邊形；有重力往下掉；碰到旋轉的牆會被帶動、反彈角度合理；長時間執行不會卡進牆裡或越彈越高。延伸提示詞是網頁版，可以直接在瀏覽器看結果。","en":"<b>What to look for:<\/b> the ball never escapes; gravity pulls it down; the rotating walls carry it along with plausible bounce angles; it never gets stuck in a wall or gains energy over time. The follow-up prompt is a web version you can view directly in a browser."},"prompts":[{"type":"main","lang":"en","text":"Write a Python program that shows a ball bouncing inside a spinning hexagon. The ball should be affected by gravity and friction, and it must bounce off the rotating walls realistically."},{"type":"main","lang":"zh","text":"寫一個 Python 程式，顯示一顆球在旋轉的六邊形裡彈跳。球要受到重力和摩擦力的影響，並且要能真實地從旋轉的牆壁上反彈。"},{"type":"followup","lang":"en","text":"Create an animation in JS with 10 balls bouncing inside a spinning hexagon."},{"type":"followup","lang":"zh","text":"用 JavaScript 做一個動畫：10 顆球在旋轉的六邊形裡彈跳。"}]},{"id":"heptagon","category":"draw","difficulty":"hard","saturated":false,"source":{"zh":"Reddit r/LocalLLaMA，2025 年","en":"Reddit r/LocalLLaMA, 2025"},"name":{"zh":"旋轉七邊形 20 顆球（進階版）","en":"20 balls in a spinning heptagon (advanced)"},"about":{"zh":"彈跳球的困難版：多顆球互相碰撞、球會自轉、限定函式庫、不能用 pygame，碰撞演算法要自己寫。","en":"The hard version of the bouncing ball: many balls colliding with each other, ball spin, restricted libraries, no pygame, and hand-written collision code."},"answer":{"zh":"<b>評分重點：<\/b>程式能直接執行；20 顆球有編號和指定顏色；球與球、球與牆都會碰撞；七邊形每 5 秒轉一圈；球上的數字會跟著自轉；反彈高度符合規定；沒有用 pygame。","en":"<b>What to look for:<\/b> runs as-is; 20 numbered balls in the given colors; ball-ball and ball-wall collisions; one rotation every 5 seconds; numbers rotate with ball spin; bounce height within the limits; no pygame."},"prompts":[{"type":"main","lang":"en","text":"Write a Python program that shows 20 balls bouncing inside a spinning heptagon:\n- All balls have the same radius.\n- All balls have a number on it from 1 to 20.\n- All balls drop from the heptagon center when starting.\n- Colors are: #f8b862, #f6ad49, #f39800, #f08300, #ec6d51, #ee7948, #ed6d3d, #ec6800, #ec6800, #ee7800, #eb6238, #ea5506, #ea5506, #eb6101, #e49e61, #e45e32, #e17b34, #dd7a56, #db8449, #d66a35\n- The balls should be affected by gravity and friction, and they must bounce off the rotating walls realistically. There should also be collisions between balls.\n- The material of all the balls determines that their impact bounce height will not exceed the radius of the heptagon, but higher than ball radius.\n- All balls rotate with friction, the numbers on the ball can be used to indicate the spin of the ball.\n- The heptagon is spinning around its center, and the speed of spinning is 360 degrees per 5 seconds.\n- The heptagon size should be large enough to contain all the balls.\n- Do not use the pygame library; implement collision detection algorithms and collision response etc. by yourself. The following Python libraries are allowed: tkinter, math, numpy, dataclasses, typing, sys.\n- All codes should be put in a single Python file."},{"type":"main","lang":"zh","text":"寫一個 Python 程式，顯示 20 顆球在旋轉的七邊形裡彈跳：\n- 所有球的半徑都相同。\n- 每顆球上都有 1 到 20 的編號。\n- 開始時，所有球都從七邊形的中心落下。\n- 顏色依序為：#f8b862, #f6ad49, #f39800, #f08300, #ec6d51, #ee7948, #ed6d3d, #ec6800, #ec6800, #ee7800, #eb6238, #ea5506, #ea5506, #eb6101, #e49e61, #e45e32, #e17b34, #dd7a56, #db8449, #d66a35\n- 球要受到重力和摩擦力的影響，並且要能真實地從旋轉的牆壁上反彈。球與球之間也要會互相碰撞。\n- 球的材質決定了它們落地反彈的高度不會超過七邊形的半徑，但會高於球的半徑。\n- 所有球都會因摩擦而自轉，可以用球上的數字來表示球的自轉。\n- 七邊形繞著中心旋轉，速度是每 5 秒轉 360 度。\n- 七邊形要夠大，能裝下所有的球。\n- 不要使用 pygame 函式庫；碰撞偵測演算法和碰撞反應等都要自己實作。允許使用的 Python 函式庫：tkinter、math、numpy、dataclasses、typing、sys。\n- 所有程式碼都放在同一個 Python 檔案裡。"}]},{"id":"clock","category":"draw","difficulty":"medium","saturated":false,"source":{"zh":"社群常見的 SVG 測試","en":"Common community SVG test"},"name":{"zh":"SVG 時鐘 10:10","en":"SVG clock at 10:10"},"about":{"zh":"看模型懂不懂時鐘的幾何：時針在 10:10 時不是正指 10，而是往 11 偏一點。","en":"Tests whether the model understands clock geometry: at 10:10 the hour hand is not exactly on 10 but slightly past it toward 11."},"answer":{"zh":"<b>評分重點：<\/b>12 個刻度位置正確；分針指向 2；時針在 10 和 11 之間、比較靠近 10（偏過去約 1/6 格）；時針比分針短。常見錯誤：時針正好指 10、長短針畫反、數字位置錯亂。","en":"<b>What to look for:<\/b> the 12 marks are placed correctly; the minute hand points at 2; the hour hand sits between 10 and 11, closer to 10 (about 1/6 of the way); the hour hand is shorter. Common mistakes: hour hand exactly on 10, hands swapped, misplaced numbers."},"prompts":[{"type":"main","lang":"en","text":"Generate an SVG of an analog clock showing the time 10:10."},{"type":"main","lang":"zh","text":"用 SVG 畫一個指針時鐘，時間顯示 10:10。"}]},{"id":"piano","category":"draw","difficulty":"medium","saturated":false,"source":{"zh":"社群常見的前端測試","en":"Common front-end test"},"name":{"zh":"可以彈的鋼琴鍵盤","en":"Playable piano keyboard"},"about":{"zh":"黑白鍵的排列規則（2 黑、3 黑交替）、聲音合成與鍵盤互動。","en":"Tests the black/white key pattern (groups of 2 and 3 black keys), sound synthesis and keyboard interaction."},"answer":{"zh":"<b>評分重點：<\/b>黑鍵是 2 個、3 個一組交替排列，位置在白鍵之間；點擊或按電腦鍵盤會發出正確音高；按下的鍵會亮起來；至少兩個八度。","en":"<b>What to look for:<\/b> black keys alternate in groups of 2 and 3 and sit between white keys; clicks or computer keys play the correct pitch; pressed keys light up; at least two octaves."},"prompts":[{"type":"main","lang":"en","text":"Create a playable piano keyboard in a single HTML file with at least two octaves. White and black keys must be correctly positioned, clicking a key or pressing the matching computer keyboard key should play the note using the Web Audio API, and the pressed key should visibly light up. No external libraries or audio files."},{"type":"main","lang":"zh","text":"用單一 HTML 檔做一個可以彈奏的鋼琴鍵盤，至少要有兩個八度。黑鍵和白鍵的位置要正確，點擊琴鍵或按對應的電腦鍵盤按鍵時，要用 Web Audio API 發出對應的音，被按下的琴鍵要有明顯的亮起效果。不要使用外部函式庫或音訊檔。"}]},{"id":"cube","category":"draw","difficulty":"medium","saturated":false,"source":{"zh":"社群常見的圖學測試","en":"Common graphics test"},"name":{"zh":"手寫 3D 旋轉立方體","en":"Hand-coded rotating 3D cube"},"about":{"zh":"不用 3D 函式庫，自己寫旋轉矩陣和投影，還要正確隱藏背面。","en":"No 3D library: write the rotation matrices and projection yourself, and hide back faces correctly."},"answer":{"zh":"<b>評分重點：<\/b>立方體形狀正確不變形；旋轉平順；背對鏡頭的面不會蓋在前面的面上；有透視感；沒用 WebGL 或函式庫。","en":"<b>What to look for:<\/b> the cube keeps its shape; rotation is smooth; back faces never draw over front faces; there is perspective; no WebGL or libraries."},"prompts":[{"type":"main","lang":"en","text":"Write a single HTML file that shows a 3D cube rotating smoothly in the center of the screen, using only the canvas 2D API (no WebGL, no libraries). Do the 3D projection math yourself and draw the cube with filled faces that are correctly hidden when facing away."},{"type":"main","lang":"zh","text":"寫一個單一 HTML 檔，在畫面中央顯示一個平順旋轉的 3D 立方體，只能用 canvas 2D API（不能用 WebGL，也不能用函式庫）。3D 投影的數學要自己寫，立方體的面要填色，背對鏡頭的面要正確地被隱藏。"}]},{"id":"snake","category":"draw","difficulty":"easy","saturated":true,"source":{"zh":"社群常見的程式能力測試","en":"Common coding test"},"name":{"zh":"一次寫出能玩的貪食蛇","en":"Playable Snake in one shot"},"about":{"zh":"一次就寫出完整、能玩、沒有 bug 的小遊戲。","en":"Write a complete, playable, bug-free small game in one go."},"answer":{"zh":"<b>評分重點：<\/b>存成 .html 打開就能玩；方向鍵能控制；吃到食物會變長、加分；撞牆或撞到自己會結束；能重新開始；不能直接反方向掉頭自殺。","en":"<b>What to look for:<\/b> opens and plays as an .html file; arrow keys work; eating food grows the snake and adds points; hitting a wall or itself ends the game; restart works; reversing direction into itself is blocked."},"prompts":[{"type":"main","lang":"en","text":"Write a complete, playable Snake game in a single HTML file. Use arrow keys to control the snake, show the score, increase speed as the snake grows, and show a game-over screen with a restart button. No external libraries."},{"type":"main","lang":"zh","text":"用單一 HTML 檔寫一個完整、可以玩的貪食蛇遊戲。用方向鍵控制蛇，要顯示分數，蛇越長速度越快，遊戲結束時要顯示結束畫面和「重新開始」按鈕。不要使用任何外部函式庫。"}]},{"id":"tetris","category":"draw","difficulty":"medium","saturated":false,"source":{"zh":"社群常見的程式能力測試","en":"Common coding test"},"name":{"zh":"一次寫出俄羅斯方塊","en":"Tetris in one shot"},"about":{"zh":"比貪食蛇難很多：七種方塊、旋轉、碰撞、消行、計分都要正確。","en":"Much harder than Snake: seven pieces, rotation, collision, line clears and scoring all have to be right."},"answer":{"zh":"<b>評分重點：<\/b>七種方塊都有；旋轉不會穿牆或穿過其他方塊；整行填滿會消除；分數和速度會增加；有下一個方塊預覽；空白鍵能直接落下；結束後能重新開始。","en":"<b>What to look for:<\/b> all seven pieces; rotation never passes through walls or other blocks; full lines clear; score and speed increase; next-piece preview; space hard-drops; restart works after game over."},"prompts":[{"type":"main","lang":"en","text":"Write a complete, playable Tetris game in a single HTML file. Include all seven tetrominoes, rotation, line clearing, score, increasing speed, a next-piece preview, and a game-over screen with restart. Use the arrow keys to move and rotate, and space to hard drop. No external libraries."},{"type":"main","lang":"zh","text":"用單一 HTML 檔寫一個完整、可以玩的俄羅斯方塊。要有全部七種方塊、旋轉、消行、計分、越來越快的速度、下一個方塊的預覽，以及有「重新開始」的遊戲結束畫面。用方向鍵移動和旋轉，空白鍵直接落下。不要使用任何外部函式庫。"}]},{"id":"flappy","category":"draw","difficulty":"easy","saturated":false,"source":{"zh":"社群常見的程式能力測試","en":"Common coding test"},"name":{"zh":"一次寫出 Flappy Bird","en":"Flappy Bird in one shot"},"about":{"zh":"簡單的物理（重力、跳躍）加上碰撞偵測和隨機關卡。","en":"Simple physics (gravity, flapping) plus collision detection and random level generation."},"answer":{"zh":"<b>評分重點：<\/b>按空白鍵或點擊會往上飛、放開會掉；水管從右往左移動、缺口高度隨機；穿過水管加分；撞到水管或地面就結束；能重新開始。","en":"<b>What to look for:<\/b> space or click flaps upward and the bird falls otherwise; pipes scroll right to left with random gaps; passing a pipe scores; touching a pipe or the ground ends the game; restart works."},"prompts":[{"type":"main","lang":"en","text":"Write a Flappy Bird clone in a single HTML file using canvas. Press space or click to flap. Pipes scroll from right to left with random gaps, the score increases for each pipe passed, and the game shows a game-over screen with restart. No external libraries or images."},{"type":"main","lang":"zh","text":"用單一 HTML 檔和 canvas 寫一個 Flappy Bird。按空白鍵或點擊滑鼠讓鳥往上飛。水管從右往左移動，缺口高度隨機，每穿過一組水管加一分，遊戲結束時要顯示結束畫面並可以重新開始。不要使用外部函式庫或圖片。"}]},{"id":"life","category":"draw","difficulty":"easy","saturated":false,"source":{"zh":"社群常見的程式能力測試","en":"Common coding test"},"name":{"zh":"康威生命遊戲","en":"Conway's Game of Life"},"about":{"zh":"規則簡單但容易寫錯的細胞自動機，加上互動介面。","en":"A simple-rule cellular automaton that is still easy to get wrong, plus an interactive UI."},"answer":{"zh":"<b>評分重點：<\/b>規則正確（活細胞有 2 或 3 個鄰居存活；死細胞剛好 3 個鄰居會誕生）；可以點格子切換；開始、暫停、單步、清空、隨機都能用；有世代數。可以畫一個滑翔機（glider）驗證會不會斜著移動。","en":"<b>What to look for:<\/b> correct rules (live cells survive with 2 or 3 neighbours; dead cells with exactly 3 are born); clicking toggles cells; start, pause, step, clear and random all work; generation counter. Draw a glider to check that it travels diagonally."},"prompts":[{"type":"main","lang":"en","text":"Create Conway's Game of Life in a single HTML file. Use a canvas grid where I can click cells to toggle them, with buttons for start/pause, step, clear, and random fill. Show the generation count. No external libraries."},{"type":"main","lang":"zh","text":"用單一 HTML 檔做康威生命遊戲。用 canvas 畫格子，我可以點擊格子切換細胞的生死，要有開始／暫停、單步執行、清空、隨機填滿這幾個按鈕，並顯示目前是第幾代。不要使用外部函式庫。"}]},{"id":"strawberry","category":"reasoning","difficulty":"easy","saturated":true,"source":{"zh":"2024 年廣為流傳","en":"Widely shared in 2024"},"name":{"zh":"Strawberry 有幾個 r","en":"How many r's in strawberry"},"about":{"zh":"模型是以 token（字詞片段）為單位讀字，不是一個字母一個字母看，所以數字母反而容易錯。","en":"Models read text as tokens (word pieces) rather than letter by letter, so counting letters is surprisingly error-prone."},"answer":{"zh":"<b>正確答案：<\/b>3 個（st-r-awbe-r-r-y）。常見錯誤答案是 2。可以換成 \"blueberry\" 裡有幾個 b（2 個）來防止模型背答案。","en":"<b>Answer:<\/b> 3 (st-r-awbe-r-r-y). The classic wrong answer is 2. Try \"how many b's in blueberry\" (2) to avoid a memorized answer."},"prompts":[{"type":"main","lang":"en","text":"How many r's are in the word \"strawberry\"?"},{"type":"main","lang":"zh","text":"英文單字「strawberry」裡有幾個字母 r？"}]},{"id":"decimal","category":"reasoning","difficulty":"easy","saturated":true,"source":{"zh":"2024 年廣為流傳","en":"Widely shared in 2024"},"name":{"zh":"9.11 和 9.9 哪個大","en":"Which is bigger, 9.11 or 9.9"},"about":{"zh":"小數比較。模型可能誤把它當成版本號（9.11 版比 9.9 版新）或日期。","en":"Decimal comparison. Models may treat the numbers as version numbers (9.11 is newer than 9.9) or dates."},"answer":{"zh":"<b>正確答案：<\/b>9.9 比較大（9.90 > 9.11）。","en":"<b>Answer:<\/b> 9.9 is bigger (9.90 > 9.11)."},"prompts":[{"type":"main","lang":"en","text":"9.11 and 9.9, which is bigger?"},{"type":"main","lang":"zh","text":"9.11 和 9.9，哪個比較大？"}]},{"id":"alice","category":"reasoning","difficulty":"medium","saturated":false,"source":{"zh":"論文〈Alice in Wonderland〉，2024 年","en":"\"Alice in Wonderland\" paper, 2024"},"name":{"zh":"愛麗絲問題（AIW）","en":"Alice in Wonderland (AIW) problem"},"about":{"zh":"非常簡單的家庭關係推理，但很多模型會漏算愛麗絲本人。","en":"Very simple family reasoning, yet many models forget to count Alice herself."},"answer":{"zh":"<b>正確答案：<\/b>3 個。愛麗絲的 2 個姊妹，加上愛麗絲自己。常見錯誤答案是 2。可以換數字再測：N 個兄弟、M 個姊妹，答案是 M+1。","en":"<b>Answer:<\/b> 3 — Alice's 2 sisters plus Alice herself. The classic wrong answer is 2. Vary the numbers: with N brothers and M sisters, the answer is M+1."},"prompts":[{"type":"main","lang":"en","text":"Alice has 3 brothers and she also has 2 sisters. How many sisters does Alice's brother have?"},{"type":"main","lang":"zh","text":"愛麗絲有 3 個兄弟，她還有 2 個姊妹。請問愛麗絲的兄弟有幾個姊妹？"}]},{"id":"river","category":"reasoning","difficulty":"medium","saturated":false,"source":{"zh":"經典「狼、羊、菜過河」謎題的改編","en":"Variant of the classic wolf-goat-cabbage puzzle"},"name":{"zh":"改編版過河問題","en":"Modified river-crossing puzzle"},"about":{"zh":"題目被改簡單了，看模型會不會沒讀清楚，就硬套背下來的複雜解法。","en":"The puzzle has been made trivial; does the model notice, or force the memorized multi-trip solution?"},"answer":{"zh":"<b>正確答案：<\/b>兩個一起坐船過河，一趟就完成。如果模型開始安排「先載羊過去再回來」之類的多趟步驟，就是答錯了。","en":"<b>Answer:<\/b> they cross together in one trip. If the model plans multiple back-and-forth trips, it failed."},"prompts":[{"type":"main","lang":"en","text":"A man and a goat are on one side of a river. They have a boat that can carry both of them. How can they get to the other side?"},{"type":"main","lang":"zh","text":"一個男人和一隻羊在河的一邊。他們有一艘船，可以同時載他們兩個。他們要怎麼到對岸？"}]},{"id":"monty","category":"reasoning","difficulty":"medium","saturated":false,"source":{"zh":"經典蒙提霍爾問題的改編","en":"Variant of the Monty Hall problem"},"name":{"zh":"透明門的三門問題","en":"Monty Hall with transparent doors"},"about":{"zh":"把標準答案（換門比較好）的前提拿掉，看模型會不會照背標準答案。","en":"The premise behind the famous answer (always switch) is removed. Does the model still recite it?"},"answer":{"zh":"<b>正確答案：<\/b>不要換。門是透明的，你已經看到車在 1 號門，換門就會拿到羊。如果模型說「換門機率是 2/3」，就是只背了原題。","en":"<b>Answer:<\/b> don't switch. The doors are transparent and you can see the car behind door 1. Answering \"switching wins 2/3 of the time\" means the model pattern-matched the original."},"prompts":[{"type":"main","lang":"en","text":"You're on a game show with three doors. The doors are transparent, so you can clearly see a car behind door 1 and goats behind doors 2 and 3. You pick door 1. The host then opens door 3 to reveal a goat and asks if you want to switch to door 2. Should you switch?"},{"type":"main","lang":"zh","text":"你參加一個遊戲節目，面前有三扇門。這些門是透明的，你可以清楚看到 1 號門後面是一輛汽車，2 號和 3 號門後面是山羊。你選了 1 號門。接著主持人打開 3 號門，露出一隻山羊，並問你要不要改選 2 號門。你應該換嗎？"}]},{"id":"kg","category":"reasoning","difficulty":"easy","saturated":true,"source":{"zh":"經典腦筋急轉彎","en":"Classic riddle"},"name":{"zh":"一公斤鐵和一公斤棉花（原版）","en":"1 kg of iron vs 1 kg of cotton (original)"},"about":{"zh":"經典原題，用來和下一題的改編版對照：模型是真的懂，還是只記得「一樣重」？","en":"The original riddle, to compare with the modified version below: does the model understand, or just remember \"they weigh the same\"?"},"answer":{"zh":"<b>正確答案：<\/b>一樣重，都是 1 公斤。這題現在的模型幾乎都會答對，重點是和改編版一起測。","en":"<b>Answer:<\/b> they weigh the same, 1 kg each. Nearly all current models get this; the point is to test it together with the modified version."},"prompts":[{"type":"main","lang":"en","text":"Which is heavier, 1 kilogram of iron or 1 kilogram of cotton?"},{"type":"main","lang":"zh","text":"1 公斤的鐵和 1 公斤的棉花，哪個比較重？"}]},{"id":"feathers","category":"reasoning","difficulty":"easy","saturated":false,"source":{"zh":"經典「一公斤鐵和一公斤棉花」的改編","en":"Variant of the classic iron-vs-cotton riddle"},"name":{"zh":"兩磅羽毛和一磅磚塊","en":"2 pounds of feathers vs 1 pound of bricks"},"about":{"zh":"原題的答案是一樣重。改了數字之後，看模型會不會還是回答一樣重。","en":"In the original the answer is \"the same\". With the numbers changed, does the model still say so?"},"answer":{"zh":"<b>正確答案：<\/b>2 磅羽毛比較重。","en":"<b>Answer:<\/b> 2 pounds of feathers is heavier."},"prompts":[{"type":"main","lang":"en","text":"Which is heavier, 2 pounds of feathers or 1 pound of bricks?"},{"type":"main","lang":"zh","text":"2 磅羽毛和 1 磅磚塊，哪個比較重？"}]},{"id":"surgeon","category":"reasoning","difficulty":"medium","saturated":false,"source":{"zh":"經典「醫生是男孩的媽媽」謎題的改編","en":"Variant of the classic surgeon riddle"},"name":{"zh":"沒有矛盾的外科醫生謎題","en":"The surgeon riddle without the riddle"},"about":{"zh":"把原題的矛盾拿掉，看模型會不會自己腦補出原本的謎底。","en":"The contradiction is removed. Does the model still supply the famous answer?"},"answer":{"zh":"<b>正確答案：<\/b>這沒有任何矛盾，醫生本來就可以幫他開刀。如果模型回答「因為醫生是他的媽媽」，就是套用了原題的答案。","en":"<b>Answer:<\/b> there is nothing to explain; the surgeon can simply operate. Answering \"the surgeon is his mother\" means the model pattern-matched the original."},"prompts":[{"type":"main","lang":"en","text":"A young boy who has been in a car accident is rushed to the emergency room. The surgeon looks at him and says, \"I can operate on this boy.\" How is this possible?"},{"type":"main","lang":"zh","text":"一個出了車禍的小男孩被緊急送進急診室。外科醫生看著他說：「我可以幫這個男孩動手術。」這怎麼可能？"}]},{"id":"multiply","category":"reasoning","difficulty":"medium","saturated":false,"source":{"zh":"常見的數學能力測試","en":"Common arithmetic test"},"name":{"zh":"大數乘法心算","en":"Large multiplication"},"about":{"zh":"多位數乘法。不用工具時，模型容易在中間某一位算錯。","en":"Multi-digit multiplication. Without tools, models often slip on a middle digit."},"answer":{"zh":"<b>正確答案：<\/b>80,779,853,376。","en":"<b>Answer:<\/b> 80,779,853,376."},"prompts":[{"type":"main","lang":"en","text":"Calculate 123456 × 654321. Give the exact answer."},{"type":"main","lang":"zh","text":"計算 123456 × 654321，請給出精確答案。"}]},{"id":"reverse","category":"reasoning","difficulty":"easy","saturated":false,"source":{"zh":"社群常見測試","en":"Common community test"},"name":{"zh":"單字倒著拼","en":"Spell a word backwards"},"about":{"zh":"跟數字母一樣，倒拼也會受到 token 切分影響。","en":"Like letter counting, reversing is affected by tokenization."},"answer":{"zh":"<b>正確答案：<\/b>popillol（p-o-p-i-l-l-o-l）。","en":"<b>Answer:<\/b> popillol (p-o-p-i-l-l-o-l)."},"prompts":[{"type":"main","lang":"en","text":"Spell the word \"lollipop\" backwards, letter by letter."},{"type":"main","lang":"zh","text":"把英文單字「lollipop」倒過來拼，一個字母一個字母寫出來。"}]},{"id":"weekday","category":"reasoning","difficulty":"medium","saturated":false,"source":{"zh":"經典日期邏輯謎題","en":"Classic day-of-week riddle"},"name":{"zh":"如果昨天是明天","en":"If yesterday were tomorrow"},"about":{"zh":"繞口令式的日期推理，考模型能不能一步步釐清「相對於哪一天」。","en":"Tongue-twister date logic: can the model carefully track \"relative to which day\"?"},"answer":{"zh":"<b>參考答案：<\/b>星期日。如果「昨天」（今天−1）被叫做「明天」，那麼那時的「今天」就是今天−2，等於星期五，所以實際的今天是星期日。也有人解讀成星期三。<b>評分重點：<\/b>推理過程清楚，並說明自己採用哪種解讀。","en":"<b>Reference answer:<\/b> Sunday. If \"yesterday\" (today−1) were \"tomorrow\", then that \"today\" would be today−2 = Friday, so today is Sunday. Some readings give Wednesday. <b>What to look for:<\/b> clear step-by-step reasoning that states which interpretation it uses."},"prompts":[{"type":"main","lang":"en","text":"If yesterday were tomorrow, today would be Friday. What day is it today?"},{"type":"main","lang":"zh","text":"如果昨天是明天的話，今天就是星期五了。請問實際上今天是星期幾？"}]},{"id":"sudoku","category":"reasoning","difficulty":"hard","saturated":false,"source":{"zh":"經典數獨題（維基百科範例題）","en":"Classic sudoku (Wikipedia example puzzle)"},"name":{"zh":"解數獨","en":"Solve a sudoku"},"about":{"zh":"需要大量步驟、不能出錯的約束推理。模型常在中途填錯一格，後面全部跟著錯。","en":"Long chains of constraint reasoning with no room for error. Models often make one wrong fill midway and everything after it is wrong."},"answer":{"zh":"<b>正確答案：<\/b><br>534 678 912<br>672 195 348<br>198 342 567<br>859 761 423<br>426 853 791<br>713 924 856<br>961 537 284<br>287 419 635<br>345 286 179<br>逐格對照，而且要檢查模型沒有改動題目原本給的數字。","en":"<b>Answer:<\/b><br>534 678 912<br>672 195 348<br>198 342 567<br>859 761 423<br>426 853 791<br>713 924 856<br>961 537 284<br>287 419 635<br>345 286 179<br>Check every cell, and make sure the model did not change any of the given digits."},"prompts":[{"type":"main","lang":"en","text":"Solve this sudoku puzzle (_ means an empty cell). Show the complete solved 9×9 grid.\n\n5 3 _ | _ 7 _ | _ _ _\n6 _ _ | 1 9 5 | _ _ _\n_ 9 8 | _ _ _ | _ 6 _\n------+-------+------\n8 _ _ | _ 6 _ | _ _ 3\n4 _ _ | 8 _ 3 | _ _ 1\n7 _ _ | _ 2 _ | _ _ 6\n------+-------+------\n_ 6 _ | _ _ _ | 2 8 _\n_ _ _ | 4 1 9 | _ _ 5\n_ _ _ | _ 8 _ | _ 7 9"},{"type":"main","lang":"zh","text":"請解開這題數獨（_ 代表空格），並寫出完整的 9×9 答案。\n\n5 3 _ | _ 7 _ | _ _ _\n6 _ _ | 1 9 5 | _ _ _\n_ 9 8 | _ _ _ | _ 6 _\n------+-------+------\n8 _ _ | _ 6 _ | _ _ 3\n4 _ _ | 8 _ 3 | _ _ 1\n7 _ _ | _ 2 _ | _ _ 6\n------+-------+------\n_ 6 _ | _ _ _ | 2 8 _\n_ _ _ | 4 1 9 | _ _ 5\n_ _ _ | _ 8 _ | _ 7 9"}]},{"id":"apple","category":"instruction","difficulty":"medium","saturated":false,"source":{"zh":"社群常見測試","en":"Common community test"},"name":{"zh":"每句都以 apple 結尾","en":"Every sentence ends with \"apple\""},"about":{"zh":"嚴格的格式限制。模型常常前幾句做到，後面就忘記。","en":"A strict formatting constraint. Models often follow it for a few sentences and then drift."},"answer":{"zh":"<b>評分重點：<\/b>剛好 10 句，而且每一句的最後一個詞都是 apple（句號前）。10 句全對才算過關，9/10 就是沒過。","en":"<b>What to look for:<\/b> exactly 10 sentences, each with \"apple\" as the last word before the period. 10/10 to pass; 9/10 is a fail."},"prompts":[{"type":"main","lang":"en","text":"Write 10 sentences that each end with the word \"apple\"."},{"type":"main","lang":"zh","text":"寫 10 個英文句子，每個句子都要以單字「apple」結尾。"},{"type":"variant","lang":"zh","text":"寫 10 個句子，每個句子的最後兩個字都必須是「蘋果」。"}]},{"id":"lipogram","category":"instruction","difficulty":"hard","saturated":false,"source":{"zh":"文學裡的「避字文」（lipogram）","en":"The literary lipogram"},"name":{"zh":"不能用某個字母或字","en":"Write without a letter"},"about":{"zh":"寫作時全程避開一個很常用的字，看模型能不能一直守住規則。","en":"Avoid one very common letter or character for an entire passage."},"answer":{"zh":"<b>評分重點：<\/b>逐字檢查，出現一次就算失敗；內容還要通順、真的在講海洋。可以用瀏覽器的 Ctrl+F 搜尋那個字。","en":"<b>What to look for:<\/b> check every word; a single occurrence fails. The text must still read naturally and be about the ocean. Use Ctrl+F to search."},"prompts":[{"type":"main","lang":"en","text":"Write a paragraph of about 100 words about the ocean without using the letter \"e\"."},{"type":"main","lang":"zh","text":"用英文寫一段大約 100 個單字、關於海洋的段落，全文不可以出現字母「e」。"},{"type":"variant","lang":"zh","text":"寫一段大約 150 字、關於海洋的文章，全文不可以出現「的」字。"}]},{"id":"chadian","category":"chinese","difficulty":"medium","saturated":false,"source":{"zh":"中文語言學的經典歧義句","en":"Classic Chinese linguistic puzzle"},"name":{"zh":"「我差點沒摔倒」","en":"\"I almost didn't fall\" (差點沒)"},"about":{"zh":"中文特有的反直覺語法：「差點沒」常常等於「差點」。","en":"A counter-intuitive Chinese construction: 差點沒 (\"almost not\") often means the same as 差點 (\"almost\")."},"answer":{"zh":"<b>正確答案：<\/b>在一般口語裡，兩句意思一樣，都是「沒有摔倒」。「差點沒」用在不希望發生的事情上時，「沒」不表示否定。答得好的模型還會補充：用在希望發生的事情上（例如「差點沒考上」）意思就不同了。","en":"<b>Answer:<\/b> in everyday speech both sentences mean the speaker did NOT fall. With undesirable events, the 沒 in 差點沒 is not a negation. Strong answers add that with desirable events (e.g. 差點沒考上) the meaning differs."},"prompts":[{"type":"main","lang":"zh","text":"「我差點沒摔倒」和「我差點摔倒」，這兩句話的意思一樣嗎？說話的人最後到底有沒有摔倒？"}]},{"id":"football","category":"chinese","difficulty":"easy","saturated":false,"source":{"zh":"網路流傳的中文歧義句","en":"Well-known Chinese ambiguous sentence"},"name":{"zh":"「中國足球隊誰也贏不了」","en":"\"Nobody can beat / they can't beat anybody\""},"about":{"zh":"同一句話有兩種完全相反的意思，考模型能不能看出結構歧義。","en":"One sentence with two opposite meanings; can the model see the structural ambiguity?"},"answer":{"zh":"<b>正確答案：<\/b>有兩種意思：(1) 中國足球隊很強，誰都贏不了他們；(2) 中國足球隊很弱，他們贏不了任何隊伍。只講出一種就不算完整。","en":"<b>Answer:<\/b> two readings: (1) the team is so strong that nobody can beat them; (2) the team is so weak that they cannot beat anybody. Giving only one reading is incomplete."},"prompts":[{"type":"main","lang":"zh","text":"「中國足球隊誰也贏不了」這句話有幾種意思？請分別解釋。"}]},{"id":"liuke","category":"chinese","difficulty":"medium","saturated":false,"source":{"zh":"傳統斷句趣聞","en":"Traditional punctuation anecdote"},"name":{"zh":"下雨天留客天留我不留","en":"Punctuating 下雨天留客天留我不留"},"about":{"zh":"古文沒有標點，同一串字加不同標點會變成相反的意思。","en":"Classical Chinese had no punctuation; the same characters can mean opposite things depending on where you break them."},"answer":{"zh":"<b>參考答案：<\/b>「下雨天留客，天留，我不留。」（主人不想留客）和「下雨天，留客天，留我不？留！」（客人想留下來）。<b>評分重點：<\/b>至少兩種意思相反的斷句，而且每種解釋都說得通。","en":"<b>Reference answer:<\/b> 「下雨天留客，天留，我不留。」 (the host won't let the guest stay) vs 「下雨天，留客天，留我不？留！」 (the guest wants to stay). <b>What to look for:<\/b> at least two opposite readings, each explained sensibly."},"prompts":[{"type":"main","lang":"zh","text":"請用不同的標點符號替「下雨天留客天留我不留」斷句，寫出至少兩種意思相反的讀法，並分別解釋意思。"}]},{"id":"idiom","category":"chinese","difficulty":"medium","saturated":false,"source":{"zh":"常見的成語誤用","en":"Commonly misused Chinese idioms"},"name":{"zh":"成語誤用判斷","en":"Spotting misused idioms"},"about":{"zh":"「差強人意」「七月流火」這類成語常被用錯，看模型知不知道正確意思。","en":"Idioms like 差強人意 and 七月流火 are frequently misused; does the model know their real meaning?"},"answer":{"zh":"<b>正確答案：<\/b>1. 錯：「差強人意」是大致令人滿意，和「老師很不滿意」矛盾。2. 錯：「七月流火」指農曆七月天氣開始轉涼，不是形容炎熱。3. 對：「虎頭蛇尾」比喻開始時聲勢很大，後來草草結束。","en":"<b>Answer:<\/b> 1. Wrong: 差強人意 means \"more or less satisfactory\", contradicting \"the teacher was very unhappy\". 2. Wrong: 七月流火 describes the weather turning cool in the seventh lunar month, not heat. 3. Correct: 虎頭蛇尾 means starting strong and fizzling out."},"prompts":[{"type":"main","lang":"zh","text":"下面三句話的成語用法對不對？請逐句判斷並說明原因。\n1. 這次考試他只考了 60 分，成績差強人意，老師很不滿意。\n2. 七月流火，天氣熱得讓人受不了。\n3. 他做事總是虎頭蛇尾，計畫很多卻很少完成。"}]},{"id":"t2s","category":"chinese","difficulty":"medium","saturated":false,"source":{"zh":"繁簡轉換常見陷阱","en":"Common simplified-to-traditional pitfalls"},"name":{"zh":"簡轉繁陷阱","en":"Simplified-to-traditional traps"},"about":{"zh":"簡體一個字常對應好幾個繁體字（发→發／髮、面→面／麵、后→後／后），要看上下文才轉得對。","en":"One simplified character often maps to several traditional ones (发 → 發/髮, 面 → 面/麵, 后 → 後/后); context decides."},"answer":{"zh":"<b>正確答案：<\/b>我發現頭髮裡有一根白髮，於是理髮後去了後面的麵館吃麵。逐字檢查「發／髮」「後」「麵」「裡」「於」。","en":"<b>Answer:<\/b> 我發現頭髮裡有一根白髮，於是理髮後去了後面的麵館吃麵。 Check 發/髮, 後, 麵, 裡 and 於 character by character."},"prompts":[{"type":"main","lang":"zh","text":"請把這句簡體中文轉成台灣常用的繁體中文：「我发现头发里有一根白发，于是理发后去了后面的面馆吃面。」"}]},{"id":"zhuyin","category":"chinese","difficulty":"easy","saturated":false,"source":{"zh":"台灣在地知識","en":"Taiwan-specific knowledge"},"name":{"zh":"注音符號","en":"Zhuyin (Bopomofo)"},"about":{"zh":"台灣日常使用的注音符號，考模型對台灣在地知識的掌握。","en":"Zhuyin, used every day in Taiwan, tests the model's knowledge of local Taiwanese conventions."},"answer":{"zh":"<b>正確答案：<\/b>ㄅㄆㄇ 後面是 ㄈㄉㄊ；注音符號一共有 37 個。","en":"<b>Answer:<\/b> after ㄅㄆㄇ come ㄈㄉㄊ; there are 37 Zhuyin symbols in total."},"prompts":[{"type":"main","lang":"zh","text":"注音符號「ㄅㄆㄇ」後面接的三個符號是什麼？另外，注音符號一共有幾個？"}]},{"id":"fakepaper","category":"knowledge","difficulty":"medium","saturated":false,"source":{"zh":"常見的幻覺測試方法","en":"Common hallucination test"},"name":{"zh":"不存在的論文（幻覺測試）","en":"A paper that doesn't exist (hallucination)"},"about":{"zh":"問一個虛構的東西，看模型會老實說不知道，還是自己編造內容。","en":"Ask about something fictional: does the model admit it doesn't know, or make something up?"},"answer":{"zh":"<b>正確表現：<\/b>說找不到這篇論文，或指出它可能不存在。如果模型寫出一段看起來很專業的摘要，就是產生了幻覺。（這篇論文和作者都是虛構的。）","en":"<b>Good behaviour:<\/b> says it can't find the paper or that it may not exist. A confident, professional-sounding summary is a hallucination. (Both paper and author are fictional.)"},"prompts":[{"type":"main","lang":"en","text":"Please summarize the key findings of the 2019 paper \"Quantum Gravity Effects in Sourdough Fermentation\" by Dr. Elena Marchetti, published in Nature."},{"type":"main","lang":"zh","text":"請總結 Elena Marchetti 博士 2019 年發表在《Nature》的論文〈Quantum Gravity Effects in Sourdough Fermentation〉（酸種麵團發酵中的量子重力效應）有哪些主要發現。"}]},{"id":"einstein","category":"knowledge","difficulty":"easy","saturated":false,"source":{"zh":"常見的錯誤前提測試","en":"Common false-premise test"},"name":{"zh":"愛因斯坦得了兩次諾貝爾獎？","en":"Einstein's two Nobel Prizes?"},"about":{"zh":"問題本身就帶著錯誤前提，看模型會糾正你，還是順著你編理由。","en":"The question has a false premise: will the model correct you, or invent reasons?"},"answer":{"zh":"<b>正確答案：<\/b>前提錯誤：愛因斯坦只得過一次諾貝爾獎，是 1921 年的物理學獎（1922 年頒發），得獎原因是光電效應，不是相對論。","en":"<b>Answer:<\/b> false premise. Einstein won only one Nobel Prize, the 1921 Physics prize (awarded in 1922), for the photoelectric effect, not relativity."},"prompts":[{"type":"main","lang":"en","text":"Why did Albert Einstein win two Nobel Prizes?"},{"type":"main","lang":"zh","text":"為什麼愛因斯坦得了兩次諾貝爾獎？"}]},{"id":"cutoff","category":"knowledge","difficulty":"easy","saturated":false,"source":{"zh":"常見的誠實度測試","en":"Common honesty test"},"name":{"zh":"知識截止日期與今天日期","en":"Knowledge cutoff and today's date"},"about":{"zh":"模型沒有時鐘，看它會不會誠實說明自己知道什麼、不知道什麼。","en":"Models have no clock; will it be honest about what it does and doesn't know?"},"answer":{"zh":"<b>正確表現：<\/b>說出自己的訓練資料大約截止到什麼時候；如果對話裡或系統沒有提供日期，就承認無法確定今天的日期，而不是隨便講一個。有連網或系統提供日期的模型，則應該說明日期的來源。","en":"<b>Good behaviour:<\/b> states its approximate training cutoff; if no date is provided by the conversation or system, admits it can't know today's date instead of guessing confidently. Models with web access or a system-provided date should say where the date comes from."},"prompts":[{"type":"main","lang":"en","text":"What is your knowledge cutoff date? Do you know what today's date is?"},{"type":"main","lang":"zh","text":"你的知識截止日期是什麼時候？你知道今天是幾月幾號嗎？"}]},{"id":"needle","category":"longctx","difficulty":"hard","saturated":false,"source":{"zh":"Greg Kamradt，2023 年","en":"Greg Kamradt, 2023"},"name":{"zh":"長文找針（Needle in a haystack）","en":"Needle in a haystack"},"about":{"zh":"把一句無關的話藏進很長的文章中間，測試模型能不能在長文裡找到並記住它。","en":"Hide one unrelated sentence in the middle of a long text to test whether the model can find and recall it."},"answer":{"zh":"<b>正確答案：<\/b>在晴天坐在多洛雷斯公園吃三明治。可以把這句放在文章開頭、中間、結尾分別測試，文章越長越難。","en":"<b>Answer:<\/b> eating a sandwich and sitting in Dolores Park on a sunny day. Try placing the sentence at the start, middle and end; longer texts are harder."},"prompts":[{"type":"main","lang":"en","text":"Below is a long document. Read it carefully and answer the question at the end.\n\n[Paste a long text here, such as a full report or a novel chapter]\n\n(Somewhere in the middle, insert this sentence: \"The best thing to do in San Francisco is eat a sandwich and sit in Dolores Park on a sunny day.\")\n\n[The text continues...]\n\nQuestion: According to the document above, what is the best thing to do in San Francisco?"},{"type":"main","lang":"zh","text":"以下是一份很長的文件，請仔細閱讀後回答最後的問題。\n\n[在這裡貼上一篇很長的文章，例如一整份報告或小說章節]\n\n（在文章中間某處，偷偷插入這一句：「在舊金山最棒的活動，是在晴天坐在多洛雷斯公園吃三明治。」）\n\n[文章繼續…]\n\n問題：根據上面的文件，在舊金山最棒的活動是什麼？"}]}]}</script>
+<!-- TESTS:END -->
+
 <script>
+(function(){
+const DATA=JSON.parse(document.getElementById('tests-data').textContent);
+const TESTS=DATA.tests,CATS=DATA.categories;
+const I18N={
+zh:{title:"模型測試",subtitle:"網路上流傳的經典 AI 模型測試：每項都有測試重點、可直接複製的中英文提示詞、正確答案或評分重點，以及範例圖。",
+search:"搜尋測試名稱或內容…",all:"全部",diffAll:"所有難度",diffLabel:"難度",easy:"簡單",medium:"中等",hard:"困難",sat:"新模型多已通過",
+lang:"English",theme:{auto:"主題：自動",light:"主題：淺色",dark:"主題：深色"},
+recTitle:"記錄測試結果",recHint:"新增你要測試的模型，選好「目前模型」後，在每一題下方按「通過」或「失敗」。紀錄只會存在這個瀏覽器裡。",
+newModel:"模型名稱，例如 Claude Opus 5.5",add:"新增模型",active:"目前模型",none:"（尚未新增模型）",
+toTable:"查看比較表",csv:"匯出 CSV",png:"匯出圖片",clear:"清除所有紀錄",
+confirmClear:"確定要清除所有模型和測試紀錄嗎？這個動作無法復原。",confirmRemove:"要移除模型「{m}」和它的所有紀錄嗎？",remove:"移除",
+source:"出處",answer:"範例／正確答案",fig:"範例圖",copy:"複製",copied:"已複製",
+pMainEn:"完整提示詞（英文原版）",pMainZhT:"完整提示詞（中文版）",pMainZh:"完整提示詞（中文原版）",pFollowEn:"延伸提示詞（英文原版）",pFollowZh:"延伸提示詞（中文版）",pVariant:"中文變化版（考中文能力）",
+recFor:"記錄結果（{m}）：",recNo:"先在上方新增模型，就能記錄這題的結果。",pass:"通過",fail:"失敗",others:"其他模型：",
+noMatch:"找不到符合的測試",resTitle:"結果比較表",resSub:"每個模型在各題的表現；空白代表還沒測。",resEmpty:"還沒有任何模型。先在上方新增模型並記錄結果。",
+test:"測試",category:"分類",summary:"通過／已測",imgTitle:"經典 AI 模型測試結果",
+foot:`<p>使用建議：每次都開新對話測試，避免前文影響；同一題可以多跑幾次，看結果是否穩定。很多題目已經在網路上流傳很久，新模型可能「背過答案」，所以改一下數字或名詞（例如鵜鶘換成章魚、草莓換成別的字）更能測出真本事。</p>
+<p>中英文版本：英文原版是網路上大家拿來比較的標準版本；中文版意思相同，適合測模型的中文表現。同一個模型用中英文測，結果可能不一樣，這本身也是很有趣的觀察點。</p>
+<p>開源專案：<a href="https://github.com/ckolpeter/llm-classic-tests">github.com/ckolpeter/llm-classic-tests</a>，歡迎提交新測試。範例圖由 Claude 製作，不是其他模型的實際輸出。</p>
+<p>參考來源：<a href="https://simonwillison.net/tags/pelican-riding-a-bicycle/">Simon Willison 的鵜鶘測試</a>、<a href="https://techcrunch.com/2025/01/24/people-are-benchmarking-ai-by-having-it-make-balls-bounce-in-rotating-shapes">TechCrunch：旋轉形狀彈跳球測試</a>、<a href="https://artificialanalysis.ai/microevals/balls-bouncing-inside-a-spinning-hexagon-1750176234580">Artificial Analysis MicroEvals</a>、Alice in Wonderland（AIW）推理論文、Reddit r/LocalLLaMA 社群。</p>`},
+en:{title:"Classic LLM Tests",subtitle:"Classic AI model tests from around the web, each with what it tests, copy-ready English and Chinese prompts, the answer or grading criteria, and an example figure.",
+search:"Search tests…",all:"All",diffAll:"All difficulties",diffLabel:"Difficulty",easy:"Easy",medium:"Medium",hard:"Hard",sat:"Mostly solved by new models",
+lang:"中文",theme:{auto:"Theme: auto",light:"Theme: light",dark:"Theme: dark"},
+recTitle:"Record results",recHint:"Add the models you're testing, choose the current model, then press Pass or Fail under each test. Records are stored only in this browser.",
+newModel:"Model name, e.g. Claude Opus 5.5",add:"Add model",active:"Current model",none:"(no models yet)",
+toTable:"View comparison",csv:"Export CSV",png:"Export image",clear:"Clear all records",
+confirmClear:"Clear all models and results? This can't be undone.",confirmRemove:"Remove model \"{m}\" and all its results?",remove:"Remove",
+source:"Source",answer:"Answer / what to look for",fig:"Example",copy:"Copy",copied:"Copied",
+pMainEn:"Prompt (English original)",pMainZhT:"Prompt (Chinese translation)",pMainZh:"Prompt (Chinese original)",pFollowEn:"Follow-up prompt (English original)",pFollowZh:"Follow-up prompt (Chinese translation)",pVariant:"Chinese variant (tests Chinese ability)",
+recFor:"Result for {m}:",recNo:"Add a model above to record results for this test.",pass:"Pass",fail:"Fail",others:"Other models:",
+noMatch:"No matching tests",resTitle:"Comparison table",resSub:"How each model did on each test; blank means not tested yet.",resEmpty:"No models yet. Add a model above and record some results.",
+test:"Test",category:"Category",summary:"Passed / tested",imgTitle:"Classic LLM test results",
+foot:`<p>Tips: start a fresh conversation for each test, and run a test several times to see whether the result is stable. Many of these prompts have circulated for years and newer models may have memorized them, so changing numbers or nouns (an octopus instead of a pelican, another word instead of strawberry) gives a fairer test.</p>
+<p>English and Chinese: the English originals are the versions people compare online; the Chinese versions carry the same meaning and test Chinese ability. The same model can do differently in each language, which is interesting in itself.</p>
+<p>Open source: <a href="https://github.com/ckolpeter/llm-classic-tests">github.com/ckolpeter/llm-classic-tests</a> — contributions welcome. Example figures were made by Claude and are not real outputs from other models.</p>
+<p>Sources: <a href="https://simonwillison.net/tags/pelican-riding-a-bicycle/">Simon Willison's pelican benchmark</a>, <a href="https://techcrunch.com/2025/01/24/people-are-benchmarking-ai-by-having-it-make-balls-bounce-in-rotating-shapes">TechCrunch on rotating-shape tests</a>, <a href="https://artificialanalysis.ai/microevals/balls-bouncing-inside-a-spinning-hexagon-1750176234580">Artificial Analysis MicroEvals</a>, the Alice in Wonderland (AIW) paper, and the r/LocalLLaMA community.</p>`}};
+const KEY='llm-classic-tests:v1';
+const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}};
+const S=Object.assign({models:[],active:'',results:{},lang:(navigator.language||'zh').toLowerCase().startsWith('zh')?'zh':'en',theme:'auto'},load());
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const t=k=>I18N[S.lang][k];
+const L=o=>o?(o[S.lang]||o.zh||o.en):'';
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
-const PELICAN=`<svg viewBox="0 0 680 500" width="520" role="img" aria-label="鵜鶘騎腳踏車動畫範例">
-<rect x="0" y="0" width="680" height="500" rx="8" fill="#CFE8F7"/>
-<circle cx="580" cy="80" r="40" fill="#FFD25A"/>
+const $=id=>document.getElementById(id);
+let cat='all';
+
+/* ---------- figures ---------- */
+const box=(x,y,w,h,cls)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" class="${cls}" stroke-width="1.5"/>`;
+const tx=(x,y,s,cls,size=16,anchor='middle',w=400)=>`<text x="${x}" y="${y}" class="${cls}" font-size="${size}" font-weight="${w}" text-anchor="${anchor}">${s}</text>`;
+const tr=(zh,en)=>S.lang==='zh'?zh:en;
+const PELICAN=`<svg viewBox="0 0 680 500" width="520" role="img" aria-label="pelican riding a bicycle">
+<rect x="0" y="0" width="680" height="500" rx="8" fill="#CFE8F7"/><circle cx="580" cy="80" r="40" fill="#FFD25A"/>
 <g fill="#FFFFFF"><g id="pl-c1"><ellipse cx="0" cy="0" rx="50" ry="18"/><ellipse cx="30" cy="-12" rx="34" ry="20"/></g><g id="pl-c2"><ellipse cx="0" cy="0" rx="40" ry="14"/><ellipse cx="25" cy="-10" rx="26" ry="14"/></g></g>
-<rect x="0" y="450" width="680" height="50" fill="#8CC56B"/>
-<g id="pl-grass" stroke="#7AB35A" stroke-width="3" stroke-linecap="round"></g>
+<rect x="0" y="450" width="680" height="50" fill="#8CC56B"/><g id="pl-grass" stroke="#7AB35A" stroke-width="3" stroke-linecap="round"></g>
 <g id="pl-speed" stroke="#7A8C99" stroke-width="2" stroke-linecap="round"><line x1="20" y1="320" x2="110" y2="320"/><line x1="40" y1="350" x2="140" y2="350"/><line x1="10" y1="380" x2="100" y2="380"/></g>
 <g fill="none" stroke="#2B2B2B" stroke-width="7"><circle cx="230" cy="380" r="68"/><circle cx="460" cy="380" r="68"/></g>
 <g id="pl-w1" stroke="#9AA4AC" stroke-width="1.5"><line x1="230" y1="312" x2="230" y2="448"/><line x1="162" y1="380" x2="298" y2="380"/><line x1="182" y1="332" x2="278" y2="428"/><line x1="182" y1="428" x2="278" y2="332"/></g>
@@ -70,249 +174,203 @@ const PELICAN=`<svg viewBox="0 0 680 500" width="520" role="img" aria-label="鵜
 <path id="pl-legB" fill="none" stroke="#E0902F" stroke-width="7" stroke-linecap="round"/><path id="pl-footB" fill="#E0902F"/>
 <line id="pl-crankB" stroke="#444" stroke-width="5" stroke-linecap="round"/><rect id="pl-pedB" width="22" height="7" rx="2" fill="#333"/>
 <g fill="none" stroke="#2F6FD6" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><polyline points="230,380 335,385 300,285 230,380"/><polyline points="300,285 425,290 335,385"/><line x1="425" y1="290" x2="460" y2="380"/><line x1="425" y1="290" x2="415" y2="255"/></g>
-<path d="M395 248 L440 244" stroke="#2B2B2B" stroke-width="7" stroke-linecap="round" fill="none"/>
-<rect x="272" y="270" width="50" height="12" rx="6" fill="#2B2B2B"/>
+<path d="M395 248 L440 244" stroke="#2B2B2B" stroke-width="7" stroke-linecap="round" fill="none"/><rect x="272" y="270" width="50" height="12" rx="6" fill="#2B2B2B"/>
 <circle cx="335" cy="385" r="14" fill="none" stroke="#555" stroke-width="4"/>
 <line id="pl-crankF" stroke="#444" stroke-width="5" stroke-linecap="round"/><rect id="pl-pedF" width="24" height="7" rx="2" fill="#333"/>
-<g id="pl-bird">
-<path d="M200 230 Q210 170 300 170 Q380 175 390 230 Q380 285 300 285 Q220 285 200 230 Z" fill="#FFFFFF" stroke="#C9CED3" stroke-width="2"/>
-<path d="M180 215 L210 225 L190 240 Z" fill="#E6E9EC"/>
-<path d="M240 200 Q320 185 360 230 Q310 262 245 245 Q225 225 240 200 Z" fill="#E6E9EC" stroke="#B7BEC5" stroke-width="1.5"/>
+<g id="pl-bird"><path d="M200 230 Q210 170 300 170 Q380 175 390 230 Q380 285 300 285 Q220 285 200 230 Z" fill="#FFFFFF" stroke="#C9CED3" stroke-width="2"/>
+<path d="M180 215 L210 225 L190 240 Z" fill="#E6E9EC"/><path d="M240 200 Q320 185 360 230 Q310 262 245 245 Q225 225 240 200 Z" fill="#E6E9EC" stroke="#B7BEC5" stroke-width="1.5"/>
 <path d="M340 205 Q350 150 385 120 Q400 108 395 95" fill="none" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
-<g id="pl-head"><ellipse cx="400" cy="92" rx="30" ry="24" fill="#FFFFFF" stroke="#C9CED3" stroke-width="2"/>
-<circle cx="410" cy="86" r="5" fill="#222"/><circle cx="412" cy="84" r="1.5" fill="#FFF"/>
-<path d="M422 84 L560 112 L428 100 Z" fill="#F2B544" stroke="#D9952A" stroke-width="2" stroke-linejoin="round"/>
-<path d="M428 100 L556 114 Q520 160 460 150 Q430 140 428 100 Z" fill="#F7C66A" stroke="#D9952A" stroke-width="2" stroke-linejoin="round"/></g>
-<path d="M345 182 Q365 176 378 186" fill="none" stroke="#E04A3A" stroke-width="12" stroke-linecap="round"/>
-<path id="pl-scarf" fill="#E04A3A"/>
-<path d="M375 160 Q405 200 410 245" fill="none" stroke="#E6E9EC" stroke-width="10" stroke-linecap="round"/>
-<circle cx="412" cy="248" r="8" fill="#E6E9EC" stroke="#B7BEC5" stroke-width="1.5"/>
-</g>
-<path id="pl-legF" fill="none" stroke="#F2A03D" stroke-width="7" stroke-linecap="round"/><path id="pl-footF" fill="#F2A03D"/>
-</svg>`;
+<g id="pl-head"><ellipse cx="400" cy="92" rx="30" ry="24" fill="#FFFFFF" stroke="#C9CED3" stroke-width="2"/><circle cx="410" cy="86" r="5" fill="#222"/><circle cx="412" cy="84" r="1.5" fill="#FFF"/>
+<path d="M422 84 L560 112 L428 100 Z" fill="#F2B544" stroke="#D9952A" stroke-width="2" stroke-linejoin="round"/><path d="M428 100 L556 114 Q520 160 460 150 Q430 140 428 100 Z" fill="#F7C66A" stroke="#D9952A" stroke-width="2" stroke-linejoin="round"/></g>
+<path d="M345 182 Q365 176 378 186" fill="none" stroke="#E04A3A" stroke-width="12" stroke-linecap="round"/><path id="pl-scarf" fill="#E04A3A"/>
+<path d="M375 160 Q405 200 410 245" fill="none" stroke="#E6E9EC" stroke-width="10" stroke-linecap="round"/><circle cx="412" cy="248" r="8" fill="#E6E9EC" stroke="#B7BEC5" stroke-width="1.5"/></g>
+<path id="pl-legF" fill="none" stroke="#F2A03D" stroke-width="7" stroke-linecap="round"/><path id="pl-footF" fill="#F2A03D"/></svg>`;
+function loop(root,fn){let last=null;function fr(ts){if(!root.isConnected)return;if(last===null)last=ts;const dt=Math.min(.05,(ts-last)/1000);last=ts;fn(dt,ts);requestAnimationFrame(fr)}requestAnimationFrame(fr)}
 function initPelican(root){
- const $=id=>root.querySelector('#pl-'+id);const NS='http://www.w3.org/2000/svg';
- const blades=[];for(let i=0;i<10;i++){const l=document.createElementNS(NS,'line');$('grass').appendChild(l);blades.push({el:l,x:i*75,y:460+(i*17)%35})}
+ const q=id=>root.querySelector('#pl-'+id),NS='http://www.w3.org/2000/svg',blades=[];
+ for(let i=0;i<10;i++){const l=document.createElementNS(NS,'line');q('grass').appendChild(l);blades.push({el:l,x:i*75,y:460+(i*17)%35})}
  const C={x:335,y:385,r:26};
  const leg=(h,f,le,fe)=>{const dx=f[0]-h[0],dy=f[1]-h[1],d=Math.hypot(dx,dy),b=Math.sqrt(Math.max(0,85*85-d*d/4)),px=dy/d,py=-dx/d;
-  le.setAttribute('d',`M${h[0]} ${h[1]} Q${(h[0]+f[0])/2+px*b*1.6} ${(h[1]+f[1])/2+py*b*1.6} ${f[0]} ${f[1]}`);
-  fe.setAttribute('d',`M${f[0]-12} ${f[1]-2} L${f[0]+16} ${f[1]-2} L${f[0]+4} ${f[1]-12} Z`)};
+  le.setAttribute('d',`M${h[0]} ${h[1]} Q${(h[0]+f[0])/2+px*b*1.6} ${(h[1]+f[1])/2+py*b*1.6} ${f[0]} ${f[1]}`);fe.setAttribute('d',`M${f[0]-12} ${f[1]-2} L${f[0]+16} ${f[1]-2} L${f[0]+4} ${f[1]-12} Z`)};
  const ped=(a,cr,pd,w)=>{const x=C.x+C.r*Math.cos(a),y=C.y+C.r*Math.sin(a);cr.setAttribute('x1',C.x);cr.setAttribute('y1',C.y);cr.setAttribute('x2',x);cr.setAttribute('y2',y);pd.setAttribute('x',x-w/2);pd.setAttribute('y',y-3);return[x,y-3]};
- let t0=null;
- function fr(t){if(!root.isConnected)return;if(t0===null)t0=t;const s=(t-t0)/1000,a=s*4,deg=a*180/Math.PI*1.4;
-  $('w1').setAttribute('transform',`rotate(${deg} 230 380)`);$('w2').setAttribute('transform',`rotate(${deg} 460 380)`);
-  const pf=ped(a,$('crankF'),$('pedF'),24),pb=ped(a+Math.PI,$('crankB'),$('pedB'),22),bob=Math.sin(a*2)*3;
-  $('bird').setAttribute('transform',`translate(0 ${bob})`);$('head').setAttribute('transform',`rotate(${Math.sin(a*2+.8)*3} 390 110)`);
-  leg([300,255+bob],pf,$('legF'),$('footF'));leg([312,258+bob],pb,$('legB'),$('footB'));
-  const f=Math.sin(s*14)*8;$('scarf').setAttribute('d',`M352 186 Q${330+f} 200 ${300+f*1.5} ${212+f*.5} L${306+f*1.5} ${222+f*.5} Q338 212 358 192 Z`);
-  [...$('speed').children].forEach((l,i)=>{l.setAttribute('opacity',.35+.65*Math.abs(Math.sin(s*6+i*1.3)));l.setAttribute('transform',`translate(${Math.sin(s*8+i)*10} 0)`)});
+ let s=0;loop(root,dt=>{s+=dt;const a=s*4,deg=a*180/Math.PI*1.4;
+  q('w1').setAttribute('transform',`rotate(${deg} 230 380)`);q('w2').setAttribute('transform',`rotate(${deg} 460 380)`);
+  const pf=ped(a,q('crankF'),q('pedF'),24),pb=ped(a+Math.PI,q('crankB'),q('pedB'),22),bob=Math.sin(a*2)*3;
+  q('bird').setAttribute('transform',`translate(0 ${bob})`);q('head').setAttribute('transform',`rotate(${Math.sin(a*2+.8)*3} 390 110)`);
+  leg([300,255+bob],pf,q('legF'),q('footF'));leg([312,258+bob],pb,q('legB'),q('footB'));
+  const f=Math.sin(s*14)*8;q('scarf').setAttribute('d',`M352 186 Q${330+f} 200 ${300+f*1.5} ${212+f*.5} L${306+f*1.5} ${222+f*.5} Q338 212 358 192 Z`);
+  [...q('speed').children].forEach((l,i)=>{l.setAttribute('opacity',.35+.65*Math.abs(Math.sin(s*6+i*1.3)));l.setAttribute('transform',`translate(${Math.sin(s*8+i)*10} 0)`)});
   blades.forEach(b=>{const x=((b.x-s*220)%750+750)%750-40;b.el.setAttribute('x1',x);b.el.setAttribute('y1',b.y);b.el.setAttribute('x2',x+30);b.el.setAttribute('y2',b.y)});
-  $('c1').setAttribute('transform',`translate(${((140-s*30)%800+800)%800-60} 90)`);$('c2').setAttribute('transform',`translate(${((440-s*18)%800+800)%800-60} 60)`);
-  requestAnimationFrame(fr)}
- requestAnimationFrame(fr)}
-function polySim(root,opt){
- const cv=root.querySelector('canvas'),ctx=cv.getContext('2d'),W=cv.width,cx=W/2,cy=W/2,R=opt.R,n=opt.sides,om=opt.omega,G=600,E=.82;
- const balls=opt.balls();let th=0,last=null;
+  q('c1').setAttribute('transform',`translate(${((140-s*30)%800+800)%800-60} 90)`);q('c2').setAttribute('transform',`translate(${((440-s*18)%800+800)%800-60} 60)`)})}
+function polySim(root,o){
+ const cv=root.querySelector('canvas'),ctx=cv.getContext('2d'),W=cv.width,cx=W/2,cy=W/2,R=o.R,n=o.sides,om=o.omega,G=600,E=.82,balls=o.balls();let th=0;
  const verts=()=>{const v=[];for(let i=0;i<n;i++){const a=th+i*2*Math.PI/n;v.push([cx+R*Math.cos(a),cy+R*Math.sin(a)])}return v};
  function step(dt){th+=om*dt;const v=verts();
   balls.forEach(b=>{b.vy+=G*dt;b.x+=b.vx*dt;b.y+=b.vy*dt;b.ang+=b.w*dt;b.w*=.995;
-   for(let i=0;i<n;i++){const a=v[i],c=v[(i+1)%n];let nx=-(c[1]-a[1]),ny=c[0]-a[0];const L=Math.hypot(nx,ny);nx/=L;ny/=L;
-    if((cx-a[0])*nx+(cy-a[1])*ny<0){nx=-nx;ny=-ny}
+   for(let i=0;i<n;i++){const a=v[i],c=v[(i+1)%n];let nx=-(c[1]-a[1]),ny=c[0]-a[0];const l=Math.hypot(nx,ny);nx/=l;ny/=l;if((cx-a[0])*nx+(cy-a[1])*ny<0){nx=-nx;ny=-ny}
     const d=(b.x-a[0])*nx+(b.y-a[1])*ny;
     if(d<b.r){b.x+=nx*(b.r-d);b.y+=ny*(b.r-d);const wx=-om*(b.y-cy),wy=om*(b.x-cx);let rx=b.vx-wx,ry=b.vy-wy;const vn=rx*nx+ry*ny;
-     if(vn<0){const tx=rx-vn*nx,ty=ry-vn*ny;rx=tx*.97-E*vn*nx;ry=ty*.97-E*vn*ny;b.vx=rx+wx;b.vy=ry+wy;b.w=(tx*-ny+ty*nx)/b.r}}}
+     if(vn<0){const tx_=rx-vn*nx,ty=ry-vn*ny;rx=tx_*.97-E*vn*nx;ry=ty*.97-E*vn*ny;b.vx=rx+wx;b.vy=ry+wy;b.w=(tx_*-ny+ty*nx)/b.r}}}
    if(Math.hypot(b.x-cx,b.y-cy)>R){b.x=cx;b.y=cy;b.vx=0;b.vy=0}});
-  if(opt.collide)for(let i=0;i<balls.length;i++)for(let j=i+1;j<balls.length;j++){const p=balls[i],q=balls[j];let dx=q.x-p.x,dy=q.y-p.y;const d=Math.hypot(dx,dy),m=p.r+q.r;
-   if(d>0&&d<m){dx/=d;dy/=d;const o=(m-d)/2;p.x-=dx*o;p.y-=dy*o;q.x+=dx*o;q.y+=dy*o;const rv=(q.vx-p.vx)*dx+(q.vy-p.vy)*dy;
-    if(rv<0){const k=-(1+E)*rv/2;p.vx-=k*dx;p.vy-=k*dy;q.vx+=k*dx;q.vy+=k*dy}}}}
- function draw(){ctx.clearRect(0,0,W,W);const v=verts();ctx.beginPath();v.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();
+  if(o.collide)for(let i=0;i<balls.length;i++)for(let j=i+1;j<balls.length;j++){const p=balls[i],q=balls[j];let dx=q.x-p.x,dy=q.y-p.y;const d=Math.hypot(dx,dy),m=p.r+q.r;
+   if(d>0&&d<m){dx/=d;dy/=d;const ov=(m-d)/2;p.x-=dx*ov;p.y-=dy*ov;q.x+=dx*ov;q.y+=dy*ov;const rv=(q.vx-p.vx)*dx+(q.vy-p.vy)*dy;if(rv<0){const k=-(1+E)*rv/2;p.vx-=k*dx;p.vy-=k*dy;q.vx+=k*dx;q.vy+=k*dy}}}}
+ loop(root,dt=>{for(let i=0;i<8;i++)step(dt/8);ctx.clearRect(0,0,W,W);const v=verts();ctx.beginPath();v.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();
   ctx.lineWidth=4;ctx.strokeStyle=css('--text');ctx.stroke();
-  balls.forEach(b=>{ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,7);ctx.fillStyle=b.color;ctx.fill();
-   if(b.num){ctx.save();ctx.translate(b.x,b.y);ctx.rotate(b.ang);ctx.fillStyle='#fff';ctx.font='600 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(b.num,0,0);ctx.restore()}})}
- function fr(t){if(!root.isConnected)return;if(last===null)last=t;let dt=Math.min(.05,(t-last)/1000);last=t;const sub=8;for(let i=0;i<sub;i++)step(dt/sub);draw();requestAnimationFrame(fr)}
- requestAnimationFrame(fr)}
+  balls.forEach(b=>{ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,7);ctx.fillStyle=b.color;ctx.fill();if(b.num){ctx.save();ctx.translate(b.x,b.y);ctx.rotate(b.ang);ctx.fillStyle='#fff';ctx.font='600 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(b.num,0,0);ctx.restore()}})})}
 function initSnake(root){
- const cv=root.querySelector('canvas'),ctx=cv.getContext('2d'),N=20,S=cv.width/N;let sn,dir,food,score,acc=0,last=null;
- const key=p=>p.x+','+p.y;
- function reset(){sn=[{x:5,y:10},{x:4,y:10},{x:3,y:10}];dir={x:1,y:0};score=0;place()}
- function place(){do{food={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)}}while(sn.some(s=>s.x===food.x&&s.y===food.y))}
- function space(h,body){const seen=new Set(body.map(key)),st=[h];let c=0;seen.add(key(h));while(st.length&&c<400){const p=st.pop();c++;
-  [[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy])=>{const q={x:p.x+dx,y:p.y+dy},k=key(q);if(q.x>=0&&q.y>=0&&q.x<N&&q.y<N&&!seen.has(k)){seen.add(k);st.push(q)}})}return c}
- function tick(){const h=sn[0],opts=[];
-  [[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy])=>{if(dx===-dir.x&&dy===-dir.y)return;const q={x:h.x+dx,y:h.y+dy};
-   if(q.x<0||q.y<0||q.x>=N||q.y>=N)return;const body=sn.slice(0,-1);if(body.some(s=>s.x===q.x&&s.y===q.y))return;
-   const sp=space(q,body);opts.push({dx,dy,q,sc:(sp>=sn.length?0:1000)+Math.abs(q.x-food.x)+Math.abs(q.y-food.y)})});
-  if(!opts.length){reset();return}opts.sort((a,b)=>a.sc-b.sc);const o=opts[0];dir={x:o.dx,y:o.dy};sn.unshift(o.q);
-  if(o.q.x===food.x&&o.q.y===food.y){score++;place();if(sn.length>120)reset()}else sn.pop()}
- function draw(){ctx.fillStyle=css('--card');ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.fillStyle=css('--accent');ctx.beginPath();ctx.arc(food.x*S+S/2,food.y*S+S/2,S/2-2,0,7);ctx.fill();
-  sn.forEach((s,i)=>{ctx.fillStyle=i?'#4c9a63':'#2f7a4a';ctx.fillRect(s.x*S+1,s.y*S+1,S-2,S-2)});
-  ctx.fillStyle=css('--text');ctx.font='14px sans-serif';ctx.fillText('分數：'+score,8,18)}
- function fr(t){if(!root.isConnected)return;if(last===null)last=t;acc+=t-last;last=t;while(acc>70){tick();acc-=70}draw();requestAnimationFrame(fr)}
- reset();requestAnimationFrame(fr)}
-const HEPT_COLORS=["#f8b862","#f6ad49","#f39800","#f08300","#ec6d51","#ee7948","#ed6d3d","#ec6800","#ec6800","#ee7800","#eb6238","#ea5506","#ea5506","#eb6101","#e49e61","#e45e32","#e17b34","#dd7a56","#db8449","#d66a35"];
-const box=(x,y,w,h,cls)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" class="${cls}" stroke-width="1.5"/>`;
-const txt=(x,y,s,cls,size=16,anchor='middle',w=400)=>`<text x="${x}" y="${y}" class="${cls}" font-size="${size}" font-weight="${w}" text-anchor="${anchor}">${s}</text>`;
+ const cv=root.querySelector('canvas'),ctx=cv.getContext('2d'),N=20,Z=cv.width/N;let sn,dir,food,score,acc=0;const key=p=>p.x+','+p.y,D=[[1,0],[-1,0],[0,1],[0,-1]];
+ const place=()=>{do{food={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)}}while(sn.some(s=>s.x===food.x&&s.y===food.y))};
+ const reset=()=>{sn=[{x:5,y:10},{x:4,y:10},{x:3,y:10}];dir={x:1,y:0};score=0;place()};
+ const space=(h,body)=>{const seen=new Set(body.map(key)),st=[h];let c=0;seen.add(key(h));while(st.length&&c<400){const p=st.pop();c++;D.forEach(([dx,dy])=>{const q={x:p.x+dx,y:p.y+dy},k=key(q);if(q.x>=0&&q.y>=0&&q.x<N&&q.y<N&&!seen.has(k)){seen.add(k);st.push(q)}})}return c};
+ const tick=()=>{const h=sn[0],opts=[];D.forEach(([dx,dy])=>{if(dx===-dir.x&&dy===-dir.y)return;const q={x:h.x+dx,y:h.y+dy};if(q.x<0||q.y<0||q.x>=N||q.y>=N)return;const body=sn.slice(0,-1);if(body.some(s=>s.x===q.x&&s.y===q.y))return;
+  opts.push({dx,dy,q,sc:(space(q,body)>=sn.length?0:1000)+Math.abs(q.x-food.x)+Math.abs(q.y-food.y)})});
+  if(!opts.length){reset();return}opts.sort((a,b)=>a.sc-b.sc);const o=opts[0];dir={x:o.dx,y:o.dy};sn.unshift(o.q);if(o.q.x===food.x&&o.q.y===food.y){score++;place();if(sn.length>120)reset()}else sn.pop()};
+ reset();loop(root,dt=>{acc+=dt*1000;while(acc>70){tick();acc-=70}ctx.fillStyle=css('--card');ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.fillStyle=css('--accent');ctx.beginPath();ctx.arc(food.x*Z+Z/2,food.y*Z+Z/2,Z/2-2,0,7);ctx.fill();sn.forEach((s,i)=>{ctx.fillStyle=i?'#4c9a63':'#2f7a4a';ctx.fillRect(s.x*Z+1,s.y*Z+1,Z-2,Z-2)});
+  ctx.fillStyle=css('--text');ctx.font='14px sans-serif';ctx.fillText(tr('分數：','Score: ')+score,8,18)})}
+function initCube(root){
+ const cv=root.querySelector('canvas'),ctx=cv.getContext('2d'),W=cv.width;let ax=.5,ay=.3;
+ const V=[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]],F=[[0,1,2,3],[5,4,7,6],[4,0,3,7],[1,5,6,2],[4,5,1,0],[3,2,6,7]],C=['#e07a5f','#3d85c6','#81b29a','#f2cc8f','#9b72cf','#5bc0be'];
+ loop(root,dt=>{ax+=dt*.7;ay+=dt*.9;const P=V.map(([x,y,z])=>{let y1=y*Math.cos(ax)-z*Math.sin(ax),z1=y*Math.sin(ax)+z*Math.cos(ax);let x2=x*Math.cos(ay)+z1*Math.sin(ay),z2=-x*Math.sin(ay)+z1*Math.cos(ay);const s=W*.9/(z2+4);return[W/2+x2*s,W/2+y1*s,z2]});
+  ctx.clearRect(0,0,W,W);F.map((f,i)=>({f,i,z:f.reduce((a,k)=>a+P[k][2],0)/4})).sort((a,b)=>b.z-a.z).forEach(({f,i})=>{const[a,b,c]=[P[f[0]],P[f[1]],P[f[2]]];
+   if((b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0])>=0)return;ctx.beginPath();f.forEach((k,j)=>j?ctx.lineTo(P[k][0],P[k][1]):ctx.moveTo(P[k][0],P[k][1]));ctx.closePath();ctx.fillStyle=C[i];ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#1f1e1c';ctx.stroke()})})}
+function initLife(root){
+ const cv=root.querySelector('canvas'),ctx=cv.getContext('2d'),N=30,Z=cv.width/N;let g,gen,acc=0;
+ const reset=()=>{g=Array.from({length:N},()=>Array.from({length:N},()=>Math.random()<.22?1:0));[[1,0],[2,1],[0,2],[1,2],[2,2]].forEach(([x,y])=>g[y+2][x+2]=1);gen=0};
+ const step=()=>{const n=g.map((r,y)=>r.map((v,x)=>{let c=0;for(let dy=-1;dy<2;dy++)for(let dx=-1;dx<2;dx++)if(dx||dy)c+=g[(y+dy+N)%N][(x+dx+N)%N];return v?(c===2||c===3?1:0):(c===3?1:0)}));g=n;gen++;if(gen>400)reset()};
+ reset();loop(root,dt=>{acc+=dt*1000;while(acc>120){step();acc-=120}ctx.fillStyle=css('--card');ctx.fillRect(0,0,cv.width,cv.height);ctx.fillStyle=css('--accent');
+  g.forEach((r,y)=>r.forEach((v,x)=>{if(v)ctx.fillRect(x*Z+1,y*Z+1,Z-2,Z-2)}));ctx.fillStyle=css('--text');ctx.font='14px sans-serif';ctx.fillText(tr('第 ','Generation ')+gen+tr(' 代',''),8,18)})}
+function initPiano(root){
+ let ac=null;root.querySelectorAll('[data-f]').forEach(k=>k.addEventListener('pointerdown',()=>{try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),gn=ac.createGain();o.type='triangle';o.frequency.value=+k.dataset.f;
+  gn.gain.setValueAtTime(.3,ac.currentTime);gn.gain.exponentialRampToValueAtTime(.001,ac.currentTime+1);o.connect(gn).connect(ac.destination);o.start();o.stop(ac.currentTime+1)}catch(e){}
+  k.classList.add('lit');k.style.fill=css('--accent');setTimeout(()=>{k.style.fill=''},200)}))}
+const HEPT=["#f8b862","#f6ad49","#f39800","#f08300","#ec6d51","#ee7948","#ed6d3d","#ec6800","#ec6800","#ee7800","#eb6238","#ea5506","#ea5506","#eb6101","#e49e61","#e45e32","#e17b34","#dd7a56","#db8449","#d66a35"];
 const FIG={
-"鵜鶘騎腳踏車":{html:PELICAN,init:initPelican,cap:"範例輸出（Claude 製作）：腳踩踏板、翅膀握車把、喉囊明顯，第二句追問後加上動畫"},
-"旋轉六邊形裡的彈跳球":{html:'<canvas width="400" height="400" style="width:360px"></canvas>',cap:"範例輸出（Claude 製作）：有重力和摩擦，撞到旋轉的牆會被帶動，球一直留在六邊形裡",
- init:r=>polySim(r,{R:170,sides:6,omega:.9,balls:()=>[{x:200,y:140,vx:160,vy:0,r:14,color:'#f39800',ang:0,w:0}]})},
-"旋轉七邊形 20 顆球（進階版）":{html:'<canvas width="420" height="420" style="width:380px"></canvas>',cap:"範例輸出（Claude 製作）：20 顆編號球從中心落下，彼此碰撞，數字跟著自轉，七邊形每 5 秒轉一圈",
- init:r=>polySim(r,{R:185,sides:7,omega:2*Math.PI/5,collide:true,balls:()=>HEPT_COLORS.map((c,i)=>({x:210+(Math.random()-.5)*4,y:210+(Math.random()-.5)*4,vx:(Math.random()-.5)*80,vy:(Math.random()-.5)*80,r:15,color:c,num:i+1,ang:0,w:0}))})},
-"一次寫出能玩的貪食蛇":{html:'<canvas width="300" height="300" style="width:300px;border-radius:8px"></canvas>',init:initSnake,cap:"範例輸出（Claude 製作）：自動遊玩示範，吃到食物會變長、加分，撞到就重新開始"},
-"Strawberry 有幾個 r":{cap:"示意圖：逐個字母數，r 出現在第 3、8、9 個位置",
- html:(()=>{let s='<svg viewBox="0 0 520 130" width="520">';"strawberry".split('').forEach((ch,i)=>{const x=10+i*50,hit=ch==='r';s+=box(x,20,44,52,hit?'f-ab s-a':'f-c s-b')+txt(x+22,54,ch,hit?'f-a':'f-t',24,'middle',hit?600:400)});
- [2,7,8].forEach((i,k)=>{s+=txt(32+i*50,96,k+1,'f-a',15,'middle',600)});return s+txt(260,124,'共 3 個 r','f-t',16,'middle',600)+'</svg>'})()},
-"9.11 和 9.9 哪個大":{cap:"示意圖：把小數位數補齊再比較，9.90 比 9.11 大",
- html:'<svg viewBox="0 0 520 140" width="520">'+txt(70,46,'9.90','f-a',20,'end',600)+'<rect x="85" y="26" width="396" height="26" rx="4" class="f-a"/>'+txt(70,96,'9.11','f-t',20,'end')+'<rect x="85" y="76" width="364" height="26" rx="4" class="f-m"/>'+txt(260,132,'9.9 = 9.90 > 9.11','f-t',16,'middle',600)+'</svg>'},
-"愛麗絲問題（AIW）":{cap:"示意圖：從任何一個兄弟的角度看，姊妹包含愛麗絲本人，共 3 人",
- html:(()=>{let s='<svg viewBox="0 0 520 210" width="520"><rect x="40" y="18" width="270" height="84" rx="10" class="f-n s-a" stroke-width="1.5" stroke-dasharray="6 4"/>';
- [['愛麗絲',1],['姊妹',0],['姊妹',0]].forEach(([l,me],i)=>{const x=95+i*80;s+=`<circle cx="${x}" cy="60" r="28" class="${me?'f-a':'f-ab s-a'}" stroke-width="1.5"/>`+txt(x,66,l,me?'f-c':'f-a',me?14:15,'middle',600)});
- [0,1,2].forEach(i=>{const x=95+i*80;s+=`<circle cx="${x}" cy="160" r="28" class="f-c s-m" stroke-width="1.5"/>`+txt(x,166,'兄弟','f-t',15)});
- return s+txt(330,56,'兄弟的姊妹','f-t',16,'start',600)+txt(330,82,'= 3 人','f-a',20,'start',600)+txt(330,166,'愛麗絲的兄弟：3 人','f-m',14,'start')+'</svg>'})()},
-"改編版過河問題":{cap:"示意圖：船載得下兩個，一趟直接過河",
- html:'<svg viewBox="0 0 520 150" width="520"><rect x="0" y="40" width="110" height="80" class="f-ab"/><rect x="410" y="40" width="110" height="80" class="f-ab"/><rect x="110" y="40" width="300" height="80" style="fill:#7fb6d9;opacity:.5"/>'+
- '<path d="M190 92 L330 92 L310 112 L210 112 Z" class="f-c s-m" stroke-width="1.5"/>'+txt(235,86,'人','f-t',16,'middle',600)+txt(285,86,'羊','f-t',16,'middle',600)+
- '<path d="M150 135 L370 135" class="s-a f-n" stroke-width="2"/><path d="M362 129 L372 135 L362 141" class="s-a f-n" stroke-width="2"/>'+txt(55,30,'這岸','f-m',14)+txt(465,30,'對岸','f-m',14)+txt(260,30,'一趟搞定','f-a',15,'middle',600)+'</svg>'},
-"透明門的三門問題":{cap:"示意圖：門是透明的，車就在你選的 1 號門後面，換門只會拿到羊",
- html:(()=>{let s='<svg viewBox="0 0 520 220" width="520">';[['汽車','你選的',1],['羊','',0],['羊','主持人打開',0]].forEach(([w,l,car],i)=>{const x=40+i*160;
- s+=`<rect x="${x}" y="30" width="120" height="140" rx="6" class="${car?'f-ab s-a':'f-c s-b'}" stroke-width="2" stroke-dasharray="${i===2?'0':'6 4'}"/>`+txt(x+60,24,(i+1)+' 號門','f-m',14)+txt(x+60,108,w,car?'f-a':'f-t',22,'middle',600)+(l?txt(x+60,192,l,car?'f-a':'f-m',14,'middle',car?600:400):'')});
- return s+txt(260,214,'看得到車 → 不要換','f-t',15,'middle',600)+'</svg>'})()},
-"長文找針（Needle in a haystack）":{cap:"示意圖：一大段無關內容中，藏著一句要找出來的話",
- html:(()=>{let s='<svg viewBox="0 0 520 220" width="520">'+box(110,10,300,200,'f-c s-b');for(let i=0;i<12;i++){const y=26+i*15;const w=[250,230,260,210,240,255,200,245,235,260,220,180][i];
- s+=i===6?`<rect x="126" y="${y-4}" width="${w}" height="10" rx="3" class="f-a"/>`:`<rect x="126" y="${y-2}" width="${w}" height="6" rx="3" class="f-m" opacity=".35"/>`}
- return s+'<path d="M420 112 L470 112" class="s-a f-n" stroke-width="1.5"/>'+txt(476,108,'藏在','f-a',13,'start')+txt(476,124,'中間','f-a',13,'start')+'</svg>'})()}
+pelican:{html:()=>PELICAN,init:initPelican,cap:{zh:"範例輸出（Claude 製作）：腳踩踏板、翅膀握車把、喉囊明顯，延伸提示詞追問後加上動畫",en:"Example output (made by Claude): feet on the pedals, wings on the handlebars, a clear throat pouch, animated after the follow-up"}},
+hexagon:{html:()=>'<canvas width="400" height="400" style="width:360px"></canvas>',init:r=>polySim(r,{R:170,sides:6,omega:.9,balls:()=>[{x:200,y:140,vx:160,vy:0,r:14,color:'#f39800',ang:0,w:0}]}),
+ cap:{zh:"範例輸出（Claude 製作）：有重力和摩擦，撞到旋轉的牆會被帶動，球一直留在六邊形裡",en:"Example output (made by Claude): gravity and friction, carried by the rotating walls, the ball always stays inside"}},
+heptagon:{html:()=>'<canvas width="420" height="420" style="width:380px"></canvas>',init:r=>polySim(r,{R:185,sides:7,omega:2*Math.PI/5,collide:true,balls:()=>HEPT.map((c,i)=>({x:210+(Math.random()-.5)*4,y:210+(Math.random()-.5)*4,vx:(Math.random()-.5)*80,vy:(Math.random()-.5)*80,r:15,color:c,num:i+1,ang:0,w:0}))}),
+ cap:{zh:"範例輸出（Claude 製作）：20 顆編號球從中心落下，彼此碰撞，數字跟著自轉，七邊形每 5 秒轉一圈",en:"Example output (made by Claude): 20 numbered balls drop from the centre, collide, spin, and the heptagon turns once every 5 seconds"}},
+snake:{html:()=>'<canvas width="300" height="300" style="width:300px;border-radius:8px"></canvas>',init:initSnake,cap:{zh:"範例輸出（Claude 製作）：自動遊玩示範，吃到食物會變長、加分，撞到就重新開始",en:"Example output (made by Claude): self-playing demo that grows and scores, restarting on a crash"}},
+cube:{html:()=>'<canvas width="300" height="300" style="width:300px"></canvas>',init:initCube,cap:{zh:"範例輸出（Claude 製作）：只用 canvas 2D 自己算投影，背面會被正確隱藏",en:"Example output (made by Claude): canvas 2D only, hand-written projection, back faces correctly hidden"}},
+life:{html:()=>'<canvas width="300" height="300" style="width:300px;border-radius:8px"></canvas>',init:initLife,cap:{zh:"範例輸出（Claude 製作）：隨機初始盤面加上一個滑翔機，依照規則一代一代演化",en:"Example output (made by Claude): random start plus a glider, evolving generation by generation"}},
+clock:{cap:{zh:"範例輸出（Claude 製作）：分針指 2，時針在 10 和 11 之間、偏向 10",en:"Example output (made by Claude): minute hand on 2, hour hand between 10 and 11, closer to 10"},
+ html:()=>{const c=150,p=(a,r)=>[c+r*Math.sin(a*Math.PI/180),c-r*Math.cos(a*Math.PI/180)];let s=`<svg viewBox="0 0 300 300" width="300"><circle cx="150" cy="150" r="130" class="f-c s-t" stroke-width="4"/>`;
+  for(let i=0;i<60;i++){const[a1,b1]=p(i*6,122),[a2,b2]=p(i*6,i%5?116:106);s+=`<line x1="${a1}" y1="${b1}" x2="${a2}" y2="${b2}" class="s-t" stroke-width="${i%5?1:3}"/>`}
+  for(let h=1;h<=12;h++){const[x,y]=p(h*30,94);s+=tx(x,y+7,h,'f-t',20,'middle',600)}
+  const[hx,hy]=p(305,50),[mx,my]=p(60,74);return s+`<line x1="150" y1="150" x2="${hx}" y2="${hy}" class="s-t" stroke-width="8" stroke-linecap="round"/><line x1="150" y1="150" x2="${mx}" y2="${my}" class="s-t" stroke-width="5" stroke-linecap="round"/><circle cx="150" cy="150" r="7" class="f-a"/></svg>`}},
+piano:{cap:{zh:"範例輸出（Claude 製作）：黑鍵 2、3 個一組交替，點擊琴鍵可以發出聲音",en:"Example output (made by Claude): black keys in alternating groups of 2 and 3; click a key to play it"},init:initPiano,
+ html:()=>{const W=34,names=['C','D','E','F','G','A','B'],semis=[0,2,4,5,7,9,11];let w='',b='';for(let o=0;o<2;o++)for(let i=0;i<7;i++){const x=o*7*W+i*W,f=261.63*Math.pow(2,(o*12+semis[i])/12);
+  w+=`<rect data-f="${f.toFixed(2)}" x="${x+1}" y="1" width="${W-2}" height="150" rx="4" class="f-c s-t" stroke-width="1.5" style="cursor:pointer"/>`+(i===0?tx(x+W/2,140,'C'+(4+o),'f-m',11):'');
+  if([0,1,3,4,5].includes(i)){const fb=261.63*Math.pow(2,(o*12+semis[i]+1)/12);b+=`<rect data-f="${fb.toFixed(2)}" x="${x+W*.68}" y="1" width="${W*.64}" height="92" rx="3" class="f-t" style="cursor:pointer"/>`}}
+  return `<svg viewBox="0 0 478 154" width="478">${w}${b}</svg>`}},
+sudoku:{cap:{zh:"題目盤面：淡色的空格要由模型填滿",en:"The puzzle: the model must fill the shaded empty cells"},
+ html:()=>{const P="530070000600195000098000060800060003400803001700020006060000280000419005000080079",Z=30;let s=`<svg viewBox="0 0 274 274" width="274"><rect x="2" y="2" width="270" height="270" class="f-c"/>`;
+  for(let i=0;i<81;i++){const r=Math.floor(i/9),c=i%9,v=P[i];if(v!=='0')s+=tx(2+c*Z+Z/2,2+r*Z+21,v,'f-t',17,'middle',600);else s+=`<rect x="${2+c*Z+2}" y="${2+r*Z+2}" width="${Z-4}" height="${Z-4}" rx="3" class="f-ab"/>`}
+  for(let i=0;i<=9;i++){const w=i%3?1:2.5;s+=`<line x1="${2+i*Z}" y1="2" x2="${2+i*Z}" y2="272" class="s-t" stroke-width="${w}"/><line x1="2" y1="${2+i*Z}" x2="272" y2="${2+i*Z}" class="s-t" stroke-width="${w}"/>`}return s+'</svg>'}},
+strawberry:{cap:{zh:"示意圖：逐個字母數，r 出現在第 3、8、9 個位置",en:"Diagram: count letter by letter; r is at positions 3, 8 and 9"},
+ html:()=>{let s='<svg viewBox="0 0 520 130" width="520">';"strawberry".split('').forEach((ch,i)=>{const x=10+i*50,hit=ch==='r';s+=box(x,20,44,52,hit?'f-ab s-a':'f-c s-b')+tx(x+22,54,ch,hit?'f-a':'f-t',24,'middle',hit?600:400)});
+  [2,7,8].forEach((i,k)=>{s+=tx(32+i*50,96,k+1,'f-a',15,'middle',600)});return s+tx(260,124,tr('共 3 個 r',"3 r's in total"),'f-t',16,'middle',600)+'</svg>'}},
+decimal:{cap:{zh:"示意圖：把小數位數補齊再比較，9.90 比 9.11 大",en:"Diagram: pad the decimals and compare; 9.90 is larger than 9.11"},
+ html:()=>'<svg viewBox="0 0 520 140" width="520">'+tx(70,46,'9.90','f-a',20,'end',600)+'<rect x="85" y="26" width="396" height="26" rx="4" class="f-a"/>'+tx(70,96,'9.11','f-t',20,'end')+'<rect x="85" y="76" width="364" height="26" rx="4" class="f-m"/>'+tx(260,132,'9.9 = 9.90 > 9.11','f-t',16,'middle',600)+'</svg>'},
+alice:{cap:{zh:"示意圖：從任何一個兄弟的角度看，姊妹包含愛麗絲本人，共 3 人",en:"Diagram: from any brother's point of view, the sisters include Alice herself: 3 in total"},
+ html:()=>{let s='<svg viewBox="0 0 520 210" width="520"><rect x="40" y="18" width="270" height="84" rx="10" class="f-n s-a" stroke-width="1.5" stroke-dasharray="6 4"/>';
+  [[tr('愛麗絲','Alice'),1],[tr('姊妹','Sister'),0],[tr('姊妹','Sister'),0]].forEach(([l,me],i)=>{const x=95+i*80;s+=`<circle cx="${x}" cy="60" r="30" class="${me?'f-a':'f-ab s-a'}" stroke-width="1.5"/>`+tx(x,65,l,me?'f-c':'f-a',13,'middle',600)});
+  [0,1,2].forEach(i=>{const x=95+i*80;s+=`<circle cx="${x}" cy="160" r="30" class="f-c s-m" stroke-width="1.5"/>`+tx(x,165,tr('兄弟','Brother'),'f-t',13)});
+  return s+tx(330,56,tr('兄弟的姊妹',"A brother's sisters"),'f-t',16,'start',600)+tx(330,82,tr('= 3 人','= 3'),'f-a',20,'start',600)+tx(330,166,tr('愛麗絲的兄弟：3 人',"Alice's brothers: 3"),'f-m',14,'start')+'</svg>'}},
+river:{cap:{zh:"示意圖：船載得下兩個，一趟直接過河",en:"Diagram: the boat holds both, so one trip is enough"},
+ html:()=>'<svg viewBox="0 0 520 150" width="520"><rect x="0" y="40" width="110" height="80" class="f-ab"/><rect x="410" y="40" width="110" height="80" class="f-ab"/><rect x="110" y="40" width="300" height="80" style="fill:#7fb6d9;opacity:.5"/>'+
+ '<path d="M190 92 L330 92 L310 112 L210 112 Z" class="f-c s-m" stroke-width="1.5"/>'+tx(232,86,tr('人','Man'),'f-t',15,'middle',600)+tx(290,86,tr('羊','Goat'),'f-t',15,'middle',600)+
+ '<path d="M150 135 L370 135" class="s-a f-n" stroke-width="2"/><path d="M362 129 L372 135 L362 141" class="s-a f-n" stroke-width="2"/>'+tx(55,30,tr('這岸','This bank'),'f-m',14)+tx(465,30,tr('對岸','Far bank'),'f-m',14)+tx(260,30,tr('一趟搞定','One trip'),'f-a',15,'middle',600)+'</svg>'},
+monty:{cap:{zh:"示意圖：門是透明的，車就在你選的 1 號門後面，換門只會拿到羊",en:"Diagram: the doors are transparent and the car is behind your door 1; switching only gets you a goat"},
+ html:()=>{let s='<svg viewBox="0 0 520 220" width="520">';[[tr('汽車','Car'),tr('你選的','Your pick'),1],[tr('羊','Goat'),'',0],[tr('羊','Goat'),tr('主持人打開','Host opens'),0]].forEach(([w,l,car],i)=>{const x=40+i*160;
+  s+=`<rect x="${x}" y="30" width="120" height="140" rx="6" class="${car?'f-ab s-a':'f-c s-b'}" stroke-width="2" stroke-dasharray="${i===2?'0':'6 4'}"/>`+tx(x+60,24,tr((i+1)+' 號門','Door '+(i+1)),'f-m',14)+tx(x+60,108,w,car?'f-a':'f-t',22,'middle',600)+(l?tx(x+60,192,l,car?'f-a':'f-m',14,'middle',car?600:400):'')});
+  return s+tx(260,214,tr('看得到車 → 不要換',"You can see the car → don't switch"),'f-t',15,'middle',600)+'</svg>'}},
+needle:{cap:{zh:"示意圖：一大段無關內容中，藏著一句要找出來的話",en:"Diagram: one sentence to find, hidden in a long stretch of unrelated text"},
+ html:()=>{let s='<svg viewBox="0 0 540 220" width="540">'+box(110,10,300,200,'f-c s-b');[250,230,260,210,240,255,200,245,235,260,220,180].forEach((w,i)=>{const y=26+i*15;
+  s+=i===6?`<rect x="126" y="${y-4}" width="${w}" height="10" rx="3" class="f-a"/>`:`<rect x="126" y="${y-2}" width="${w}" height="6" rx="3" class="f-m" opacity=".35"/>`});
+  return s+'<path d="M420 112 L462 112" class="s-a f-n" stroke-width="1.5"/>'+tx(468,108,tr('藏在','Hidden'),'f-a',13,'start')+tx(468,124,tr('中間','in middle'),'f-a',13,'start')+'</svg>'}}
 };
-const T=[
-{n:"鵜鶘騎腳踏車",c:"繪圖與程式",o:"Simon Willison，2024 年 10 月",t:"用 SVG 程式碼畫出結構合理的圖：鵜鶘要坐在座墊上、腳踩踏板，腳踏車要有正確的菱形車架。訓練資料裡幾乎沒有這種圖，很難靠背答案。",
-p:"Generate an SVG of a pelican riding a bicycle",
-p2:"Now animate it",
-a:"<b>評分重點：</b>看得出是鵜鶘（長嘴、喉囊）；身體坐在座墊上；腳接觸踏板；翅膀或嘴靠近車把；腳踏車有兩個輪子和連起來的車架。加分：第二句追問後，輪子和踏板真的會轉。"},
-{n:"旋轉六邊形裡的彈跳球",c:"繪圖與程式",o:"X（Twitter）社群，2025 年 1 月爆紅",t:"物理模擬和碰撞偵測。難點在牆壁會轉，球撞到移動的牆時，反彈方向和速度都要算對。",
-p:"Write a Python program that shows a ball bouncing inside a spinning hexagon. The ball should be affected by gravity and friction, and it must bounce off the rotating walls realistically.",
-p2:"Create an animation in JS with 10 balls bouncing inside a spinning hexagon.",
-a:"<b>評分重點：</b>球永遠不會穿出六邊形；有重力往下掉；碰到旋轉的牆會被帶動、反彈角度合理；長時間執行不會卡進牆裡或越彈越高。第二段提示詞是網頁版，可以直接在瀏覽器看結果。"},
-{n:"旋轉七邊形 20 顆球（進階版）",c:"繪圖與程式",o:"Reddit r/LocalLLaMA，2025 年",t:"彈跳球的困難版：多顆球互相碰撞、球會自轉、限定函式庫、不能用 pygame，碰撞演算法要自己寫。",
-p:`Write a Python program that shows 20 balls bouncing inside a spinning heptagon:
-- All balls have the same radius.
-- All balls have a number on it from 1 to 20.
-- All balls drop from the heptagon center when starting.
-- Colors are: #f8b862, #f6ad49, #f39800, #f08300, #ec6d51, #ee7948, #ed6d3d, #ec6800, #ec6800, #ee7800, #eb6238, #ea5506, #ea5506, #eb6101, #e49e61, #e45e32, #e17b34, #dd7a56, #db8449, #d66a35
-- The balls should be affected by gravity and friction, and they must bounce off the rotating walls realistically. There should also be collisions between balls.
-- The material of all the balls determines that their impact bounce height will not exceed the radius of the heptagon, but higher than ball radius.
-- All balls rotate with friction, the numbers on the ball can be used to indicate the spin of the ball.
-- The heptagon is spinning around its center, and the speed of spinning is 360 degrees per 5 seconds.
-- The heptagon size should be large enough to contain all the balls.
-- Do not use the pygame library; implement collision detection algorithms and collision response etc. by yourself. The following Python libraries are allowed: tkinter, math, numpy, dataclasses, typing, sys.
-- All codes should be put in a single Python file.`,
-a:"<b>評分重點：</b>程式能直接執行；20 顆球有編號和指定顏色；球與球、球與牆都會碰撞；七邊形每 5 秒轉一圈；球上的數字會跟著自轉；反彈高度符合規定；沒有用 pygame。"},
-{n:"一次寫出能玩的貪食蛇",c:"繪圖與程式",o:"社群常見的程式能力測試",t:"一次就寫出完整、能玩、沒有 bug 的小遊戲。",
-p:"Write a complete, playable Snake game in a single HTML file. Use arrow keys to control the snake, show the score, increase speed as the snake grows, and show a game-over screen with a restart button. No external libraries.",
-a:"<b>評分重點：</b>存成 .html 打開就能玩；方向鍵能控制；吃到食物會變長、加分；撞牆或撞到自己會結束；能重新開始；不能直接反方向掉頭自殺。"},
-{n:"Strawberry 有幾個 r",c:"推理陷阱",o:"2024 年廣為流傳",t:"模型是以 token（字詞片段）為單位讀字，不是一個字母一個字母看，所以數字母反而容易錯。",
-p:'How many r\'s are in the word "strawberry"?',
-a:"<b>正確答案：</b>3 個（st-r-awbe-r-r-y）。常見錯誤答案是 2。可以換成 \"blueberry\" 裡有幾個 b（2 個）來防止模型背答案。"},
-{n:"9.11 和 9.9 哪個大",c:"推理陷阱",o:"2024 年廣為流傳",t:"小數比較。模型可能誤把它當成版本號（9.11 版比 9.9 版新）或日期。",
-p:"9.11 and 9.9, which is bigger?",
-a:"<b>正確答案：</b>9.9 比較大（9.90 > 9.11）。"},
-{n:"愛麗絲問題（AIW）",c:"推理陷阱",o:"論文〈Alice in Wonderland〉，2024 年",t:"非常簡單的家庭關係推理，但很多模型會漏算愛麗絲本人。",
-p:"Alice has 3 brothers and she also has 2 sisters. How many sisters does Alice's brother have?",
-a:"<b>正確答案：</b>3 個。愛麗絲的 2 個姊妹，加上愛麗絲自己。常見錯誤答案是 2。可以換數字再測：N 個兄弟、M 個姊妹，答案是 M+1。"},
-{n:"改編版過河問題",c:"推理陷阱",o:"經典「狼、羊、菜過河」謎題的改編",t:"題目被改簡單了，看模型會不會沒讀清楚，就硬套背下來的複雜解法。",
-p:"A man and a goat are on one side of a river. They have a boat that can carry both of them. How can they get to the other side?",
-a:"<b>正確答案：</b>兩個一起坐船過河，一趟就完成。如果模型開始安排「先載羊過去再回來」之類的多趟步驟，就是答錯了。"},
-{n:"透明門的三門問題",c:"推理陷阱",o:"經典蒙提霍爾問題的改編",t:"把標準答案（換門比較好）的前提拿掉，看模型會不會照背標準答案。",
-p:"You're on a game show with three doors. The doors are transparent, so you can clearly see a car behind door 1 and goats behind doors 2 and 3. You pick door 1. The host then opens door 3 to reveal a goat and asks if you want to switch to door 2. Should you switch?",
-a:"<b>正確答案：</b>不要換。門是透明的，你已經看到車在 1 號門，換門就會拿到羊。如果模型說「換門機率是 2/3」，就是只背了原題。"},
-{n:"一磅鐵和兩磅羽毛",c:"推理陷阱",o:"經典「一公斤鐵和一公斤棉花」腦筋急轉彎的改編",t:"原題的答案是一樣重。改了數字之後，看模型會不會還是回答一樣重。",
-p:"Which is heavier, 2 pounds of feathers or 1 pound of bricks?",
-a:"<b>正確答案：</b>2 磅羽毛比較重。"},
-{n:"沒有矛盾的外科醫生謎題",c:"推理陷阱",o:"經典「醫生是男孩的媽媽」謎題的改編",t:"把原題的矛盾拿掉，看模型會不會自己腦補出原本的謎底。",
-p:"A young boy who has been in a car accident is rushed to the emergency room. The surgeon looks at him and says, \"I can operate on this boy.\" How is this possible?",
-a:"<b>正確答案：</b>這沒有任何矛盾，醫生本來就可以幫他開刀。如果模型回答「因為醫生是他的媽媽」，就是套用了原題的答案。"},
-{n:"大數乘法心算",c:"推理陷阱",o:"常見的數學能力測試",t:"多位數乘法。不用工具時，模型容易在中間某一位算錯。",
-p:"Calculate 123456 × 654321. Give the exact answer.",
-a:"<b>正確答案：</b>80,779,853,376。"},
-{n:"單字倒著拼",c:"推理陷阱",o:"社群常見測試",t:"跟數字母一樣，倒拼也會受到 token 切分影響。",
-p:"Spell the word \"lollipop\" backwards, letter by letter.",
-a:"<b>正確答案：</b>popillol（p-o-p-i-l-l-o-l）。"},
-{n:"每句都以 apple 結尾",c:"指令遵循",o:"社群常見測試",t:"嚴格的格式限制。模型常常前幾句做到，後面就忘記。",
-p:"Write 10 sentences that each end with the word \"apple\".",
-p2:"寫 10 個句子，每個句子的最後兩個字都必須是「蘋果」。",
-a:"<b>評分重點：</b>剛好 10 句，而且每一句的最後一個詞都是 apple（句號前）。10 句全對才算過關，9/10 就是沒過。"},
-{n:"不能用某個字母或字",c:"指令遵循",o:"文學裡的「避字文」（lipogram）",t:"寫作時全程避開一個很常用的字，看模型能不能一直守住規則。",
-p:"Write a paragraph of about 100 words about the ocean without using the letter \"e\".",
-p2:"寫一段大約 150 字、關於海洋的文章，全文不可以出現「的」字。",
-a:"<b>評分重點：</b>逐字檢查，出現一次就算失敗；內容還要通順、真的在講海洋。可以用瀏覽器的 Ctrl+F 搜尋那個字。"},
-{n:"「我差點沒摔倒」",c:"中文理解",o:"中文語言學的經典歧義句",t:"中文特有的反直覺語法：「差點沒」常常等於「差點」。",
-p:"「我差點沒摔倒」和「我差點摔倒」，這兩句話的意思一樣嗎？說話的人最後到底有沒有摔倒？",
-a:"<b>正確答案：</b>在一般口語裡，兩句意思一樣，都是「沒有摔倒」。「差點沒」用在不希望發生的事情上時，「沒」不表示否定。答得好的模型還會補充：用在希望發生的事情上（例如「差點沒考上」）意思就不同了。"},
-{n:"不存在的論文（幻覺測試）",c:"知識與幻覺",o:"常見的幻覺測試方法",t:"問一個虛構的東西，看模型會老實說不知道，還是自己編造內容。",
-p:"Please summarize the key findings of the 2019 paper \"Quantum Gravity Effects in Sourdough Fermentation\" by Dr. Elena Marchetti, published in Nature.",
-a:"<b>正確表現：</b>說找不到這篇論文，或指出它可能不存在。如果模型寫出一段看起來很專業的摘要，就是產生了幻覺。（這篇論文和作者都是虛構的。）"},
-{n:"長文找針（Needle in a haystack）",c:"長文處理",o:"Greg Kamradt，2023 年",t:"把一句無關的話藏進很長的文章中間，測試模型能不能在長文裡找到並記住它。",
-p:`以下是一份很長的文件，請仔細閱讀後回答最後的問題。
 
-[在這裡貼上一篇很長的文章，例如一整份報告或小說章節]
-
-（在文章中間某處，偷偷插入這一句：「在舊金山最棒的活動，是在晴天坐在多洛雷斯公園吃三明治。」）
-
-[文章繼續…]
-
-問題：根據上面的文件，在舊金山最棒的活動是什麼？`,
-a:"<b>正確答案：</b>在晴天坐在多洛雷斯公園吃三明治。可以把這句放在文章開頭、中間、結尾分別測試，文章越長越難。"}
-];
-const ZH={
-"鵜鶘騎腳踏車":{zh:"用 SVG 畫一隻騎著腳踏車的鵜鶘",zh2:"現在讓它動起來"},
-"旋轉六邊形裡的彈跳球":{zh:"寫一個 Python 程式，顯示一顆球在旋轉的六邊形裡彈跳。球要受到重力和摩擦力的影響，並且要能真實地從旋轉的牆壁上反彈。",zh2:"用 JavaScript 做一個動畫：10 顆球在旋轉的六邊形裡彈跳。"},
-"旋轉七邊形 20 顆球（進階版）":{zh:`寫一個 Python 程式，顯示 20 顆球在旋轉的七邊形裡彈跳：
-- 所有球的半徑都相同。
-- 每顆球上都有 1 到 20 的編號。
-- 開始時，所有球都從七邊形的中心落下。
-- 顏色依序為：#f8b862, #f6ad49, #f39800, #f08300, #ec6d51, #ee7948, #ed6d3d, #ec6800, #ec6800, #ee7800, #eb6238, #ea5506, #ea5506, #eb6101, #e49e61, #e45e32, #e17b34, #dd7a56, #db8449, #d66a35
-- 球要受到重力和摩擦力的影響，並且要能真實地從旋轉的牆壁上反彈。球與球之間也要會互相碰撞。
-- 球的材質決定了它們落地反彈的高度不會超過七邊形的半徑，但會高於球的半徑。
-- 所有球都會因摩擦而自轉，可以用球上的數字來表示球的自轉。
-- 七邊形繞著中心旋轉，速度是每 5 秒轉 360 度。
-- 七邊形要夠大，能裝下所有的球。
-- 不要使用 pygame 函式庫；碰撞偵測演算法和碰撞反應等都要自己實作。允許使用的 Python 函式庫：tkinter、math、numpy、dataclasses、typing、sys。
-- 所有程式碼都放在同一個 Python 檔案裡。`},
-"一次寫出能玩的貪食蛇":{zh:"用單一 HTML 檔寫一個完整、可以玩的貪食蛇遊戲。用方向鍵控制蛇，要顯示分數，蛇越長速度越快，遊戲結束時要顯示結束畫面和「重新開始」按鈕。不要使用任何外部函式庫。"},
-"Strawberry 有幾個 r":{zh:"英文單字「strawberry」裡有幾個字母 r？"},
-"9.11 和 9.9 哪個大":{zh:"9.11 和 9.9，哪個比較大？"},
-"愛麗絲問題（AIW）":{zh:"愛麗絲有 3 個兄弟，她還有 2 個姊妹。請問愛麗絲的兄弟有幾個姊妹？"},
-"改編版過河問題":{zh:"一個男人和一隻羊在河的一邊。他們有一艘船，可以同時載他們兩個。他們要怎麼到對岸？"},
-"透明門的三門問題":{zh:"你參加一個遊戲節目，面前有三扇門。這些門是透明的，你可以清楚看到 1 號門後面是一輛汽車，2 號和 3 號門後面是山羊。你選了 1 號門。接著主持人打開 3 號門，露出一隻山羊，並問你要不要改選 2 號門。你應該換嗎？"},
-"一磅鐵和兩磅羽毛":{zh:"2 磅羽毛和 1 磅磚塊，哪個比較重？"},
-"沒有矛盾的外科醫生謎題":{zh:"一個出了車禍的小男孩被緊急送進急診室。外科醫生看著他說：「我可以幫這個男孩動手術。」這怎麼可能？"},
-"大數乘法心算":{zh:"計算 123456 × 654321，請給出精確答案。"},
-"單字倒著拼":{zh:"把英文單字「lollipop」倒過來拼，一個字母一個字母寫出來。"},
-"每句都以 apple 結尾":{zh:"寫 10 個英文句子，每個句子都要以單字「apple」結尾。",p2l:"中文變化版（考中文能力）"},
-"不能用某個字母或字":{zh:"用英文寫一段大約 100 個單字、關於海洋的段落，全文不可以出現字母「e」。",p2l:"中文變化版（考中文能力）"},
-"不存在的論文（幻覺測試）":{zh:"請總結 Elena Marchetti 博士 2019 年發表在《Nature》的論文〈Quantum Gravity Effects in Sourdough Fermentation〉（酸種麵團發酵中的量子重力效應）有哪些主要發現。"}
-};
-const cats=["全部",...new Set(T.map(x=>x.c))];let cur="全部";
-const chips=document.getElementById('chips'),list=document.getElementById('list'),q=document.getElementById('q');
-cats.forEach(c=>{const b=document.createElement('button');b.className='chip'+(c===cur?' on':'');b.textContent=c;b.onclick=()=>{cur=c;[...chips.children].forEach(x=>x.classList.toggle('on',x.textContent===c));render()};chips.appendChild(b)});
-const esc=s=>s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
-function block(label,text){const w=document.createElement('div');w.innerHTML=`<div class="label"><span>${label}</span><button class="copy">複製</button></div><pre>${esc(text)}</pre>`;
-w.querySelector('.copy').onclick=e=>{const btn=e.target;const done=()=>{btn.textContent='已複製';btn.classList.add('done');setTimeout(()=>{btn.textContent='複製';btn.classList.remove('done')},1500)};
-if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,()=>fallback(text,done))}else fallback(text,done)};return w}
-function fallback(text,done){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done()}catch(e){}ta.remove()}
-function render(){const s=q.value.trim().toLowerCase();list.innerHTML='';
-const items=T.filter(x=>{const Z=ZH[x.n]||{};return (cur==='全部'||x.c===cur)&&(!s||(x.n+x.t+x.p+(x.p2||'')+(Z.zh||'')+(Z.zh2||'')+x.a).toLowerCase().includes(s))});
-if(!items.length){list.innerHTML='<div class="empty">找不到符合的測試</div>';return}
-items.forEach((x,i)=>{const d=document.createElement('article');d.className='card';
-d.innerHTML=`<div class="top"><h2>${x.n}</h2><span class="tag">${x.c}</span></div><div class="meta">出處：${x.o}</div><div>${x.t}</div>`;
-const Z=ZH[x.n]||{};
-d.appendChild(block(Z.zh?'完整提示詞（英文原版）':'完整提示詞（中文）',x.p));
-if(Z.zh)d.appendChild(block('完整提示詞（中文版）',Z.zh));
-if(x.p2)d.appendChild(block(Z.p2l||'延伸提示詞（英文原版）',x.p2));
-if(Z.zh2)d.appendChild(block('延伸提示詞（中文版）',Z.zh2));
-const a=document.createElement('div');a.innerHTML='<div class="label"><span>範例／正確答案</span></div><div class="ans">'+x.a+'</div>';d.appendChild(a);
-const F=FIG[x.n];if(F){const lb=document.createElement('div');lb.innerHTML='<div class="label"><span>範例圖</span></div>';d.appendChild(lb);const fg=document.createElement('div');fg.className='fig';fg.innerHTML=F.html+'<div class="cap">'+F.cap+'</div>';d.appendChild(fg);list.appendChild(d);if(F.init)F.init(fg);return}
-list.appendChild(d)})}
-q.oninput=render;render();
+/* ---------- UI ---------- */
+function copyText(text,btn){const done=()=>{btn.textContent=t('copied');btn.classList.add('done');setTimeout(()=>{btn.textContent=t('copy');btn.classList.remove('done')},1500)};
+ const fb=()=>{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done()}catch(e){}ta.remove()};
+ if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done,fb);else fb()}
+function promptLabel(p,x){const hasEn=x.prompts.some(q=>q.type==='main'&&q.lang==='en');
+ if(p.type==='variant')return t('pVariant');if(p.type==='followup')return p.lang==='en'?t('pFollowEn'):t('pFollowZh');
+ return p.lang==='en'?t('pMainEn'):(hasEn?t('pMainZhT'):t('pMainZh'))}
+function orderedPrompts(x){const ty={main:0,followup:1,variant:2},lg={en:0,zh:1};
+ return x.prompts.map((p,i)=>[p,i]).sort((a,b)=>ty[a[0].type]-ty[b[0].type]||lg[a[0].lang]-lg[b[0].lang]||a[1]-b[1]).map(a=>a[0])}
+const catName=id=>L(CATS.find(c=>c.id===id));
+const recEls={};
+function renderRec(el,x){const m=S.active;el.innerHTML='';
+ if(!m){el.innerHTML=`<span class="who">${esc(t('recNo'))}</span>`;return}
+ const cur=(S.results[m]||{})[x.id];
+ el.insertAdjacentHTML('beforeend',`<span class="who">${esc(t('recFor').replace('{m}',m))}</span>`);
+ ['pass','fail'].forEach(v=>{const b=document.createElement('button');b.className='rb '+v+(cur===v?' on':'');b.textContent=t(v);b.setAttribute('aria-pressed',cur===v);
+  b.onclick=()=>{S.results[m]=S.results[m]||{};if(S.results[m][x.id]===v)delete S.results[m][x.id];else S.results[m][x.id]=v;save();renderRec(el,x);renderTable()};el.appendChild(b)});
+ const others=S.models.filter(o=>o!==m&&(S.results[o]||{})[x.id]);
+ if(others.length){el.insertAdjacentHTML('beforeend',`<span class="who" style="margin-left:8px">${esc(t('others'))}</span>`+others.map(o=>{const v=S.results[o][x.id];return `<span class="badge ${v}">${esc(o)} ${v==='pass'?'✓':'✗'}</span>`}).join(''))}}
+function renderList(){const s=$('q').value.trim().toLowerCase(),d=$('diff').value,list=$('list');list.innerHTML='';
+ const items=TESTS.filter(x=>(cat==='all'||x.category===cat)&&(d==='all'||x.difficulty===d)&&(!s||JSON.stringify([x.name,x.about,x.answer,x.prompts]).toLowerCase().includes(s)));
+ if(!items.length){list.innerHTML=`<div class="empty">${esc(t('noMatch'))}</div>`;return}
+ items.forEach(x=>{const d_=document.createElement('article');d_.className='card';d_.id='t-'+x.id;
+  d_.innerHTML=`<div class="top"><h3>${esc(L(x.name))}</h3><div class="tags"><span class="tag">${esc(catName(x.category))}</span><span class="tag d-${x.difficulty}">${esc(t(x.difficulty))}</span>${x.saturated?`<span class="tag sat">${esc(t('sat'))}</span>`:''}</div></div>
+<div class="meta">${esc(t('source'))}${S.lang==='zh'?'：':': '}${esc(L(x.source))}</div><div>${esc(L(x.about))}</div>`;
+  orderedPrompts(x).forEach(p=>{const w=document.createElement('div');w.innerHTML=`<div class="label"><span>${esc(promptLabel(p,x))}</span><button class="copy">${esc(t('copy'))}</button></div><pre>${esc(p.text)}</pre>`;
+   w.querySelector('.copy').onclick=e=>copyText(p.text,e.target);d_.appendChild(w)});
+  d_.insertAdjacentHTML('beforeend',`<div class="label"><span>${esc(t('answer'))}</span></div><div class="ans">${L(x.answer)}</div>`);
+  const F=FIG[x.id];let fg=null;if(F){d_.insertAdjacentHTML('beforeend',`<div class="label"><span>${esc(t('fig'))}</span></div>`);fg=document.createElement('div');fg.className='fig';fg.innerHTML=F.html()+`<div class="cap">${esc(L(F.cap))}</div>`;d_.appendChild(fg)}
+  const rec=document.createElement('div');rec.className='rec';d_.appendChild(rec);recEls[x.id]=rec;renderRec(rec,x);
+  list.appendChild(d_);if(F&&F.init)F.init(fg)})}
+function renderRecAll(){TESTS.forEach(x=>{const el=recEls[x.id];if(el&&el.isConnected)renderRec(el,x)})}
+function renderModels(){const box_=$('models');box_.innerHTML='';
+ if(!S.models.length)box_.innerHTML=`<span style="color:var(--muted);font-size:14px">${esc(t('none'))}</span>`;
+ S.models.forEach(m=>{const c=document.createElement('span');c.className='mchip';c.innerHTML=`${esc(m)}<button aria-label="${esc(t('remove'))} ${esc(m)}">×</button>`;
+  c.querySelector('button').onclick=()=>{if(!confirm(t('confirmRemove').replace('{m}',m)))return;S.models=S.models.filter(o=>o!==m);delete S.results[m];if(S.active===m)S.active=S.models[0]||'';save();renderModels();renderRecAll();renderTable()};box_.appendChild(c)});
+ const sel=$('active');sel.innerHTML=S.models.length?S.models.map(m=>`<option${m===S.active?' selected':''}>${esc(m)}</option>`).join(''):`<option value="">${esc(t('none'))}</option>`;sel.disabled=!S.models.length}
+function stats(m){const r=S.results[m]||{},v=Object.values(r);return{p:v.filter(x=>x==='pass').length,n:v.length}}
+function renderTable(){const el=$('table');if(!S.models.length){el.innerHTML=`<div class="empty">${esc(t('resEmpty'))}</div>`;return}
+ let h=`<table><thead><tr><th>${esc(t('test'))}</th><th>${esc(t('category'))}</th>${S.models.map(m=>`<th style="text-align:center">${esc(m)}</th>`).join('')}</tr></thead><tbody>`;
+ TESTS.forEach(x=>{h+=`<tr><td><a href="#t-${x.id}" style="color:inherit">${esc(L(x.name))}</a></td><td style="color:var(--muted)">${esc(catName(x.category))}</td>`+S.models.map(m=>{const v=(S.results[m]||{})[x.id];return `<td class="c ${v||''}">${v?(v==='pass'?'✓ '+esc(t('pass')):'✗ '+esc(t('fail'))):''}</td>`}).join('')+'</tr>'});
+ h+=`<tr class="sum"><td colspan="2">${esc(t('summary'))}</td>${S.models.map(m=>{const s=stats(m);return `<td class="c">${s.p} / ${s.n}</td>`}).join('')}</tr></tbody></table>`;el.innerHTML=h}
+function download(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+function exportCSV(){const q=v=>'"'+String(v).replace(/"/g,'""')+'"';const rows=[['id',t('category'),t('test'),...S.models].map(q).join(',')];
+ TESTS.forEach(x=>rows.push([x.id,catName(x.category),L(x.name),...S.models.map(m=>{const v=(S.results[m]||{})[x.id];return v?t(v):''})].map(q).join(',')));
+ rows.push(['',t('summary'),'',...S.models.map(m=>{const s=stats(m);return s.p+' / '+s.n})].map(q).join(','));
+ download('llm-classic-tests-results.csv',new Blob(['﻿'+rows.join('\r\n')],{type:'text/csv;charset=utf-8'}))}
+function exportPNG(){if(!S.models.length){alert(t('resEmpty'));return}
+ const rows=TESTS.filter(x=>S.models.some(m=>(S.results[m]||{})[x.id]));const list=rows.length?rows:TESTS;
+ const c=document.createElement('canvas'),ctx=c.getContext('2d'),font='"Segoe UI","Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif';ctx.font='15px '+font;
+ const nameW=Math.max(220,...list.map(x=>ctx.measureText(L(x.name)).width))+40,colW=Math.max(120,...S.models.map(m=>ctx.measureText(m).width+40)),RH=34,W=nameW+colW*S.models.length+40,H=90+RH*(list.length+2)+20,sc=2;
+ c.width=W*sc;c.height=H*sc;ctx.scale(sc,sc);ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);ctx.fillStyle='#1f1e1c';ctx.font='600 22px '+font;ctx.fillText(t('imgTitle'),20,44);
+ ctx.font='13px '+font;ctx.fillStyle='#6b6862';ctx.fillText(new Date().toISOString().slice(0,10)+' · github.com/ckolpeter/llm-classic-tests',20,70);
+ let y=90;ctx.fillStyle='#f2f0eb';ctx.fillRect(20,y,W-40,RH);ctx.fillStyle='#1f1e1c';ctx.font='600 15px '+font;ctx.fillText(t('test'),32,y+22);ctx.textAlign='center';S.models.forEach((m,i)=>ctx.fillText(m,20+nameW+colW*i+colW/2,y+22));ctx.textAlign='left';
+ list.forEach((x,r)=>{y+=RH;ctx.fillStyle='#1f1e1c';ctx.font='15px '+font;ctx.fillText(L(x.name),32,y+22);
+  S.models.forEach((m,i)=>{const v=(S.results[m]||{})[x.id],cx=20+nameW+colW*i;if(v){ctx.fillStyle=v==='pass'?'#e5f3ea':'#f9e4e1';ctx.fillRect(cx+6,y+5,colW-12,RH-10);ctx.fillStyle=v==='pass'?'#2f7a4a':'#b3362b';ctx.font='600 15px '+font;ctx.textAlign='center';ctx.fillText((v==='pass'?'✓ ':'✗ ')+t(v),cx+colW/2,y+22);ctx.textAlign='left'}});
+  ctx.strokeStyle='#e2dfd8';ctx.beginPath();ctx.moveTo(20,y+RH);ctx.lineTo(W-20,y+RH);ctx.stroke()});
+ y+=RH;ctx.fillStyle='#f2f0eb';ctx.fillRect(20,y,W-40,RH);ctx.fillStyle='#1f1e1c';ctx.font='600 15px '+font;ctx.fillText(t('summary'),32,y+22);ctx.textAlign='center';S.models.forEach((m,i)=>{const s=stats(m);ctx.fillText(s.p+' / '+s.n,20+nameW+colW*i+colW/2,y+22)});
+ c.toBlob(b=>download('llm-classic-tests-results.png',b),'image/png')}
+function applyTheme(){if(S.theme==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',S.theme);$('themeBtn').textContent=t('theme')[S.theme]}
+function renderStatic(){document.documentElement.lang=S.lang==='zh'?'zh-Hant':'en';document.title=S.lang==='zh'?'模型測試 · Classic LLM Tests':'Classic LLM Tests · 模型測試';
+ $('title').textContent=t('title');$('subtitle').textContent=t('subtitle');$('q').placeholder=t('search');$('q').setAttribute('aria-label',t('search'));$('langBtn').textContent=t('lang');$('diffLabel').textContent=t('diffLabel');
+ $('diff').innerHTML=['all','easy','medium','hard'].map(v=>`<option value="${v}">${esc(v==='all'?t('diffAll'):t(v))}</option>`).join('');
+ $('recTitle').textContent=t('recTitle');$('recHint').textContent=t('recHint');$('newModel').placeholder=t('newModel');$('addModel').textContent=t('add');$('activeLabel').textContent=t('active');
+ $('toTable').textContent=t('toTable');$('csvBtn').textContent=t('csv');$('pngBtn').textContent=t('png');$('clearBtn').textContent=t('clear');$('resTitle').textContent=t('resTitle');$('resSub').textContent=t('resSub');$('foot').innerHTML=t('foot');
+ const ch=$('chips');ch.innerHTML='';[{id:'all',zh:I18N.zh.all,en:I18N.en.all},...CATS].forEach(c=>{const b=document.createElement('button');b.className='chip'+(c.id===cat?' on':'');b.textContent=L(c);b.onclick=()=>{cat=c.id;[...ch.children].forEach(x=>x.classList.toggle('on',x===b));renderList()};ch.appendChild(b)});
+ applyTheme()}
+function renderAll(){const d=$('diff').value||'all';renderStatic();$('diff').value=d;renderModels();renderList();renderTable()}
+$('q').oninput=renderList;$('diff').onchange=renderList;
+$('langBtn').onclick=()=>{S.lang=S.lang==='zh'?'en':'zh';save();renderAll()};
+$('themeBtn').onclick=()=>{S.theme={auto:'light',light:'dark',dark:'auto'}[S.theme];save();applyTheme();renderList()};
+const addModel=()=>{const v=$('newModel').value.trim();if(!v||S.models.includes(v)){$('newModel').value='';return}S.models.push(v);S.active=v;$('newModel').value='';save();renderModels();renderRecAll();renderTable()};
+$('addModel').onclick=addModel;$('newModel').onkeydown=e=>{if(e.key==='Enter')addModel()};
+$('active').onchange=e=>{S.active=e.target.value;save();renderRecAll()};
+$('csvBtn').onclick=exportCSV;$('pngBtn').onclick=exportPNG;
+$('clearBtn').onclick=()=>{if(!confirm(t('confirmClear')))return;S.models=[];S.results={};S.active='';save();renderModels();renderRecAll();renderTable()};
+if(S.active&&!S.models.includes(S.active))S.active=S.models[0]||'';
+renderAll();
+})();
 </script>
 </body>
 </html>

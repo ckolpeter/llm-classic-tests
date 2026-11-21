@@ -1,0 +1,61 @@
+name: 新增測試 / New test
+description: 推薦一個經典的 AI 模型測試 / Suggest a classic AI model test
+title: "[新增測試] "
+labels: ["new test"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: 測試名稱 / Test name
+      placeholder: 例如：鵜鶘騎腳踏車 / e.g. Pelican riding a bicycle
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: 分類 / Category
+      options:
+        - 繪圖與程式 / Drawing & coding
+        - 推理陷阱 / Reasoning traps
+        - 指令遵循 / Instruction following
+        - 中文理解 / Chinese language
+        - 知識與誠實 / Knowledge & honesty
+        - 長文處理 / Long context
+    validations:
+      required: true
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: 難度 / Difficulty
+      options: [簡單 / Easy, 中等 / Medium, 困難 / Hard]
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: 出處 / Source
+      description: 原始作者、網址或年份；改編題請註明改編自哪一題 / Author, link or year; for variants, say what it's based on
+    validations:
+      required: true
+  - type: textarea
+    id: prompt
+    attributes:
+      label: 完整提示詞（原文）/ Full prompt (original wording)
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: prompt_translation
+    attributes:
+      label: 翻譯版提示詞（選填）/ Translated prompt (optional)
+      render: text
+  - type: textarea
+    id: answer
+    attributes:
+      label: 正確答案或評分重點 / Answer or grading criteria
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: 這題在考什麼？/ What does it test?

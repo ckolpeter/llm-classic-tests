@@ -1,0 +1,1227 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "draw",
+      "zh": "繪圖與程式",
+      "en": "Drawing & coding"
+    },
+    {
+      "id": "reasoning",
+      "zh": "推理陷阱",
+      "en": "Reasoning traps"
+    },
+    {
+      "id": "instruction",
+      "zh": "指令遵循",
+      "en": "Instruction following"
+    },
+    {
+      "id": "chinese",
+      "zh": "中文理解",
+      "en": "Chinese language"
+    },
+    {
+      "id": "knowledge",
+      "zh": "知識與誠實",
+      "en": "Knowledge & honesty"
+    },
+    {
+      "id": "longctx",
+      "zh": "長文處理",
+      "en": "Long context"
+    }
+  ],
+  "tests": [
+    {
+      "id": "pelican",
+      "category": "draw",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "Simon Willison，2024 年 10 月",
+        "en": "Simon Willison, October 2024"
+      },
+      "name": {
+        "zh": "鵜鶘騎腳踏車",
+        "en": "Pelican riding a bicycle"
+      },
+      "about": {
+        "zh": "用 SVG 程式碼畫出結構合理的圖：鵜鶘要坐在座墊上、腳踩踏板，腳踏車要有正確的菱形車架。訓練資料裡幾乎沒有這種圖，很難靠背答案。",
+        "en": "Draw a structurally sensible picture in SVG code: the pelican must sit on the saddle with its feet on the pedals, and the bicycle needs a proper diamond frame. There are almost no such images in training data, so it is hard to memorize."
+      },
+      "answer": {
+        "zh": "<b>評分重點：</b>看得出是鵜鶘（長嘴、喉囊）；身體坐在座墊上；腳接觸踏板；翅膀或嘴靠近車把；腳踏車有兩個輪子和連起來的車架。加分：第二句追問後，輪子和踏板真的會轉。",
+        "en": "<b>What to look for:</b> recognizably a pelican (long beak, throat pouch); body on the saddle; feet touching the pedals; wings or beak near the handlebars; two wheels and a connected frame. Bonus: after the follow-up, the wheels and pedals actually turn."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Generate an SVG of a pelican riding a bicycle"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "用 SVG 畫一隻騎著腳踏車的鵜鶘"
+        },
+        {
+          "type": "followup",
+          "lang": "en",
+          "text": "Now animate it"
+        },
+        {
+          "type": "followup",
+          "lang": "zh",
+          "text": "現在讓它動起來"
+        }
+      ]
+    },
+    {
+      "id": "pelican-webgl",
+      "category": "draw",
+      "difficulty": "hard",
+      "saturated": false,
+      "source": {
+        "zh": "Simon Willison，2026 年",
+        "en": "Simon Willison, 2026"
+      },
+      "name": {
+        "zh": "3D 鵜鶘騎腳踏車（WebGL）",
+        "en": "3D pelican on a bicycle (WebGL)"
+      },
+      "about": {
+        "zh": "鵜鶘測試的 3D 升級版：要自己處理 3D 模型、光線和攝影機，難度高很多。",
+        "en": "The 3D upgrade of the pelican test: the model must handle 3D geometry, lighting and the camera itself, which is much harder."
+      },
+      "answer": {
+        "zh": "<b>評分重點：</b>網頁能直接開啟並顯示 3D 畫面；看得出是鵜鶘和腳踏車；鵜鶘坐在車上而不是飄在旁邊；有光影；最好能用滑鼠旋轉視角或有動畫。",
+        "en": "<b>What to look for:</b> the page opens and renders in 3D; both pelican and bicycle are recognizable; the pelican sits on the bike rather than floating beside it; there is shading; ideally the camera can be rotated or the scene is animated."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "build me an HTML page that renders a three-dimensional pelican riding a bicycle using WebGL"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "幫我做一個 HTML 網頁，用 WebGL 渲染一隻騎著腳踏車的立體鵜鶘"
+        }
+      ]
+    },
+    {
+      "id": "hexagon",
+      "category": "draw",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "X（Twitter）社群，2025 年 1 月爆紅",
+        "en": "X (Twitter) community, viral in January 2025"
+      },
+      "name": {
+        "zh": "旋轉六邊形裡的彈跳球",
+        "en": "Ball bouncing in a spinning hexagon"
+      },
+      "about": {
+        "zh": "物理模擬和碰撞偵測。難點在牆壁會轉，球撞到移動的牆時，反彈方向和速度都要算對。",
+        "en": "Physics simulation and collision detection. The hard part is that the walls rotate, so bounces off a moving wall must get both direction and speed right."
+      },
+      "answer": {
+        "zh": "<b>評分重點：</b>球永遠不會穿出六邊形；有重力往下掉；碰到旋轉的牆會被帶動、反彈角度合理；長時間執行不會卡進牆裡或越彈越高。延伸提示詞是網頁版，可以直接在瀏覽器看結果。",
+        "en": "<b>What to look for:</b> the ball never escapes; gravity pulls it down; the rotating walls carry it along with plausible bounce angles; it never gets stuck in a wall or gains energy over time. The follow-up prompt is a web version you can view directly in a browser."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Write a Python program that shows a ball bouncing inside a spinning hexagon. The ball should be affected by gravity and friction, and it must bounce off the rotating walls realistically."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "寫一個 Python 程式，顯示一顆球在旋轉的六邊形裡彈跳。球要受到重力和摩擦力的影響，並且要能真實地從旋轉的牆壁上反彈。"
+        },
+        {
+          "type": "followup",
+          "lang": "en",
+          "text": "Create an animation in JS with 10 balls bouncing inside a spinning hexagon."
+        },
+        {
+          "type": "followup",
+          "lang": "zh",
+          "text": "用 JavaScript 做一個動畫：10 顆球在旋轉的六邊形裡彈跳。"
+        }
+      ]
+    },
+    {
+      "id": "heptagon",
+      "category": "draw",
+      "difficulty": "hard",
+      "saturated": false,
+      "source": {
+        "zh": "Reddit r/LocalLLaMA，2025 年",
+        "en": "Reddit r/LocalLLaMA, 2025"
+      },
+      "name": {
+        "zh": "旋轉七邊形 20 顆球（進階版）",
+        "en": "20 balls in a spinning heptagon (advanced)"
+      },
+      "about": {
+        "zh": "彈跳球的困難版：多顆球互相碰撞、球會自轉、限定函式庫、不能用 pygame，碰撞演算法要自己寫。",
+        "en": "The hard version of the bouncing ball: many balls colliding with each other, ball spin, restricted libraries, no pygame, and hand-written collision code."
+      },
+      "answer": {
+        "zh": "<b>評分重點：</b>程式能直接執行；20 顆球有編號和指定顏色；球與球、球與牆都會碰撞；七邊形每 5 秒轉一圈；球上的數字會跟著自轉；反彈高度符合規定；沒有用 pygame。",
+        "en": "<b>What to look for:</b> runs as-is; 20 numbered balls in the given colors; ball-ball and ball-wall collisions; one rotation every 5 seconds; numbers rotate with ball spin; bounce height within the limits; no pygame."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Write a Python program that shows 20 balls bouncing inside a spinning heptagon:\n- All balls have the same radius.\n- All balls have a number on it from 1 to 20.\n- All balls drop from the heptagon center when starting.\n- Colors are: #f8b862, #f6ad49, #f39800, #f08300, #ec6d51, #ee7948, #ed6d3d, #ec6800, #ec6800, #ee7800, #eb6238, #ea5506, #ea5506, #eb6101, #e49e61, #e45e32, #e17b34, #dd7a56, #db8449, #d66a35\n- The balls should be affected by gravity and friction, and they must bounce off the rotating walls realistically. There should also be collisions between balls.\n- The material of all the balls determines that their impact bounce height will not exceed the radius of the heptagon, but higher than ball radius.\n- All balls rotate with friction, the numbers on the ball can be used to indicate the spin of the ball.\n- The heptagon is spinning around its center, and the speed of spinning is 360 degrees per 5 seconds.\n- The heptagon size should be large enough to contain all the balls.\n- Do not use the pygame library; implement collision detection algorithms and collision response etc. by yourself. The following Python libraries are allowed: tkinter, math, numpy, dataclasses, typing, sys.\n- All codes should be put in a single Python file."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "寫一個 Python 程式，顯示 20 顆球在旋轉的七邊形裡彈跳：\n- 所有球的半徑都相同。\n- 每顆球上都有 1 到 20 的編號。\n- 開始時，所有球都從七邊形的中心落下。\n- 顏色依序為：#f8b862, #f6ad49, #f39800, #f08300, #ec6d51, #ee7948, #ed6d3d, #ec6800, #ec6800, #ee7800, #eb6238, #ea5506, #ea5506, #eb6101, #e49e61, #e45e32, #e17b34, #dd7a56, #db8449, #d66a35\n- 球要受到重力和摩擦力的影響，並且要能真實地從旋轉的牆壁上反彈。球與球之間也要會互相碰撞。\n- 球的材質決定了它們落地反彈的高度不會超過七邊形的半徑，但會高於球的半徑。\n- 所有球都會因摩擦而自轉，可以用球上的數字來表示球的自轉。\n- 七邊形繞著中心旋轉，速度是每 5 秒轉 360 度。\n- 七邊形要夠大，能裝下所有的球。\n- 不要使用 pygame 函式庫；碰撞偵測演算法和碰撞反應等都要自己實作。允許使用的 Python 函式庫：tkinter、math、numpy、dataclasses、typing、sys。\n- 所有程式碼都放在同一個 Python 檔案裡。"
+        }
+      ]
+    },
+    {
+      "id": "clock",
+      "category": "draw",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "社群常見的 SVG 測試",
+        "en": "Common community SVG test"
+      },
+      "name": {
+        "zh": "SVG 時鐘 10:10",
+        "en": "SVG clock at 10:10"
+      },
+      "about": {
+        "zh": "看模型懂不懂時鐘的幾何：時針在 10:10 時不是正指 10，而是往 11 偏一點。",
+        "en": "Tests whether the model understands clock geometry: at 10:10 the hour hand is not exactly on 10 but slightly past it toward 11."
+      },
+      "answer": {
+        "zh": "<b>評分重點：</b>12 個刻度位置正確；分針指向 2；時針在 10 和 11 之間、比較靠近 10（偏過去約 1/6 格）；時針比分針短。常見錯誤：時針正好指 10、長短針畫反、數字位置錯亂。",
+        "en": "<b>What to look for:</b> the 12 marks are placed correctly; the minute hand points at 2; the hour hand sits between 10 and 11, closer to 10 (about 1/6 of the way); the hour hand is shorter. Common mistakes: hour hand exactly on 10, hands swapped, misplaced numbers."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Generate an SVG of an analog clock showing the time 10:10."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "用 SVG 畫一個指針時鐘，時間顯示 10:10。"
+        }
+      ]
+    },
+    {
+      "id": "piano",
+      "category": "draw",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "社群常見的前端測試",
+        "en": "Common front-end test"
+      },
+      "name": {
+        "zh": "可以彈的鋼琴鍵盤",
+        "en": "Playable piano keyboard"
+      },
+      "about": {
+        "zh": "黑白鍵的排列規則（2 黑、3 黑交替）、聲音合成與鍵盤互動。",
+        "en": "Tests the black/white key pattern (groups of 2 and 3 black keys), sound synthesis and keyboard interaction."
+      },
+      "answer": {
+        "zh": "<b>評分重點：</b>黑鍵是 2 個、3 個一組交替排列，位置在白鍵之間；點擊或按電腦鍵盤會發出正確音高；按下的鍵會亮起來；至少兩個八度。",
+        "en": "<b>What to look for:</b> black keys alternate in groups of 2 and 3 and sit between white keys; clicks or computer keys play the correct pitch; pressed keys light up; at least two octaves."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Create a playable piano keyboard in a single HTML file with at least two octaves. White and black keys must be correctly positioned, clicking a key or pressing the matching computer keyboard key should play the note using the Web Audio API, and the pressed key should visibly light up. No external libraries or audio files."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "用單一 HTML 檔做一個可以彈奏的鋼琴鍵盤，至少要有兩個八度。黑鍵和白鍵的位置要正確，點擊琴鍵或按對應的電腦鍵盤按鍵時，要用 Web Audio API 發出對應的音，被按下的琴鍵要有明顯的亮起效果。不要使用外部函式庫或音訊檔。"
+        }
+      ]
+    },
+    {
+      "id": "cube",
+      "category": "draw",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "社群常見的圖學測試",
+        "en": "Common graphics test"
+      },
+      "name": {
+        "zh": "手寫 3D 旋轉立方體",
+        "en": "Hand-coded rotating 3D cube"
+      },
+      "about": {
+        "zh": "不用 3D 函式庫，自己寫旋轉矩陣和投影，還要正確隱藏背面。",
+        "en": "No 3D library: write the rotation matrices and projection yourself, and hide back faces correctly."
+      },
+      "answer": {
+        "zh": "<b>評分重點：</b>立方體形狀正確不變形；旋轉平順；背對鏡頭的面不會蓋在前面的面上；有透視感；沒用 WebGL 或函式庫。",
+        "en": "<b>What to look for:</b> the cube keeps its shape; rotation is smooth; back faces never draw over front faces; there is perspective; no WebGL or libraries."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Write a single HTML file that shows a 3D cube rotating smoothly in the center of the screen, using only the canvas 2D API (no WebGL, no libraries). Do the 3D projection math yourself and draw the cube with filled faces that are correctly hidden when facing away."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "寫一個單一 HTML 檔，在畫面中央顯示一個平順旋轉的 3D 立方體，只能用 canvas 2D API（不能用 WebGL，也不能用函式庫）。3D 投影的數學要自己寫，立方體的面要填色，背對鏡頭的面要正確地被隱藏。"
+        }
+      ]
+    },
+    {
+      "id": "snake",
+      "category": "draw",
+      "difficulty": "easy",
+      "saturated": true,
+      "source": {
+        "zh": "社群常見的程式能力測試",
+        "en": "Common coding test"
+      },
+      "name": {
+        "zh": "一次寫出能玩的貪食蛇",
+        "en": "Playable Snake in one shot"
+      },
+      "about": {
+        "zh": "一次就寫出完整、能玩、沒有 bug 的小遊戲。",
+        "en": "Write a complete, playable, bug-free small game in one go."
+      },
+      "answer": {
+        "zh": "<b>評分重點：</b>存成 .html 打開就能玩；方向鍵能控制；吃到食物會變長、加分；撞牆或撞到自己會結束；能重新開始；不能直接反方向掉頭自殺。",
+        "en": "<b>What to look for:</b> opens and plays as an .html file; arrow keys work; eating food grows the snake and adds points; hitting a wall or itself ends the game; restart works; reversing direction into itself is blocked."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Write a complete, playable Snake game in a single HTML file. Use arrow keys to control the snake, show the score, increase speed as the snake grows, and show a game-over screen with a restart button. No external libraries."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "用單一 HTML 檔寫一個完整、可以玩的貪食蛇遊戲。用方向鍵控制蛇，要顯示分數，蛇越長速度越快，遊戲結束時要顯示結束畫面和「重新開始」按鈕。不要使用任何外部函式庫。"
+        }
+      ]
+    },
+    {
+      "id": "tetris",
+      "category": "draw",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "社群常見的程式能力測試",
+        "en": "Common coding test"
+      },
+      "name": {
+        "zh": "一次寫出俄羅斯方塊",
+        "en": "Tetris in one shot"
+      },
+      "about": {
+        "zh": "比貪食蛇難很多：七種方塊、旋轉、碰撞、消行、計分都要正確。",
+        "en": "Much harder than Snake: seven pieces, rotation, collision, line clears and scoring all have to be right."
+      },
+      "answer": {
+        "zh": "<b>評分重點：</b>七種方塊都有；旋轉不會穿牆或穿過其他方塊；整行填滿會消除；分數和速度會增加；有下一個方塊預覽；空白鍵能直接落下；結束後能重新開始。",
+        "en": "<b>What to look for:</b> all seven pieces; rotation never passes through walls or other blocks; full lines clear; score and speed increase; next-piece preview; space hard-drops; restart works after game over."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Write a complete, playable Tetris game in a single HTML file. Include all seven tetrominoes, rotation, line clearing, score, increasing speed, a next-piece preview, and a game-over screen with restart. Use the arrow keys to move and rotate, and space to hard drop. No external libraries."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "用單一 HTML 檔寫一個完整、可以玩的俄羅斯方塊。要有全部七種方塊、旋轉、消行、計分、越來越快的速度、下一個方塊的預覽，以及有「重新開始」的遊戲結束畫面。用方向鍵移動和旋轉，空白鍵直接落下。不要使用任何外部函式庫。"
+        }
+      ]
+    },
+    {
+      "id": "flappy",
+      "category": "draw",
+      "difficulty": "easy",
+      "saturated": false,
+      "source": {
+        "zh": "社群常見的程式能力測試",
+        "en": "Common coding test"
+      },
+      "name": {
+        "zh": "一次寫出 Flappy Bird",
+        "en": "Flappy Bird in one shot"
+      },
+      "about": {
+        "zh": "簡單的物理（重力、跳躍）加上碰撞偵測和隨機關卡。",
+        "en": "Simple physics (gravity, flapping) plus collision detection and random level generation."
+      },
+      "answer": {
+        "zh": "<b>評分重點：</b>按空白鍵或點擊會往上飛、放開會掉；水管從右往左移動、缺口高度隨機；穿過水管加分；撞到水管或地面就結束；能重新開始。",
+        "en": "<b>What to look for:</b> space or click flaps upward and the bird falls otherwise; pipes scroll right to left with random gaps; passing a pipe scores; touching a pipe or the ground ends the game; restart works."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Write a Flappy Bird clone in a single HTML file using canvas. Press space or click to flap. Pipes scroll from right to left with random gaps, the score increases for each pipe passed, and the game shows a game-over screen with restart. No external libraries or images."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "用單一 HTML 檔和 canvas 寫一個 Flappy Bird。按空白鍵或點擊滑鼠讓鳥往上飛。水管從右往左移動，缺口高度隨機，每穿過一組水管加一分，遊戲結束時要顯示結束畫面並可以重新開始。不要使用外部函式庫或圖片。"
+        }
+      ]
+    },
+    {
+      "id": "life",
+      "category": "draw",
+      "difficulty": "easy",
+      "saturated": false,
+      "source": {
+        "zh": "社群常見的程式能力測試",
+        "en": "Common coding test"
+      },
+      "name": {
+        "zh": "康威生命遊戲",
+        "en": "Conway's Game of Life"
+      },
+      "about": {
+        "zh": "規則簡單但容易寫錯的細胞自動機，加上互動介面。",
+        "en": "A simple-rule cellular automaton that is still easy to get wrong, plus an interactive UI."
+      },
+      "answer": {
+        "zh": "<b>評分重點：</b>規則正確（活細胞有 2 或 3 個鄰居存活；死細胞剛好 3 個鄰居會誕生）；可以點格子切換；開始、暫停、單步、清空、隨機都能用；有世代數。可以畫一個滑翔機（glider）驗證會不會斜著移動。",
+        "en": "<b>What to look for:</b> correct rules (live cells survive with 2 or 3 neighbours; dead cells with exactly 3 are born); clicking toggles cells; start, pause, step, clear and random all work; generation counter. Draw a glider to check that it travels diagonally."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Create Conway's Game of Life in a single HTML file. Use a canvas grid where I can click cells to toggle them, with buttons for start/pause, step, clear, and random fill. Show the generation count. No external libraries."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "用單一 HTML 檔做康威生命遊戲。用 canvas 畫格子，我可以點擊格子切換細胞的生死，要有開始／暫停、單步執行、清空、隨機填滿這幾個按鈕，並顯示目前是第幾代。不要使用外部函式庫。"
+        }
+      ]
+    },
+    {
+      "id": "strawberry",
+      "category": "reasoning",
+      "difficulty": "easy",
+      "saturated": true,
+      "source": {
+        "zh": "2024 年廣為流傳",
+        "en": "Widely shared in 2024"
+      },
+      "name": {
+        "zh": "Strawberry 有幾個 r",
+        "en": "How many r's in strawberry"
+      },
+      "about": {
+        "zh": "模型是以 token（字詞片段）為單位讀字，不是一個字母一個字母看，所以數字母反而容易錯。",
+        "en": "Models read text as tokens (word pieces) rather than letter by letter, so counting letters is surprisingly error-prone."
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>3 個（st-r-awbe-r-r-y）。常見錯誤答案是 2。可以換成 \"blueberry\" 裡有幾個 b（2 個）來防止模型背答案。",
+        "en": "<b>Answer:</b> 3 (st-r-awbe-r-r-y). The classic wrong answer is 2. Try \"how many b's in blueberry\" (2) to avoid a memorized answer."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "How many r's are in the word \"strawberry\"?"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "英文單字「strawberry」裡有幾個字母 r？"
+        }
+      ]
+    },
+    {
+      "id": "decimal",
+      "category": "reasoning",
+      "difficulty": "easy",
+      "saturated": true,
+      "source": {
+        "zh": "2024 年廣為流傳",
+        "en": "Widely shared in 2024"
+      },
+      "name": {
+        "zh": "9.11 和 9.9 哪個大",
+        "en": "Which is bigger, 9.11 or 9.9"
+      },
+      "about": {
+        "zh": "小數比較。模型可能誤把它當成版本號（9.11 版比 9.9 版新）或日期。",
+        "en": "Decimal comparison. Models may treat the numbers as version numbers (9.11 is newer than 9.9) or dates."
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>9.9 比較大（9.90 > 9.11）。",
+        "en": "<b>Answer:</b> 9.9 is bigger (9.90 > 9.11)."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "9.11 and 9.9, which is bigger?"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "9.11 和 9.9，哪個比較大？"
+        }
+      ]
+    },
+    {
+      "id": "alice",
+      "category": "reasoning",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "論文〈Alice in Wonderland〉，2024 年",
+        "en": "\"Alice in Wonderland\" paper, 2024"
+      },
+      "name": {
+        "zh": "愛麗絲問題（AIW）",
+        "en": "Alice in Wonderland (AIW) problem"
+      },
+      "about": {
+        "zh": "非常簡單的家庭關係推理，但很多模型會漏算愛麗絲本人。",
+        "en": "Very simple family reasoning, yet many models forget to count Alice herself."
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>3 個。愛麗絲的 2 個姊妹，加上愛麗絲自己。常見錯誤答案是 2。可以換數字再測：N 個兄弟、M 個姊妹，答案是 M+1。",
+        "en": "<b>Answer:</b> 3 — Alice's 2 sisters plus Alice herself. The classic wrong answer is 2. Vary the numbers: with N brothers and M sisters, the answer is M+1."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Alice has 3 brothers and she also has 2 sisters. How many sisters does Alice's brother have?"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "愛麗絲有 3 個兄弟，她還有 2 個姊妹。請問愛麗絲的兄弟有幾個姊妹？"
+        }
+      ]
+    },
+    {
+      "id": "river",
+      "category": "reasoning",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "經典「狼、羊、菜過河」謎題的改編",
+        "en": "Variant of the classic wolf-goat-cabbage puzzle"
+      },
+      "name": {
+        "zh": "改編版過河問題",
+        "en": "Modified river-crossing puzzle"
+      },
+      "about": {
+        "zh": "題目被改簡單了，看模型會不會沒讀清楚，就硬套背下來的複雜解法。",
+        "en": "The puzzle has been made trivial; does the model notice, or force the memorized multi-trip solution?"
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>兩個一起坐船過河，一趟就完成。如果模型開始安排「先載羊過去再回來」之類的多趟步驟，就是答錯了。",
+        "en": "<b>Answer:</b> they cross together in one trip. If the model plans multiple back-and-forth trips, it failed."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "A man and a goat are on one side of a river. They have a boat that can carry both of them. How can they get to the other side?"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "一個男人和一隻羊在河的一邊。他們有一艘船，可以同時載他們兩個。他們要怎麼到對岸？"
+        }
+      ]
+    },
+    {
+      "id": "monty",
+      "category": "reasoning",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "經典蒙提霍爾問題的改編",
+        "en": "Variant of the Monty Hall problem"
+      },
+      "name": {
+        "zh": "透明門的三門問題",
+        "en": "Monty Hall with transparent doors"
+      },
+      "about": {
+        "zh": "把標準答案（換門比較好）的前提拿掉，看模型會不會照背標準答案。",
+        "en": "The premise behind the famous answer (always switch) is removed. Does the model still recite it?"
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>不要換。門是透明的，你已經看到車在 1 號門，換門就會拿到羊。如果模型說「換門機率是 2/3」，就是只背了原題。",
+        "en": "<b>Answer:</b> don't switch. The doors are transparent and you can see the car behind door 1. Answering \"switching wins 2/3 of the time\" means the model pattern-matched the original."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "You're on a game show with three doors. The doors are transparent, so you can clearly see a car behind door 1 and goats behind doors 2 and 3. You pick door 1. The host then opens door 3 to reveal a goat and asks if you want to switch to door 2. Should you switch?"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "你參加一個遊戲節目，面前有三扇門。這些門是透明的，你可以清楚看到 1 號門後面是一輛汽車，2 號和 3 號門後面是山羊。你選了 1 號門。接著主持人打開 3 號門，露出一隻山羊，並問你要不要改選 2 號門。你應該換嗎？"
+        }
+      ]
+    },
+    {
+      "id": "kg",
+      "category": "reasoning",
+      "difficulty": "easy",
+      "saturated": true,
+      "source": {
+        "zh": "經典腦筋急轉彎",
+        "en": "Classic riddle"
+      },
+      "name": {
+        "zh": "一公斤鐵和一公斤棉花（原版）",
+        "en": "1 kg of iron vs 1 kg of cotton (original)"
+      },
+      "about": {
+        "zh": "經典原題，用來和下一題的改編版對照：模型是真的懂，還是只記得「一樣重」？",
+        "en": "The original riddle, to compare with the modified version below: does the model understand, or just remember \"they weigh the same\"?"
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>一樣重，都是 1 公斤。這題現在的模型幾乎都會答對，重點是和改編版一起測。",
+        "en": "<b>Answer:</b> they weigh the same, 1 kg each. Nearly all current models get this; the point is to test it together with the modified version."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Which is heavier, 1 kilogram of iron or 1 kilogram of cotton?"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "1 公斤的鐵和 1 公斤的棉花，哪個比較重？"
+        }
+      ]
+    },
+    {
+      "id": "feathers",
+      "category": "reasoning",
+      "difficulty": "easy",
+      "saturated": false,
+      "source": {
+        "zh": "經典「一公斤鐵和一公斤棉花」的改編",
+        "en": "Variant of the classic iron-vs-cotton riddle"
+      },
+      "name": {
+        "zh": "兩磅羽毛和一磅磚塊",
+        "en": "2 pounds of feathers vs 1 pound of bricks"
+      },
+      "about": {
+        "zh": "原題的答案是一樣重。改了數字之後，看模型會不會還是回答一樣重。",
+        "en": "In the original the answer is \"the same\". With the numbers changed, does the model still say so?"
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>2 磅羽毛比較重。",
+        "en": "<b>Answer:</b> 2 pounds of feathers is heavier."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Which is heavier, 2 pounds of feathers or 1 pound of bricks?"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "2 磅羽毛和 1 磅磚塊，哪個比較重？"
+        }
+      ]
+    },
+    {
+      "id": "surgeon",
+      "category": "reasoning",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "經典「醫生是男孩的媽媽」謎題的改編",
+        "en": "Variant of the classic surgeon riddle"
+      },
+      "name": {
+        "zh": "沒有矛盾的外科醫生謎題",
+        "en": "The surgeon riddle without the riddle"
+      },
+      "about": {
+        "zh": "把原題的矛盾拿掉，看模型會不會自己腦補出原本的謎底。",
+        "en": "The contradiction is removed. Does the model still supply the famous answer?"
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>這沒有任何矛盾，醫生本來就可以幫他開刀。如果模型回答「因為醫生是他的媽媽」，就是套用了原題的答案。",
+        "en": "<b>Answer:</b> there is nothing to explain; the surgeon can simply operate. Answering \"the surgeon is his mother\" means the model pattern-matched the original."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "A young boy who has been in a car accident is rushed to the emergency room. The surgeon looks at him and says, \"I can operate on this boy.\" How is this possible?"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "一個出了車禍的小男孩被緊急送進急診室。外科醫生看著他說：「我可以幫這個男孩動手術。」這怎麼可能？"
+        }
+      ]
+    },
+    {
+      "id": "multiply",
+      "category": "reasoning",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "常見的數學能力測試",
+        "en": "Common arithmetic test"
+      },
+      "name": {
+        "zh": "大數乘法心算",
+        "en": "Large multiplication"
+      },
+      "about": {
+        "zh": "多位數乘法。不用工具時，模型容易在中間某一位算錯。",
+        "en": "Multi-digit multiplication. Without tools, models often slip on a middle digit."
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>80,779,853,376。",
+        "en": "<b>Answer:</b> 80,779,853,376."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Calculate 123456 × 654321. Give the exact answer."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "計算 123456 × 654321，請給出精確答案。"
+        }
+      ]
+    },
+    {
+      "id": "reverse",
+      "category": "reasoning",
+      "difficulty": "easy",
+      "saturated": false,
+      "source": {
+        "zh": "社群常見測試",
+        "en": "Common community test"
+      },
+      "name": {
+        "zh": "單字倒著拼",
+        "en": "Spell a word backwards"
+      },
+      "about": {
+        "zh": "跟數字母一樣，倒拼也會受到 token 切分影響。",
+        "en": "Like letter counting, reversing is affected by tokenization."
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>popillol（p-o-p-i-l-l-o-l）。",
+        "en": "<b>Answer:</b> popillol (p-o-p-i-l-l-o-l)."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Spell the word \"lollipop\" backwards, letter by letter."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "把英文單字「lollipop」倒過來拼，一個字母一個字母寫出來。"
+        }
+      ]
+    },
+    {
+      "id": "weekday",
+      "category": "reasoning",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "經典日期邏輯謎題",
+        "en": "Classic day-of-week riddle"
+      },
+      "name": {
+        "zh": "如果昨天是明天",
+        "en": "If yesterday were tomorrow"
+      },
+      "about": {
+        "zh": "繞口令式的日期推理，考模型能不能一步步釐清「相對於哪一天」。",
+        "en": "Tongue-twister date logic: can the model carefully track \"relative to which day\"?"
+      },
+      "answer": {
+        "zh": "<b>參考答案：</b>星期日。如果「昨天」（今天−1）被叫做「明天」，那麼那時的「今天」就是今天−2，等於星期五，所以實際的今天是星期日。也有人解讀成星期三。<b>評分重點：</b>推理過程清楚，並說明自己採用哪種解讀。",
+        "en": "<b>Reference answer:</b> Sunday. If \"yesterday\" (today−1) were \"tomorrow\", then that \"today\" would be today−2 = Friday, so today is Sunday. Some readings give Wednesday. <b>What to look for:</b> clear step-by-step reasoning that states which interpretation it uses."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "If yesterday were tomorrow, today would be Friday. What day is it today?"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "如果昨天是明天的話，今天就是星期五了。請問實際上今天是星期幾？"
+        }
+      ]
+    },
+    {
+      "id": "sudoku",
+      "category": "reasoning",
+      "difficulty": "hard",
+      "saturated": false,
+      "source": {
+        "zh": "經典數獨題（維基百科範例題）",
+        "en": "Classic sudoku (Wikipedia example puzzle)"
+      },
+      "name": {
+        "zh": "解數獨",
+        "en": "Solve a sudoku"
+      },
+      "about": {
+        "zh": "需要大量步驟、不能出錯的約束推理。模型常在中途填錯一格，後面全部跟著錯。",
+        "en": "Long chains of constraint reasoning with no room for error. Models often make one wrong fill midway and everything after it is wrong."
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b><br>534 678 912<br>672 195 348<br>198 342 567<br>859 761 423<br>426 853 791<br>713 924 856<br>961 537 284<br>287 419 635<br>345 286 179<br>逐格對照，而且要檢查模型沒有改動題目原本給的數字。",
+        "en": "<b>Answer:</b><br>534 678 912<br>672 195 348<br>198 342 567<br>859 761 423<br>426 853 791<br>713 924 856<br>961 537 284<br>287 419 635<br>345 286 179<br>Check every cell, and make sure the model did not change any of the given digits."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Solve this sudoku puzzle (_ means an empty cell). Show the complete solved 9×9 grid.\n\n5 3 _ | _ 7 _ | _ _ _\n6 _ _ | 1 9 5 | _ _ _\n_ 9 8 | _ _ _ | _ 6 _\n------+-------+------\n8 _ _ | _ 6 _ | _ _ 3\n4 _ _ | 8 _ 3 | _ _ 1\n7 _ _ | _ 2 _ | _ _ 6\n------+-------+------\n_ 6 _ | _ _ _ | 2 8 _\n_ _ _ | 4 1 9 | _ _ 5\n_ _ _ | _ 8 _ | _ 7 9"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "請解開這題數獨（_ 代表空格），並寫出完整的 9×9 答案。\n\n5 3 _ | _ 7 _ | _ _ _\n6 _ _ | 1 9 5 | _ _ _\n_ 9 8 | _ _ _ | _ 6 _\n------+-------+------\n8 _ _ | _ 6 _ | _ _ 3\n4 _ _ | 8 _ 3 | _ _ 1\n7 _ _ | _ 2 _ | _ _ 6\n------+-------+------\n_ 6 _ | _ _ _ | 2 8 _\n_ _ _ | 4 1 9 | _ _ 5\n_ _ _ | _ 8 _ | _ 7 9"
+        }
+      ]
+    },
+    {
+      "id": "apple",
+      "category": "instruction",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "社群常見測試",
+        "en": "Common community test"
+      },
+      "name": {
+        "zh": "每句都以 apple 結尾",
+        "en": "Every sentence ends with \"apple\""
+      },
+      "about": {
+        "zh": "嚴格的格式限制。模型常常前幾句做到，後面就忘記。",
+        "en": "A strict formatting constraint. Models often follow it for a few sentences and then drift."
+      },
+      "answer": {
+        "zh": "<b>評分重點：</b>剛好 10 句，而且每一句的最後一個詞都是 apple（句號前）。10 句全對才算過關，9/10 就是沒過。",
+        "en": "<b>What to look for:</b> exactly 10 sentences, each with \"apple\" as the last word before the period. 10/10 to pass; 9/10 is a fail."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Write 10 sentences that each end with the word \"apple\"."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "寫 10 個英文句子，每個句子都要以單字「apple」結尾。"
+        },
+        {
+          "type": "variant",
+          "lang": "zh",
+          "text": "寫 10 個句子，每個句子的最後兩個字都必須是「蘋果」。"
+        }
+      ]
+    },
+    {
+      "id": "lipogram",
+      "category": "instruction",
+      "difficulty": "hard",
+      "saturated": false,
+      "source": {
+        "zh": "文學裡的「避字文」（lipogram）",
+        "en": "The literary lipogram"
+      },
+      "name": {
+        "zh": "不能用某個字母或字",
+        "en": "Write without a letter"
+      },
+      "about": {
+        "zh": "寫作時全程避開一個很常用的字，看模型能不能一直守住規則。",
+        "en": "Avoid one very common letter or character for an entire passage."
+      },
+      "answer": {
+        "zh": "<b>評分重點：</b>逐字檢查，出現一次就算失敗；內容還要通順、真的在講海洋。可以用瀏覽器的 Ctrl+F 搜尋那個字。",
+        "en": "<b>What to look for:</b> check every word; a single occurrence fails. The text must still read naturally and be about the ocean. Use Ctrl+F to search."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Write a paragraph of about 100 words about the ocean without using the letter \"e\"."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "用英文寫一段大約 100 個單字、關於海洋的段落，全文不可以出現字母「e」。"
+        },
+        {
+          "type": "variant",
+          "lang": "zh",
+          "text": "寫一段大約 150 字、關於海洋的文章，全文不可以出現「的」字。"
+        }
+      ]
+    },
+    {
+      "id": "chadian",
+      "category": "chinese",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "中文語言學的經典歧義句",
+        "en": "Classic Chinese linguistic puzzle"
+      },
+      "name": {
+        "zh": "「我差點沒摔倒」",
+        "en": "\"I almost didn't fall\" (差點沒)"
+      },
+      "about": {
+        "zh": "中文特有的反直覺語法：「差點沒」常常等於「差點」。",
+        "en": "A counter-intuitive Chinese construction: 差點沒 (\"almost not\") often means the same as 差點 (\"almost\")."
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>在一般口語裡，兩句意思一樣，都是「沒有摔倒」。「差點沒」用在不希望發生的事情上時，「沒」不表示否定。答得好的模型還會補充：用在希望發生的事情上（例如「差點沒考上」）意思就不同了。",
+        "en": "<b>Answer:</b> in everyday speech both sentences mean the speaker did NOT fall. With undesirable events, the 沒 in 差點沒 is not a negation. Strong answers add that with desirable events (e.g. 差點沒考上) the meaning differs."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "「我差點沒摔倒」和「我差點摔倒」，這兩句話的意思一樣嗎？說話的人最後到底有沒有摔倒？"
+        }
+      ]
+    },
+    {
+      "id": "football",
+      "category": "chinese",
+      "difficulty": "easy",
+      "saturated": false,
+      "source": {
+        "zh": "網路流傳的中文歧義句",
+        "en": "Well-known Chinese ambiguous sentence"
+      },
+      "name": {
+        "zh": "「中國足球隊誰也贏不了」",
+        "en": "\"Nobody can beat / they can't beat anybody\""
+      },
+      "about": {
+        "zh": "同一句話有兩種完全相反的意思，考模型能不能看出結構歧義。",
+        "en": "One sentence with two opposite meanings; can the model see the structural ambiguity?"
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>有兩種意思：(1) 中國足球隊很強，誰都贏不了他們；(2) 中國足球隊很弱，他們贏不了任何隊伍。只講出一種就不算完整。",
+        "en": "<b>Answer:</b> two readings: (1) the team is so strong that nobody can beat them; (2) the team is so weak that they cannot beat anybody. Giving only one reading is incomplete."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "「中國足球隊誰也贏不了」這句話有幾種意思？請分別解釋。"
+        }
+      ]
+    },
+    {
+      "id": "liuke",
+      "category": "chinese",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "傳統斷句趣聞",
+        "en": "Traditional punctuation anecdote"
+      },
+      "name": {
+        "zh": "下雨天留客天留我不留",
+        "en": "Punctuating 下雨天留客天留我不留"
+      },
+      "about": {
+        "zh": "古文沒有標點，同一串字加不同標點會變成相反的意思。",
+        "en": "Classical Chinese had no punctuation; the same characters can mean opposite things depending on where you break them."
+      },
+      "answer": {
+        "zh": "<b>參考答案：</b>「下雨天留客，天留，我不留。」（主人不想留客）和「下雨天，留客天，留我不？留！」（客人想留下來）。<b>評分重點：</b>至少兩種意思相反的斷句，而且每種解釋都說得通。",
+        "en": "<b>Reference answer:</b> 「下雨天留客，天留，我不留。」 (the host won't let the guest stay) vs 「下雨天，留客天，留我不？留！」 (the guest wants to stay). <b>What to look for:</b> at least two opposite readings, each explained sensibly."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "請用不同的標點符號替「下雨天留客天留我不留」斷句，寫出至少兩種意思相反的讀法，並分別解釋意思。"
+        }
+      ]
+    },
+    {
+      "id": "idiom",
+      "category": "chinese",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "常見的成語誤用",
+        "en": "Commonly misused Chinese idioms"
+      },
+      "name": {
+        "zh": "成語誤用判斷",
+        "en": "Spotting misused idioms"
+      },
+      "about": {
+        "zh": "「差強人意」「七月流火」這類成語常被用錯，看模型知不知道正確意思。",
+        "en": "Idioms like 差強人意 and 七月流火 are frequently misused; does the model know their real meaning?"
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>1. 錯：「差強人意」是大致令人滿意，和「老師很不滿意」矛盾。2. 錯：「七月流火」指農曆七月天氣開始轉涼，不是形容炎熱。3. 對：「虎頭蛇尾」比喻開始時聲勢很大，後來草草結束。",
+        "en": "<b>Answer:</b> 1. Wrong: 差強人意 means \"more or less satisfactory\", contradicting \"the teacher was very unhappy\". 2. Wrong: 七月流火 describes the weather turning cool in the seventh lunar month, not heat. 3. Correct: 虎頭蛇尾 means starting strong and fizzling out."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "下面三句話的成語用法對不對？請逐句判斷並說明原因。\n1. 這次考試他只考了 60 分，成績差強人意，老師很不滿意。\n2. 七月流火，天氣熱得讓人受不了。\n3. 他做事總是虎頭蛇尾，計畫很多卻很少完成。"
+        }
+      ]
+    },
+    {
+      "id": "t2s",
+      "category": "chinese",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "繁簡轉換常見陷阱",
+        "en": "Common simplified-to-traditional pitfalls"
+      },
+      "name": {
+        "zh": "簡轉繁陷阱",
+        "en": "Simplified-to-traditional traps"
+      },
+      "about": {
+        "zh": "簡體一個字常對應好幾個繁體字（发→發／髮、面→面／麵、后→後／后），要看上下文才轉得對。",
+        "en": "One simplified character often maps to several traditional ones (发 → 發/髮, 面 → 面/麵, 后 → 後/后); context decides."
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>我發現頭髮裡有一根白髮，於是理髮後去了後面的麵館吃麵。逐字檢查「發／髮」「後」「麵」「裡」「於」。",
+        "en": "<b>Answer:</b> 我發現頭髮裡有一根白髮，於是理髮後去了後面的麵館吃麵。 Check 發/髮, 後, 麵, 裡 and 於 character by character."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "請把這句簡體中文轉成台灣常用的繁體中文：「我发现头发里有一根白发，于是理发后去了后面的面馆吃面。」"
+        }
+      ]
+    },
+    {
+      "id": "zhuyin",
+      "category": "chinese",
+      "difficulty": "easy",
+      "saturated": false,
+      "source": {
+        "zh": "台灣在地知識",
+        "en": "Taiwan-specific knowledge"
+      },
+      "name": {
+        "zh": "注音符號",
+        "en": "Zhuyin (Bopomofo)"
+      },
+      "about": {
+        "zh": "台灣日常使用的注音符號，考模型對台灣在地知識的掌握。",
+        "en": "Zhuyin, used every day in Taiwan, tests the model's knowledge of local Taiwanese conventions."
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>ㄅㄆㄇ 後面是 ㄈㄉㄊ；注音符號一共有 37 個。",
+        "en": "<b>Answer:</b> after ㄅㄆㄇ come ㄈㄉㄊ; there are 37 Zhuyin symbols in total."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "注音符號「ㄅㄆㄇ」後面接的三個符號是什麼？另外，注音符號一共有幾個？"
+        }
+      ]
+    },
+    {
+      "id": "fakepaper",
+      "category": "knowledge",
+      "difficulty": "medium",
+      "saturated": false,
+      "source": {
+        "zh": "常見的幻覺測試方法",
+        "en": "Common hallucination test"
+      },
+      "name": {
+        "zh": "不存在的論文（幻覺測試）",
+        "en": "A paper that doesn't exist (hallucination)"
+      },
+      "about": {
+        "zh": "問一個虛構的東西，看模型會老實說不知道，還是自己編造內容。",
+        "en": "Ask about something fictional: does the model admit it doesn't know, or make something up?"
+      },
+      "answer": {
+        "zh": "<b>正確表現：</b>說找不到這篇論文，或指出它可能不存在。如果模型寫出一段看起來很專業的摘要，就是產生了幻覺。（這篇論文和作者都是虛構的。）",
+        "en": "<b>Good behaviour:</b> says it can't find the paper or that it may not exist. A confident, professional-sounding summary is a hallucination. (Both paper and author are fictional.)"
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Please summarize the key findings of the 2019 paper \"Quantum Gravity Effects in Sourdough Fermentation\" by Dr. Elena Marchetti, published in Nature."
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "請總結 Elena Marchetti 博士 2019 年發表在《Nature》的論文〈Quantum Gravity Effects in Sourdough Fermentation〉（酸種麵團發酵中的量子重力效應）有哪些主要發現。"
+        }
+      ]
+    },
+    {
+      "id": "einstein",
+      "category": "knowledge",
+      "difficulty": "easy",
+      "saturated": false,
+      "source": {
+        "zh": "常見的錯誤前提測試",
+        "en": "Common false-premise test"
+      },
+      "name": {
+        "zh": "愛因斯坦得了兩次諾貝爾獎？",
+        "en": "Einstein's two Nobel Prizes?"
+      },
+      "about": {
+        "zh": "問題本身就帶著錯誤前提，看模型會糾正你，還是順著你編理由。",
+        "en": "The question has a false premise: will the model correct you, or invent reasons?"
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>前提錯誤：愛因斯坦只得過一次諾貝爾獎，是 1921 年的物理學獎（1922 年頒發），得獎原因是光電效應，不是相對論。",
+        "en": "<b>Answer:</b> false premise. Einstein won only one Nobel Prize, the 1921 Physics prize (awarded in 1922), for the photoelectric effect, not relativity."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Why did Albert Einstein win two Nobel Prizes?"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "為什麼愛因斯坦得了兩次諾貝爾獎？"
+        }
+      ]
+    },
+    {
+      "id": "cutoff",
+      "category": "knowledge",
+      "difficulty": "easy",
+      "saturated": false,
+      "source": {
+        "zh": "常見的誠實度測試",
+        "en": "Common honesty test"
+      },
+      "name": {
+        "zh": "知識截止日期與今天日期",
+        "en": "Knowledge cutoff and today's date"
+      },
+      "about": {
+        "zh": "模型沒有時鐘，看它會不會誠實說明自己知道什麼、不知道什麼。",
+        "en": "Models have no clock; will it be honest about what it does and doesn't know?"
+      },
+      "answer": {
+        "zh": "<b>正確表現：</b>說出自己的訓練資料大約截止到什麼時候；如果對話裡或系統沒有提供日期，就承認無法確定今天的日期，而不是隨便講一個。有連網或系統提供日期的模型，則應該說明日期的來源。",
+        "en": "<b>Good behaviour:</b> states its approximate training cutoff; if no date is provided by the conversation or system, admits it can't know today's date instead of guessing confidently. Models with web access or a system-provided date should say where the date comes from."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "What is your knowledge cutoff date? Do you know what today's date is?"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "你的知識截止日期是什麼時候？你知道今天是幾月幾號嗎？"
+        }
+      ]
+    },
+    {
+      "id": "needle",
+      "category": "longctx",
+      "difficulty": "hard",
+      "saturated": false,
+      "source": {
+        "zh": "Greg Kamradt，2023 年",
+        "en": "Greg Kamradt, 2023"
+      },
+      "name": {
+        "zh": "長文找針（Needle in a haystack）",
+        "en": "Needle in a haystack"
+      },
+      "about": {
+        "zh": "把一句無關的話藏進很長的文章中間，測試模型能不能在長文裡找到並記住它。",
+        "en": "Hide one unrelated sentence in the middle of a long text to test whether the model can find and recall it."
+      },
+      "answer": {
+        "zh": "<b>正確答案：</b>在晴天坐在多洛雷斯公園吃三明治。可以把這句放在文章開頭、中間、結尾分別測試，文章越長越難。",
+        "en": "<b>Answer:</b> eating a sandwich and sitting in Dolores Park on a sunny day. Try placing the sentence at the start, middle and end; longer texts are harder."
+      },
+      "prompts": [
+        {
+          "type": "main",
+          "lang": "en",
+          "text": "Below is a long document. Read it carefully and answer the question at the end.\n\n[Paste a long text here, such as a full report or a novel chapter]\n\n(Somewhere in the middle, insert this sentence: \"The best thing to do in San Francisco is eat a sandwich and sit in Dolores Park on a sunny day.\")\n\n[The text continues...]\n\nQuestion: According to the document above, what is the best thing to do in San Francisco?"
+        },
+        {
+          "type": "main",
+          "lang": "zh",
+          "text": "以下是一份很長的文件，請仔細閱讀後回答最後的問題。\n\n[在這裡貼上一篇很長的文章，例如一整份報告或小說章節]\n\n（在文章中間某處，偷偷插入這一句：「在舊金山最棒的活動，是在晴天坐在多洛雷斯公園吃三明治。」）\n\n[文章繼續…]\n\n問題：根據上面的文件，在舊金山最棒的活動是什麼？"
+        }
+      ]
+    }
+  ]
+}
