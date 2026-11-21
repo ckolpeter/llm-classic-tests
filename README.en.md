@@ -14,6 +14,9 @@ A collection of the classic large language model (LLM) tests that circulate onli
 - **English and Chinese prompts**: the English originals (so you can compare with results shared online) plus Chinese versions, each with a copy button
 - **Answers or grading criteria**, difficulty labels (easy / medium / hard) and a "mostly solved by new models" marker
 - **Example figures**: working animated examples for the drawing and coding tests (pelican, bouncing balls, Snake, 3D cube, Game of Life, a playable piano…) and diagrams for the reasoning tests
+- **Paste & preview**: paste the HTML/SVG a model produced (or its whole reply) and see it rendered in a secure sandbox, with an optional side-by-side view for two models
+- **Auto-grading**: for the 21 tests with a fixed answer, paste the model's reply to get a pass/fail verdict and record it in one click (rule-based, for reference)
+- **Random variants**: 17 tests can swap their numbers or nouns in one click ("an octopus riding a skateboard", "how many s's in mississippi", a freshly generated sudoku), with the answer and grading updated automatically so models can't rely on memorization
 - **Record results**: add the models you're comparing, mark each test Pass or Fail, and get a comparison table; records stay in your browser
 - **Export** the comparison as CSV (opens in Excel) or as a PNG image for sharing
 - **English / Chinese interface** and **light / dark theme** toggles
@@ -25,8 +28,16 @@ A collection of the classic large language model (LLM) tests that circulate onli
 
 1. Open the online page above, or download [`index.html`](index.html) and open it in a browser.
 2. Pick a test, press **Copy**, and paste the prompt into the AI model you want to test.
-3. Compare the output with the "Answer / what to look for" section.
+3. Judge the result:
+   - Drawing & coding tests: paste the model's output into **Paste the model's output to preview it** to see it rendered.
+   - Tests with auto-grading: paste the model's reply into **Auto-grading** and press **Grade**.
+   - Everything else: compare with the "Answer / what to look for" section.
 4. To compare several models, add them under **Record results**, mark each test Pass or Fail, then view or export the **Comparison table**.
+5. Worried a model memorized the original? Press **Random variant** for a fresh version.
+
+| Paste & preview, side by side | Random variant + auto-grading |
+| --- | --- |
+| ![Preview](docs/preview.png) | ![Grading](docs/grading.png) |
 
 ![Example exported results image](docs/results-example.png)
 

@@ -40,6 +40,25 @@ English version below.
 | `source` / `name` / `about` / `answer` | 都要有 `zh` 和 `en`。`answer` 可以用 `<b>` 和 `<br>` |
 | `prompts` | `type` 是 `main`（主要）、`followup`（延伸追問）或 `variant`（中文變化版）；`lang` 是 `en` 或 `zh` |
 
+### 自動判分（選填）
+
+答案固定的題目可以加一個 `grader` 欄位，網頁上就會出現「自動判分」。正規表達式使用 JavaScript 語法，比對時不分大小寫。
+
+| `type` | 用途 | 欄位 |
+| --- | --- | --- |
+| `choice` | 在回答的結論處，看「正確答案」和「常見錯誤答案」哪個先出現 | `ok`、`fail`（正規表達式）、選填 `note` |
+| `contains` | 回答必須包含所有 `all`，以及 `any` 其中之一 | `all`、`any`、選填 `failNote` |
+| `exact` | 去掉格式後，回答裡要出現標準答案 | `expect`（陣列）、`normalize`：`digits`／`alnum`／`text` |
+| `sudoku` | 取回答中最後 81 個數字和解答比對 | `solution` |
+| `sentences` | 每個句子都要以指定的詞結尾 | `count`、`options`（`label`、`word`） |
+| `lipogram` | 全文不能出現指定的字 | `options`（`label`、`chars`） |
+
+`build.py` 會檢查格式。也可以在瀏覽器的開發者工具裡用 `LLMTests.grade(grader, 回答文字)` 試試看判分結果。
+
+### 隨機變體（選填）
+
+隨機變體寫在 `index.html` 的 `GEN` 物件裡，用測試的 `id` 當 key。函式回傳新的 `prompts`、`answer`，以及（選填）新的 `grader`，會取代原題同類型的提示詞。範例圖如果能跟著變體更新，在 `FIG` 裡加上 `va:true`，`html(v)` 會收到變體資料。
+
 ### 收錄原則
 
 - **要有出處**：網路上真的有人在用的測試，請附上來源。改編版也請註明改編自哪一題。
@@ -64,3 +83,7 @@ All tests live in [`tests.json`](tests.json). The easiest way to suggest one is 
 Guidelines: include a source for every test (and say what a variant is based on), give a clear answer or concrete grading criteria, keep English prompts exactly as originally published, make the Chinese version equivalent in meaning, and don't submit tests that rely on paid data, private individuals, or could cause harm.
 
 Example figures live in the `FIG` object in `index.html`, keyed by test `id`, each with `html` (returning SVG or a canvas), a bilingual `cap`, and an optional `init` for animation. Use the CSS variables for colours so they work in dark mode.
+
+**Auto-grading (optional).** Tests with a fixed answer can have a `grader` field (see the table above for the types `choice`, `contains`, `exact`, `sudoku`, `sentences`, `lipogram`). Regexes use JavaScript syntax and are matched case-insensitively. `build.py` validates the format, and you can try a grader in the browser console with `LLMTests.grade(grader, replyText)`.
+
+**Random variants (optional).** Generators live in the `GEN` object in `index.html`, keyed by test `id`. Each returns new `prompts`, an `answer` and optionally a `grader`; generated prompts replace the original prompts of the same type. If a figure can follow the variant, set `va:true` in `FIG` and its `html(v)` receives the variant data.

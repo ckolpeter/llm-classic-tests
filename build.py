@@ -49,7 +49,42 @@ def validate(data):
         for p in prompts:
             if p.get("type") not in PROMPT_TYPES or p.get("lang") not in LANGS or not p.get("text"):
                 errors.append(f"{where}: bad prompt {p}")
+        g = t.get("grader")
+        if g is not None:
+            errors += [f"{where}: grader {e}" for e in validate_grader(g)]
     return errors
+
+
+def validate_grader(g):
+    kind = g.get("type")
+    regexes = []
+    if kind == "choice":
+        if not (g.get("ok") and g.get("fail")):
+            return ["choice needs ok and fail regexes"]
+        regexes = [g["ok"], g["fail"]]
+    elif kind == "contains":
+        regexes = list(g.get("all", [])) + list(g.get("any", []))
+        if not regexes:
+            return ["contains needs an all or any list"]
+    elif kind == "exact":
+        if g.get("normalize") not in {"digits", "alnum", "text"} or not g.get("expect"):
+            return ["exact needs normalize (digits/alnum/text) and expect"]
+    elif kind == "sudoku":
+        if not re.fullmatch(r"[1-9]{81}", g.get("solution", "")):
+            return ["sudoku needs an 81-digit solution"]
+    elif kind in {"sentences", "lipogram"}:
+        key = "word" if kind == "sentences" else "chars"
+        if not g.get("options") or not all(o.get(key) and o.get("label") for o in g["options"]):
+            return [f"{kind} needs options with label and {key}"]
+    else:
+        return [f"unknown type {kind!r}"]
+    errs = []
+    for r in regexes:  # rough syntax check; the page uses JavaScript regex with the i and u flags
+        try:
+            re.compile(r)
+        except re.error as e:
+            errs.append(f"bad regex {r!r}: {e}")
+    return errs
 
 
 def render(data, page):

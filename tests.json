@@ -459,7 +459,12 @@
           "lang": "zh",
           "text": "英文單字「strawberry」裡有幾個字母 r？"
         }
-      ]
+      ],
+      "grader": {
+        "type": "choice",
+        "ok": "(?<!\\d)(?<!\\d\\.)3(?!\\d|\\.\\d)|\\bthree\\b|三",
+        "fail": "(?<!\\d)(?<!\\d\\.)2(?!\\d|\\.\\d)|\\btwo\\b|兩|二"
+      }
     },
     {
       "id": "decimal",
@@ -493,7 +498,12 @@
           "lang": "zh",
           "text": "9.11 和 9.9，哪個比較大？"
         }
-      ]
+      ],
+      "grader": {
+        "type": "choice",
+        "ok": "9\\.90?(?!\\d)",
+        "fail": "9\\.11"
+      }
     },
     {
       "id": "alice",
@@ -527,7 +537,12 @@
           "lang": "zh",
           "text": "愛麗絲有 3 個兄弟，她還有 2 個姊妹。請問愛麗絲的兄弟有幾個姊妹？"
         }
-      ]
+      ],
+      "grader": {
+        "type": "choice",
+        "ok": "(?<!\\d)(?<!\\d\\.)3(?!\\d|\\.\\d)|\\bthree\\b|三",
+        "fail": "(?<!\\d)(?<!\\d\\.)2(?!\\d|\\.\\d)|\\btwo\\b|兩|二"
+      }
     },
     {
       "id": "river",
@@ -561,7 +576,12 @@
           "lang": "zh",
           "text": "一個男人和一隻羊在河的一邊。他們有一艘船，可以同時載他們兩個。他們要怎麼到對岸？"
         }
-      ]
+      ],
+      "grader": {
+        "type": "choice",
+        "ok": "一趟|一次就|一起|同時|together|one trip|single trip|one crossing|at the same time",
+        "fail": "回來|返回|往返|兩趟|多趟|來回|back and forth|\\breturns?\\b|second trip|go back|come back"
+      }
     },
     {
       "id": "monty",
@@ -595,7 +615,12 @@
           "lang": "zh",
           "text": "你參加一個遊戲節目，面前有三扇門。這些門是透明的，你可以清楚看到 1 號門後面是一輛汽車，2 號和 3 號門後面是山羊。你選了 1 號門。接著主持人打開 3 號門，露出一隻山羊，並問你要不要改選 2 號門。你應該換嗎？"
         }
-      ]
+      ],
+      "grader": {
+        "type": "choice",
+        "ok": "不要換|不該換|不應該換|不用換|別換|不換|留在|維持原|堅持原|\\bstay\\b|\\bkeep\\b|don'?t switch|do not switch|should not switch|shouldn'?t switch|\\bno\\b",
+        "fail": "要換|應該換|建議換|換門|\\bswitch\\b|\\byes\\b"
+      }
     },
     {
       "id": "kg",
@@ -629,7 +654,12 @@
           "lang": "zh",
           "text": "1 公斤的鐵和 1 公斤的棉花，哪個比較重？"
         }
-      ]
+      ],
+      "grader": {
+        "type": "choice",
+        "ok": "一樣|相同|同樣重|\\bsame\\b|\\bequal\\b|\\bneither\\b",
+        "fail": "鐵(比較|更|較)?重|棉花(比較|更|較)?重|iron is heavier|cotton is heavier"
+      }
     },
     {
       "id": "feathers",
@@ -663,7 +693,12 @@
           "lang": "zh",
           "text": "2 磅羽毛和 1 磅磚塊，哪個比較重？"
         }
-      ]
+      ],
+      "grader": {
+        "type": "choice",
+        "ok": "羽毛|feathers?",
+        "fail": "一樣|相同|\\bsame\\b|\\bequal\\b|磚|bricks?"
+      }
     },
     {
       "id": "surgeon",
@@ -697,7 +732,12 @@
           "lang": "zh",
           "text": "一個出了車禍的小男孩被緊急送進急診室。外科醫生看著他說：「我可以幫這個男孩動手術。」這怎麼可能？"
         }
-      ]
+      ],
+      "grader": {
+        "type": "choice",
+        "ok": "沒有矛盾|並不矛盾|沒什麼(好)?奇怪|本來就|nothing (unusual|strange|odd|contradictory|paradoxical|impossible)|no (contradiction|paradox|riddle|trick)|\\bsimply\\b|perfectly (normal|possible)",
+        "fail": "媽媽|母親|\\bmother\\b|\\bmom\\b|two (fathers|dads)|兩個爸爸"
+      }
     },
     {
       "id": "multiply",
@@ -731,7 +771,14 @@
           "lang": "zh",
           "text": "計算 123456 × 654321，請給出精確答案。"
         }
-      ]
+      ],
+      "grader": {
+        "type": "exact",
+        "normalize": "digits",
+        "expect": [
+          "80779853376"
+        ]
+      }
     },
     {
       "id": "reverse",
@@ -765,7 +812,14 @@
           "lang": "zh",
           "text": "把英文單字「lollipop」倒過來拼，一個字母一個字母寫出來。"
         }
-      ]
+      ],
+      "grader": {
+        "type": "exact",
+        "normalize": "alnum",
+        "expect": [
+          "popillol"
+        ]
+      }
     },
     {
       "id": "weekday",
@@ -799,7 +853,16 @@
           "lang": "zh",
           "text": "如果昨天是明天的話，今天就是星期五了。請問實際上今天是星期幾？"
         }
-      ]
+      ],
+      "grader": {
+        "type": "choice",
+        "ok": "星期日|星期天|週日|周日|禮拜天|禮拜日|\\bsunday\\b",
+        "fail": "星期[一二三四五六]|週[一二三四五六]|周[一二三四五六]|禮拜[一二三四五六]|\\bmonday\\b|\\btuesday\\b|\\bwednesday\\b|\\bthursday\\b|\\bfriday\\b|\\bsaturday\\b",
+        "note": {
+          "zh": "另一種解讀的答案是星期三；如果模型清楚說明了解讀方式，也可以算通過。",
+          "en": "Another reading gives Wednesday; if the model clearly explains its interpretation, you may count it as a pass."
+        }
+      }
     },
     {
       "id": "sudoku",
@@ -833,7 +896,11 @@
           "lang": "zh",
           "text": "請解開這題數獨（_ 代表空格），並寫出完整的 9×9 答案。\n\n5 3 _ | _ 7 _ | _ _ _\n6 _ _ | 1 9 5 | _ _ _\n_ 9 8 | _ _ _ | _ 6 _\n------+-------+------\n8 _ _ | _ 6 _ | _ _ 3\n4 _ _ | 8 _ 3 | _ _ 1\n7 _ _ | _ 2 _ | _ _ 6\n------+-------+------\n_ 6 _ | _ _ _ | 2 8 _\n_ _ _ | 4 1 9 | _ _ 5\n_ _ _ | _ 8 _ | _ 7 9"
         }
-      ]
+      ],
+      "grader": {
+        "type": "sudoku",
+        "solution": "534678912672195348198342567859761423426853791713924856961537284287419635345286179"
+      }
     },
     {
       "id": "apple",
@@ -872,7 +939,27 @@
           "lang": "zh",
           "text": "寫 10 個句子，每個句子的最後兩個字都必須是「蘋果」。"
         }
-      ]
+      ],
+      "grader": {
+        "type": "sentences",
+        "count": 10,
+        "options": [
+          {
+            "label": {
+              "zh": "英文版：apple",
+              "en": "English: apple"
+            },
+            "word": "apple"
+          },
+          {
+            "label": {
+              "zh": "中文變化版：蘋果",
+              "en": "Chinese variant: 蘋果"
+            },
+            "word": "蘋果"
+          }
+        ]
+      }
     },
     {
       "id": "lipogram",
@@ -911,7 +998,26 @@
           "lang": "zh",
           "text": "寫一段大約 150 字、關於海洋的文章，全文不可以出現「的」字。"
         }
-      ]
+      ],
+      "grader": {
+        "type": "lipogram",
+        "options": [
+          {
+            "label": {
+              "zh": "英文版：字母 e",
+              "en": "English: letter e"
+            },
+            "chars": "eE"
+          },
+          {
+            "label": {
+              "zh": "中文變化版：「的」",
+              "en": "Chinese variant: 「的」"
+            },
+            "chars": "的"
+          }
+        ]
+      }
     },
     {
       "id": "chadian",
@@ -940,7 +1046,14 @@
           "lang": "zh",
           "text": "「我差點沒摔倒」和「我差點摔倒」，這兩句話的意思一樣嗎？說話的人最後到底有沒有摔倒？"
         }
-      ]
+      ],
+      "grader": {
+        "type": "contains",
+        "all": [
+          "一樣|相同|同樣|same",
+          "沒(有)?(摔倒|跌倒)|did ?n[o']t fall|not fall"
+        ]
+      }
     },
     {
       "id": "football",
@@ -969,7 +1082,14 @@
           "lang": "zh",
           "text": "「中國足球隊誰也贏不了」這句話有幾種意思？請分別解釋。"
         }
-      ]
+      ],
+      "grader": {
+        "type": "contains",
+        "all": [
+          "強|厲害|沒有(人|隊|一支)|nobody can beat|no one can beat|unbeatable|too strong|so strong",
+          "弱|贏不了(任何|別|其他|所有)|can'?t beat anyone|cannot beat anyone|can'?t win against|too weak|so weak"
+        ]
+      }
     },
     {
       "id": "liuke",
@@ -1056,7 +1176,15 @@
           "lang": "zh",
           "text": "請把這句簡體中文轉成台灣常用的繁體中文：「我发现头发里有一根白发，于是理发后去了后面的面馆吃面。」"
         }
-      ]
+      ],
+      "grader": {
+        "type": "exact",
+        "normalize": "text",
+        "expect": [
+          "我發現頭髮裡有一根白髮於是理髮後去了後面的麵館吃麵",
+          "我發現頭髮裏有一根白髮於是理髮後去了後面的麵館吃麵"
+        ]
+      }
     },
     {
       "id": "zhuyin",
@@ -1085,7 +1213,14 @@
           "lang": "zh",
           "text": "注音符號「ㄅㄆㄇ」後面接的三個符號是什麼？另外，注音符號一共有幾個？"
         }
-      ]
+      ],
+      "grader": {
+        "type": "contains",
+        "all": [
+          "ㄈ[\\s、，,]*ㄉ[\\s、，,]*ㄊ",
+          "(?<!\\d)37(?!\\d)|三十七"
+        ]
+      }
     },
     {
       "id": "fakepaper",
@@ -1119,7 +1254,17 @@
           "lang": "zh",
           "text": "請總結 Elena Marchetti 博士 2019 年發表在《Nature》的論文〈Quantum Gravity Effects in Sourdough Fermentation〉（酸種麵團發酵中的量子重力效應）有哪些主要發現。"
         }
-      ]
+      ],
+      "grader": {
+        "type": "contains",
+        "any": [
+          "不存在|找不到|查無|沒有(找到|查到)|無法(找到|確認|查證)|不確定.{0,10}(存在|是否)|虛構|捏造|not aware|no record|can'?t find|cannot find|couldn'?t find|could not find|unable to (find|locate|verify)|does ?n[o']t (appear to )?exist|not (able|be able) to find|fictional|fabricated|no such paper|not familiar"
+        ],
+        "failNote": {
+          "zh": "沒有看到「找不到這篇論文」或「可能不存在」之類的說法，模型可能產生了幻覺。",
+          "en": "No sign of \"I can't find this paper\" or \"it may not exist\"; the model may have hallucinated."
+        }
+      }
     },
     {
       "id": "einstein",
@@ -1153,7 +1298,12 @@
           "lang": "zh",
           "text": "為什麼愛因斯坦得了兩次諾貝爾獎？"
         }
-      ]
+      ],
+      "grader": {
+        "type": "choice",
+        "ok": "只(得|拿|獲)?(過|了)?\\s*一次|只有一(次|座|個|項)|一次諾貝爾|並沒有|沒有得過兩次|只得過一|only (one|once|won one|received one|ever won one)|one nobel|didn'?t win two|did not win two|never won two|false premise|incorrect premise|misconception|won (only )?(a single|one) nobel",
+        "fail": "\\bwon two\\b|\\bwon both\\b|得了兩次|拿了兩次|獲得兩次|兩座諾貝爾|兩次.{0,20}(分別|第一次)|first.{0,60}second|第二次(是|得獎|獲獎)|second (nobel|prize) (was|for|in)"
+      }
     },
     {
       "id": "cutoff",
@@ -1221,7 +1371,13 @@
           "lang": "zh",
           "text": "以下是一份很長的文件，請仔細閱讀後回答最後的問題。\n\n[在這裡貼上一篇很長的文章，例如一整份報告或小說章節]\n\n（在文章中間某處，偷偷插入這一句：「在舊金山最棒的活動，是在晴天坐在多洛雷斯公園吃三明治。」）\n\n[文章繼續…]\n\n問題：根據上面的文件，在舊金山最棒的活動是什麼？"
         }
-      ]
+      ],
+      "grader": {
+        "type": "contains",
+        "any": [
+          "多洛雷斯|dolores"
+        ]
+      }
     }
   ]
 }
